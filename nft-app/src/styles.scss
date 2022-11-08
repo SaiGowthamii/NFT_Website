@@ -1,1 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
+.card_style .p-card {
+    background: #38323c;
+    color: white;
+    box-shadow: 0 2px 1px -1px rgb(0 0 0), 0 1px 1px 0 rgb(0 0 0), 0 1px 3px 0 rgb(0 0 0 / 78%);
+    border-radius: 6px;
+}
+.card_style .p-card .p-card-content{
+    padding-left: 44px !important;
+
+}
+.p-inputtext{
+    padding: 0.75rem 2.75rem !important;
+}
+.p-password {
+    position: relative;
+    top: 8px;
+    right: 23px;
+    display: table-caption;
+}
