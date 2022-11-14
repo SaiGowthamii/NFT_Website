@@ -1,12 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
 .card_style .p-card {
-    background: #38323c;
+    background: #090806;
+    color: white;
+    box-shadow: 0 2px 1px -1px rgb(0 0 0), 0 1px 1px 0 rgb(0 0 0), 0 1px 3px 0 rgb(0 0 0 / 78%);
+    border-radius: 6px;
+}
+
+.menu_card .p-card {
+    background-image: linear-gradient(#302929, #45453e) !important;
+    color: white;
+    box-shadow: 0 2px 1px -1px rgb(0 0 0), 0 1px 1px 0 rgb(0 0 0), 0 1px 3px 0 rgb(0 0 0 / 78%);
+    border-radius: 6px;
+}
+.create_card .p-card {
+    background: #090806;
     color: white;
     box-shadow: 0 2px 1px -1px rgb(0 0 0), 0 1px 1px 0 rgb(0 0 0), 0 1px 3px 0 rgb(0 0 0 / 78%);
     border-radius: 6px;
 }
 .card_style .p-card .p-card-content{
     padding-left: 44px !important;
+
+}
+.create_card .p-card .p-card-content{
+    padding-left: 0px !important;
 
 }
 .p-inputtext{
@@ -17,4 +34,24 @@
     top: 8px;
     right: 23px;
     display: table-caption;
+}
+.p-dropdown .p-dropdown-label {
+    background: #090806 !important;
+    color:white !important;
+    border: 0 none;
+
+}
+.p-dropdown .p-dropdown-trigger {
+    background: #090806 !important;
+    color: white !important;
+    width: 3rem;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+.p-dropdown {
+    background: transparent !important;
+    /* border: 1px solid #ced4da; */
+    transition: 0px !important;
+    border-radius: 20px !important;
+    border: 0px !important;
 }

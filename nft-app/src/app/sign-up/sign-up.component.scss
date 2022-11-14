@@ -1,14 +1,28 @@
-.signUpSty{
+/* Split the screen in half */
+.split {
     height: 100%;
-    width: 100%;
+    width: 50%;
     position: fixed;
     z-index: 1;
     top: 0;
     overflow-x: hidden;
     padding-top: 20px;
-    background-color:#251F29;
-}
-.centered {
+  }
+  
+  /* Control the left side */
+  .left {
+    left: 0;
+    background-color: #090806;
+  }
+  
+  /* Control the right side */
+  .right {
+    right: 0;
+    background-color: #090806;
+  }
+  
+  /* If you want the content centered horizontally and vertically */
+  .centered {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -16,3 +30,97 @@
     text-align: center;
     color:whitesmoke;
   }
+  
+  /* Style the image inside the centered container, if needed */
+  .centered img {
+    width: 150px;
+    border-radius: 50%;
+  }
+  .input_style{
+    height: 27px;
+    border-radius: 4px;
+
+  }
+  .block{
+    float: left !important;
+ }
+ .btnSty{
+    width: 110px;
+    height: 39px;
+    border-radius: 9px;
+    background: transparent;
+    border-color: white !important;
+    color: white;
+    margin-top: 26px;
+    margin-left: -29px;
+    cursor: pointer;
+ }
+ .title{
+    position: relative;
+    top: 359px;
+    font-size: 52px;
+    color: white;
+    left: 524px;
+    font-family: cursive;
+ }
+ .lockicon{
+    margin-top: 21px;
+    /* margin-right: 43px; */
+    position: relative;
+    right: 41px;
+    color: black !important;
+ }
+ .createbtn{
+    border:0px !important;
+    background: transparent;
+    border-color: transparent !important;
+    color: white;
+    cursor: pointer;
+    font:bold;
+    text-decoration: solid;
+ }
+ .divStyle{
+  position: relative;
+  left: -10px;
+
+ }
+ .last{
+  position: relative;
+  left: 20px;
+  height: 36px;
+ }
+ .city{
+  position: relative;
+  left: 68px;
+  height: 36px;
+  
+ }
+ .state{
+  position: relative;
+  left: 14px;
+  height: 36px;
+ }
+ .zip{
+  position: relative;
+  left: 20px;
+  height: 36px;
+ }
+ .email{
+  position: relative;
+  left: -84px;
+  height: 36px;
+ }
+ .phone{
+  position: relative;
+  left: 208px;
+  top: -37px;
+  height: 36px;
+ }
+ .btnCls {
+  position: relative;
+  left: 48px;
+  top: 8px;
+
+ }
+
+  

@@ -1,25 +1,47 @@
-<span class="signUpSty">
-<div >
-    <div class="centered">
-    <p-card class="card_style" [style]="{'width': '25rem', 'margin-bottom': '2em', 'height':'20rem'}">
-        <!-- <div class="form-group">
-            <label for="email">Name</label>&nbsp;&nbsp;&nbsp;
-            <input type="text" placeholder="Enter the email " class="form-control"   name="email" required email />
-          </div> -->
-          <div class="field">
-            <label for="username2" class="block">Username</label><br>
-            <input id="username2" type="username" aria-describedby="username2-help" class="ng-invalid ng-dirty" pInputText class="input_style"  placeholder="Enter the username" style="float:left ;margin-top: 8px;padding: 0.75rem 2.75rem !important;" /><br>
-            <!-- <small id="username2-help" class="p-error block">Username is not available.</small> -->
-        </div><br><br>
-        <!-- <div class="field"> -->
-            <label for="password2" class="block">Password</label><br>
-            <input id="username2" type="password" aria-describedby="username2-help" class="ng-invalid ng-dirty" pInputText class="input_style"  placeholder="Enter the Password" style="float:left ;margin-top: 8px;padding: 0.75rem 2.75rem !important;" /> 
-        <!-- </div><br> -->
-        <button  type="submit" class="btn btn-primary btnSty">
+<div class="signUpSty">
+<div class="split left">
+    <img src="\assets\images\NFT_Login.jpg" width="627px" style="padding-top:53px">
+  </div>
+  
+  <div class="split right">
+    <div class="centered ui-g-12">
+        <h3>New Registration</h3>
+        <p-card class="create_card" [style]="{'width': '38rem', 'margin-bottom': '2em'}">
+          <div class="divStyle">
+         <label> First Name</label> &nbsp;&nbsp; 
+         <input type="text" style="height: 36px;" placeholder="Enter FirstName">&nbsp;&nbsp;
+         <label> Last Name</label> &nbsp;&nbsp; 
+         <input type="text" class="last" placeholder="Enter LastName"><br><br></div>
+         <div style="margin-left: -24px;" class="divStyle">
+         <label style="position: relative;right: 21px;"> Address</label> &nbsp;&nbsp; 
+         <input type="text" style="height: 36px;" placeholder="Address">&nbsp;&nbsp;
+         <label >City</label> &nbsp;&nbsp;
+         <input type="text" class="city" placeholder="Enter City" ></div><br>
+         <div class="divStyle">
+         <label > State</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  
+         <input type="text" class="state" placeholder="Enter State">&nbsp;&nbsp;&nbsp;&nbsp;
+         <label >Zip Code</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         <input type="text" class="zip" placeholder="Enter ZipCode"></div><br>
+         <div class="divStyle">
+          <label style="float: left;"> Email Address</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  
+          <input type="text" class="email" placeholder="Enter EmailAddress">&nbsp;&nbsp;&nbsp;&nbsp;
+          <label style="position: relative;
+          right: 95px;">Phone Number</label> &nbsp;&nbsp;&nbsp;
+          <input type="text" class="phone" placeholder="Enter PhoneNumber"></div>
+          <div>
+          <label > Cell Phone Number</label> &nbsp;&nbsp;&nbsp; 
+          <input type="text" style="height: 36px;" placeholder="Enter Cell Number"></div><br>
+          <div class="btnCls">
+          <button  type="submit" class="btn btn-primary btnSty">
             Submit
+           </button>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
+           <button  type="submit" class="btn btn-primary btnSty" (click)="login()">
+            Login
            </button>
-    </p-card>
-    </div>
+          </div>
 
+         
+        </p-card>      
+    </div>
+  </div>
 </div>
-</span>
