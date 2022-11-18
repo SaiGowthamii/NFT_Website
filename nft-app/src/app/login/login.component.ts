@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import {NftserService} from '../nftser.service';
+import { Observable } from 'rxjs';
+
 
 @Component({
   selector: 'app-login',
@@ -8,16 +11,49 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   show: boolean=false;
+  user:any={}
+result:any=[];
+userName:any|undefined;
+passWord:any|undefined;
+loginbol:boolean=false;
+inCorrect:boolean=false;
 
-  constructor(private router:Router) { }
+  constructor(private router:Router,private nftService:NftserService) { }
 
-  ngOnInit(): void {
+  ngOnInit(): any {     
   }
   signUp(){
     this.router.navigate(['/signUp']);
+
   }
   submit(){
-    this.router.navigate(['/home']);
+    if(this.userName=="" || this.passWord=="") {
+     this.loginbol=true;
+    }
+    else{
+      this.user={
+        "username":this.userName,
+        "password":this.passWord
+      }
+    }
+    this.nftService.loginApi(this.user).subscribe(data=>{
+      console.log('data',data);
+      this.result=data;
+      if(this.result.res=='success'){
+        localStorage.setItem('userDetails', JSON.stringify(this.result));
+        this.router.navigate(['/home']);
+      }
+      else{
+        this.inCorrect=true;
+
+      }
+      console.log("result",this.result.res);
+    })
+    // 
+  }
+  onFocus(){
+    this.loginbol=false;
+    this.inCorrect=false;
   }
 
 }

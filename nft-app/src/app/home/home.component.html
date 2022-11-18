@@ -1,27 +1,72 @@
 <div class="split left">
-    <div style="padding-top: 11px;">
+    <div style="padding-top: 12px;padding-left: 7px;padding-right: 12px;">
+        <p-card class="menu_card" [style]="{'width': 'auto','height':'74px'}">
+        <div class="cardCont">
         <img src="\assets\images\home_img.png" width="100px" style="padding-top: 15px;
-        padding-left: 7px;">
+        padding-left: 7px;margin-left: 27px;">
         <span class="menusty">
        <p-dropdown [options]="menuopt" optionLabel="name"></p-dropdown>
+       <span class="SpanSty" (click)="op.toggle($event)">
+            <i class="pi pi-user"></i>
         </span>
+        </span>
+       
+    </div>
+    </p-card>
     </div>
     <div class="centered">
-        <p-card class="menu_card" [style]="{'width': '38rem', 'margin-bottom': '2em'}">
-            <div class="field">
-                <label for="username2" class="block">Username</label><br>
-                <input id="username2" type="username" aria-describedby="username2-help" class="ng-invalid ng-dirty" pInputText class="input_style"  placeholder="Enter the username" style="float:left ;margin-top: 8px;padding: 0.75rem 2.75rem !important;" /><br>
-                <!-- <small id="username2-help" class="p-error block">Username is not available.</small> -->
-            </div><br><br>
-            <!-- <div class="field"> -->
-                <label for="password2" class="block">Password</label><br>
-                <input id="username2" type="password" aria-describedby="username2-help" class="ng-invalid ng-dirty" pInputText class="input_style"  placeholder="Enter the Password" style="float:left ;margin-top: 8px;padding: 0.75rem 2.75rem !important;" /> 
-            <!-- </div><br> -->
-            <button  type="submit" class="btn btn-primary btnSty">
-                Submit
-               </button>
-        </p-card>
+        <label>Ethereum Address</label>&nbsp;&nbsp;
+        <input type="text" style="height: 36px;" placeholder="Enter Ethereum Address">&nbsp;&nbsp;
+        <label>Token Id</label>&nbsp;&nbsp;
+        <input type="text" style="height: 36px;" placeholder="Enter TokenID">&nbsp;&nbsp;
+        <button  type="submit" class="btn btn-primary btnSty" >
+            Search
+        </button>
+        <button  type="submit" class="btn btn-primary btnSty" >
+            Reset
+        </button> 
+    </div>
+    <div class="tableProp">
+        <p-table [value]="sales" [scrollable]="true" scrollHeight="400px" [tableStyle]="{'min-width': '50rem'}">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Name</th>
+                    <th>Ethereum Address</th>
+                    <th>Token Id</th>
+                    <th>Current Price</th>
+                    <th>Checkout</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-sales>
+                <tr>
+                    <td>{{sales.code}}</td>
+                    <td>{{sales.name}}</td>
+                    <td>{{sales.category}}</td>
+                    <td>{{sales.quantity}}</td>
+                    <td><button  type="submit" class="btn btn-primary logsty" (click)="buy($event)">Buy</button> </td>
+                </tr>
+            </ng-template>
+        </p-table>
     </div>
 
+    <!-- <div style="padding:24px">
+    <p-card class="menu_card" [style]="{'width': 'auto','height':'467px'}">
+
+    <!-- </p-card> -->
+<!-- </div> -->
 
 </div>
+<p-overlayPanel #op>
+    <ng-template pTemplate>
+        <label>Name</label><br>
+        <label>Level</label><br>
+        <label>Ethereum Address</label><br>
+        <label>Wallet Amount</label><br>
+        <button  type="submit" class="btn btn-primary logsty" (click)="login()">
+            Logout
+        </button>
+    </ng-template>
+</p-overlayPanel>
+<p-dialog header="Transcation" [(visible)]="display" [style]="{width: '50vw'}">
+    Content
+</p-dialog>

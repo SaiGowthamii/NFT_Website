@@ -10,6 +10,12 @@ import {ButtonModule} from 'primeng/button';
 import { HomeComponent } from './home/home.component';
 import {DropdownModule} from 'primeng/dropdown';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {TableModule} from 'primeng/table';
+import {OverlayPanelModule} from 'primeng/overlaypanel';
+import {DialogModule} from 'primeng/dialog';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+
 
 
 
@@ -27,7 +33,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CardModule,
     PasswordModule,
     ButtonModule,
-    DropdownModule
+    DropdownModule,
+    TableModule,
+    OverlayPanelModule,
+    DialogModule,
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
