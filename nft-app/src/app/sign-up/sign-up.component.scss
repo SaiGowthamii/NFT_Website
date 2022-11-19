@@ -1,12 +1,13 @@
 /* Split the screen in half */
 .split {
     height: 100%;
-    width: 50%;
+    width: 56%;
     position: fixed;
     z-index: 1;
     top: 0;
     overflow-x: hidden;
     padding-top: 20px;
+    overflow-y: hidden;
   }
   
   /* Control the left side */
@@ -24,7 +25,7 @@
   /* If you want the content centered horizontally and vertically */
   .centered {
     position: absolute;
-    top: 50%;
+    top: 54%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
@@ -82,16 +83,17 @@
  .divStyle{
   position: relative;
   left: -10px;
+  left: -23px;
 
  }
  .last{
   position: relative;
-  left: 20px;
+  left: 55px;
   height: 36px;
  }
  .city{
   position: relative;
-  left: 68px;
+  left: 101px;
   height: 36px;
   
  }
@@ -102,7 +104,7 @@
  }
  .zip{
   position: relative;
-  left: 20px;
+  left: 54px;
   height: 36px;
  }
  .email{
@@ -112,15 +114,39 @@
  }
  .phone{
   position: relative;
-  left: 208px;
+  left: 252px;
   top: -37px;
   height: 36px;
  }
  .btnCls {
   position: relative;
   left: 48px;
-  top: 8px;
+  top: -32px;
 
  }
+ .celllab{
+  position: relative;
+  left: -69px;
+}
+ .cell{
+  height: 36px;
+  position: relative;
+  left: -86px;
+ }
+ .ethlabel{
+  position: relative;
+  right: 78px;
+ }
+ .eth{
+  height: 36px;
+    position: relative;
+    top: -39px;
+    left: 253px;
+ }
+ .required-field::after {
+  content: "*";
+  color: red;
+  margin-left:2px
+}
 
   

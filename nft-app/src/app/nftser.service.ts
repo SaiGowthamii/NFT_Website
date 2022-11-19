@@ -19,4 +19,22 @@ export class NftserService {
      })
     
   }
+  SignupApi(params:any){
+    console.log("Successful");
+     return this.http.post('http://localhost:4000/signUp',{
+      "first_name":params.first_name,
+      "last_name":params.last_name,
+      "eth_address":params.eth_address,
+      "email":params.email,
+      "cell_no":params.cell_no,
+      "ph_no":params.ph_no,
+      "street_addr":params.street_addr,
+      "city":params.city,
+      "state":params.state,
+      "zip":params.zip,
+      "username":params.username,
+      "password":params.password
+     })
+    
+  }
 }

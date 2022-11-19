@@ -14,19 +14,18 @@
               </div> -->
               <div class="field">
                 <label class="error" *ngIf="loginbol">! Enter Username and Password</label>
-                <label class="error" *ngIf="inCorrect">InCorrect UserName or Password</label>
+                <label class="error" *ngIf="inCorrect">Incorrect UserName or Password</label>
               </div>
               <div class="field">
                 <label for="username2" class="block">Username</label><br>
-                <input id="username2" type="username" aria-describedby="username2-help" onfocus="onFocus()" [(ngModel)]="userName" class="ng-invalid ng-dirty" pInputText class="input_style"  placeholder="Enter the username" style="float:left ;margin-top: 8px;padding: 0.75rem 2.75rem !important;" /><br>
+                <input id="username2" type="username" aria-describedby="username2-help" (focus)='onfocus()' [(ngModel)]="userName" class="ng-invalid ng-dirty" pInputText class="input_style"  placeholder="Enter the username" style="float:left ;margin-top: 8px;padding: 0.75rem 2.75rem !important;" /><br>
                 <!-- <small id="username2-help" class="p-error block">Username is not available.</small> -->
             </div><br><br>
             <!-- <div class="field"> -->
                 <label for="password2" class="block">Password</label><br>
-                <input id="password1" type="password" aria-describedby="username2-help"  onfocus="onFocus()" [(ngModel)]="passWord" class="ng-invalid ng-dirty" pInputText class="input_style"  placeholder="Enter the username" style="float:left ;margin-top: 8px;padding: 0.75rem 2.75rem !important;" /><br>
-                <div class="lockicon">
-                    <i  [class]="show ? 'pi pi-lock-open' : 'pi pi-lock'"></i>
-                  </div><br>
+                <input id="password1" type="password" aria-describedby="username2-help" (focus)='onfocus()'  [type]="show ? 'text' : 'password'" [(ngModel)]="passWord" class="ng-invalid ng-dirty" pInputText class="input_style"  placeholder="Enter the username" style="float:left ;margin-top: 8px;padding: 0.75rem 2.75rem !important;" /><br>
+                    <i  class="lockicon" [class]="show ? 'pi pi-lock-open' : 'pi pi-lock'" (click)="passwordshow()"></i>
+                 <br>
             <!-- </div><br> -->
             <button  type="submit" class="btn btn-primary btnSty" (click)="submit()">
                 Submit

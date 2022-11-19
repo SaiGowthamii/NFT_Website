@@ -9,31 +9,41 @@
         <h3>New Registration</h3>
         <p-card class="create_card" [style]="{'width': '38rem', 'margin-bottom': '2em'}">
           <div class="divStyle">
-         <label> First Name</label> &nbsp;&nbsp; 
-         <input type="text" style="height: 36px;" placeholder="Enter FirstName">&nbsp;&nbsp;
-         <label> Last Name</label> &nbsp;&nbsp; 
-         <input type="text" class="last" placeholder="Enter LastName"><br><br></div>
+         <label class="required-field"> First Name</label> &nbsp;&nbsp; 
+         <input type="text" (focus)='onfocus()' style="height: 36px;" [(ngModel)]="first_name" placeholder="Enter FirstName">&nbsp;&nbsp;
+         <label class="required-field"> Last Name</label> &nbsp;&nbsp; 
+         <input type="text" (focus)='onfocus()' class="last" [(ngModel)]="last_name" placeholder="Enter LastName"><br><br></div>
          <div style="margin-left: -24px;" class="divStyle">
-         <label style="position: relative;right: 21px;"> Address</label> &nbsp;&nbsp; 
-         <input type="text" style="height: 36px;" placeholder="Address">&nbsp;&nbsp;
-         <label >City</label> &nbsp;&nbsp;
-         <input type="text" class="city" placeholder="Enter City" ></div><br>
+         <label class="required-field" style="position: relative;right: 21px;"> Address</label> &nbsp;&nbsp; 
+         <input type="text" (focus)='onfocus()' style="height: 36px;" [(ngModel)]="street_addr" placeholder="Address">&nbsp;&nbsp;
+         <label class="required-field">City</label> &nbsp;&nbsp;
+         <input type="text" (focus)='onfocus()'class="city" [(ngModel)]="city" placeholder="Enter City" ></div><br>
          <div class="divStyle">
-         <label > State</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  
-         <input type="text" class="state" placeholder="Enter State">&nbsp;&nbsp;&nbsp;&nbsp;
-         <label >Zip Code</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-         <input type="text" class="zip" placeholder="Enter ZipCode"></div><br>
+         <label class="required-field"> State</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  
+         <input type="text" (focus)='onfocus()' class="state" [(ngModel)]="state" placeholder="Enter State">&nbsp;&nbsp;&nbsp;&nbsp;
+         <label class="required-field">Zip Code</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         <input type="text" (focus)='onfocus()' class="zip" [(ngModel)]="zip" placeholder="Enter ZipCode"></div><br>
          <div class="divStyle">
-          <label style="float: left;"> Email Address</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  
-          <input type="text" class="email" placeholder="Enter EmailAddress">&nbsp;&nbsp;&nbsp;&nbsp;
-          <label style="position: relative;
+          <label class="required-field" style="float: left;"> Email Address</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  
+          <input type="text" (focus)='onfocus()' class="email" [(ngModel)]="email" placeholder="Enter EmailAddress">&nbsp;&nbsp;&nbsp;&nbsp;
+          <label class="required-field" style="position: relative;
           right: 95px;">Phone Number</label> &nbsp;&nbsp;&nbsp;
-          <input type="text" class="phone" placeholder="Enter PhoneNumber"></div>
-          <div>
-          <label > Cell Phone Number</label> &nbsp;&nbsp;&nbsp; 
-          <input type="text" style="height: 36px;" placeholder="Enter Cell Number"></div><br>
+          <input type="text" (focus)='onfocus()' class="phone" [(ngModel)]="ph_no" placeholder="Enter PhoneNumber"></div>
+          <div class="divStyle">
+          <label class="celllab required-field"> Cell Phone Number</label> &nbsp;&nbsp;&nbsp; 
+          <input type="text" (focus)='onfocus()' class="cell" [(ngModel)]="cell_no" style="height: 36px;" placeholder="Enter Cell Number">
+          <label class="ethlabel required-field">Ethereum Address</label> &nbsp;&nbsp;&nbsp; 
+          <input type="text" (focus)='onfocus()' class="eth" [(ngModel)]="eth_address" style="height: 36px;position: relative;" placeholder="Enter Ethereum">
+           </div><br>
+           <div class="divStyle" style="top: -26px;"> 
+            <label class="required-field" style="position: relative;left: -68px;" >Username</label> &nbsp;&nbsp;&nbsp; 
+            <input type="text" (focus)='onfocus()'style="height: 36px;position: relative;left: -69px;" [(ngModel)]="username" placeholder="Enter Username">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <label class="required-field" style="position: relative;right: 54px;">Password</label> &nbsp;&nbsp;&nbsp; 
+            <input type="text" (focus)='onfocus()' [(ngModel)]="password" style="height: 36px;position: relative;left: 254px;top: -39px;;" placeholder="Enter Password"><br>
+            <label style="color:red;margin-left: 106px;" *ngIf="enterDetails">* Please fill all the fields</label>
+             </div>
           <div class="btnCls">
-          <button  type="submit" class="btn btn-primary btnSty">
+          <button  type="submit" class="btn btn-primary btnSty" (click)="submit()">
             Submit
            </button>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; 
            <button  type="submit" class="btn btn-primary btnSty" (click)="login()">
@@ -46,3 +56,4 @@
     </div>
   </div>
 </div>
+<p-toast position="top-left"></p-toast>

@@ -35,25 +35,31 @@ inCorrect:boolean=false;
         "username":this.userName,
         "password":this.passWord
       }
+      this.nftService.loginApi(this.user).subscribe(data=>{
+        console.log('data',data);
+        this.result=data;
+        if(this.result.res=='success'){
+          localStorage.setItem('userDetails', JSON.stringify(this.result));
+          this.router.navigate(['/home']);
+        }
+        else{
+          this.inCorrect=true;
+  
+        }
+        console.log("result",this.result.res);
+      })
     }
-    this.nftService.loginApi(this.user).subscribe(data=>{
-      console.log('data',data);
-      this.result=data;
-      if(this.result.res=='success'){
-        localStorage.setItem('userDetails', JSON.stringify(this.result));
-        this.router.navigate(['/home']);
-      }
-      else{
-        this.inCorrect=true;
-
-      }
-      console.log("result",this.result.res);
-    })
-    // 
   }
-  onFocus(){
+  oninput(){
     this.loginbol=false;
     this.inCorrect=false;
+  }
+  passwordshow() {
+    this.show = !this.show;
+  }
+  onfocus(){
+    this.inCorrect=false;
+    this.loginbol=false;
   }
 
 }
