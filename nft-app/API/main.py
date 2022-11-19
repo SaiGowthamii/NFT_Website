@@ -44,8 +44,8 @@ def login():
 def signUp():
     data = request.get_json(force=True)
     oSignUp = SignUp.SignUp(data['first_name'],data['last_name'],data['eth_address'],"silver",data['email'],data['cell_no'],data['ph_no'],data['street_addr'],data['city'],data['state'],data['zip'],data['username'],data['password'],0)
-    oSignUp.createTrader()
-    return Response(status=200)
+    out  = oSignUp.createTrader()
+    return Response(out,mimetype='application/json')
 
 @app.route("/getNFTDataForHome",methods=['GET'])
 def getNFTDataforHome():
