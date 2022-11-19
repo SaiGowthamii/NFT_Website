@@ -5,6 +5,7 @@ import Login
 import sys
 import json
 import SignUp
+import Home
 from flask import Response
 
 # initialize flask API
@@ -29,12 +30,12 @@ def login():
     #getc_details = oLogin.get_client_data()
     if out[2] == "failed":
         res  = {"res":"failed"}
-        return json.dumps(res)
+        return Response(json.dumps(res),mimetype='application/json')
     uid = out[0]
     ty = out[1]
     if ty == 0:
         json_out = oLogin.get_trader_data(uid)
-    return json_out
+    return Response(json_out,mimetype='application/json')
 
 
 #### Sign Up
@@ -51,8 +52,10 @@ def getNFTDataforHome():
     #data = request.get_json(force=True)
     args = request.args
     #t_id = data['t_id']
-    t_id = args['t_id']
-    return "Hello " + str(t_id)
+    trader_id = args['trader_id']
+    oHome = Home.Home();
+    out = oHome.getnftDataForHome(trader_id)
+    return Response(out,mimetype='application/json')
 
 
 if __name__ == '__main__':
