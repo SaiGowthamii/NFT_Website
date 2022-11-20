@@ -14,7 +14,7 @@ import {TableModule} from 'primeng/table';
 import {OverlayPanelModule} from 'primeng/overlaypanel';
 import {DialogModule} from 'primeng/dialog';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import {ToastModule} from 'primeng/toast';
 
 
@@ -40,7 +40,8 @@ import {ToastModule} from 'primeng/toast';
     DialogModule,
     HttpClientModule,
     FormsModule,
-    ToastModule
+    ToastModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
