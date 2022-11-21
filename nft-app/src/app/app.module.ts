@@ -16,6 +16,8 @@ import {DialogModule} from 'primeng/dialog';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import {ToastModule} from 'primeng/toast';
+import { OwnNftComponent } from './own-nft/own-nft.component';
+
 
 
 
@@ -25,7 +27,8 @@ import {ToastModule} from 'primeng/toast';
     AppComponent,
     LoginComponent,
     SignUpComponent,
-    HomeComponent
+    HomeComponent,
+    OwnNftComponent
   ],
   imports: [
     BrowserAnimationsModule,

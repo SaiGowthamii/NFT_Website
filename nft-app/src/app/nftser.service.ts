@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
 })
 export class NftserService {
  headers = { 'content-type': 'application/json'}
-
+ url='http://localhost:4000/getNFTDataForHome';
   constructor(private http: HttpClient) { }
   loginApi(params:any){
     console.log("Successful");
@@ -35,6 +35,8 @@ export class NftserService {
       "username":params.username,
       "password":params.password
      })
-    
+  }
+    public homeApi(id :any) : Observable<any>{  
+      return this.http.get(this.url + '?trader_id=' + id);
   }
 }

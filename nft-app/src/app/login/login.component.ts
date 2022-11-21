@@ -39,7 +39,7 @@ inCorrect:boolean=false;
         console.log('data',data);
         this.result=data;
         if(this.result.res=='success'){
-          localStorage.setItem('userDetails', JSON.stringify(this.result));
+          localStorage.setItem('t_id', this.result.t_id);
           this.router.navigate(['/home']);
         }
         else{

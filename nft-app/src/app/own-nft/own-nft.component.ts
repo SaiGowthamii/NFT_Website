@@ -1,19 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import {NftserService} from '../nftser.service';
-export interface Ipost {
-  nft_name:number,
-  contract_addr:string,
-  token_id:string,
-  current_price:string
-}
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  selector: 'app-own-nft',
+  templateUrl: './own-nft.component.html',
+  styleUrls: ['./own-nft.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class OwnNftComponent implements OnInit {
   menuopt: any[] ;
   ethadd:any;
   token_id:any;
@@ -24,19 +18,16 @@ export class HomeComponent implements OnInit {
   display:boolean=false;
   showData:boolean=false;
   showLoader:boolean=false;
-  selected:any;
-  
-  constructor(private router:Router,private nftService:NftserService) {
+  constructor(private router:Router,private nftService:NftserService) { 
     this.homepage();
     this.menuopt = [
-      {name: 'Home', code: 'HM',},
       {name: 'Own NFT', code: 'OT'},
+      {name: 'Home', code: 'HM',},
       {name: 'Transaction History', code: 'TRH'},
   ];
-}
+  }
 
   ngOnInit(): void {
-    
   }
   login(){
     this.router.navigate(['/login']);
@@ -46,23 +37,23 @@ export class HomeComponent implements OnInit {
     this.display=true
   }
   homepage(){
-   this.userDetails=localStorage.getItem('t_id');
-   console.log(this.userDetails);
-   this.showLoader=true;
-    this.nftService.homeApi(this.userDetails).subscribe(data=>{
-      this.showLoader=false;
-         for(let i in data){
-          let temp={
-                'nft_name':data[i].nft_name,
-                'contract_addr':data[i].contract_addr,
-                'token_id' :data[i].token_id,
-                'current_price':data[i].current_price
-              }
-              this.sales.push(temp);
-         }
-      console.log(this.sales)
+  //  this.userDetails=localStorage.getItem('t_id');
+  //  console.log(this.userDetails);
+  //  this.showLoader=true;
+  //   this.nftService.homeApi(this.userDetails).subscribe(data=>{
+  //     this.showLoader=false;
+  //        for(let i in data){
+  //         let temp={
+  //               'nft_name':data[i].nft_name,
+  //               'contract_addr':data[i].contract_addr,
+  //               'token_id' :data[i].token_id,
+  //               'current_price':data[i].current_price
+  //             }
+  //             this.sales.push(temp);
+  //        }
+  //     console.log(this.sales)
       
-       });
+  //      });
 
   }
 
@@ -96,14 +87,10 @@ export class HomeComponent implements OnInit {
   onChange(e:any){
     console.log("Event",e);
     if(e.value.code=='OT') {
-      this.selected=e.value.name;
       this.router.navigate(['/own']);
+    }else if(e.value.code=='HM') {
+      this.router.navigate(['/home']);
     }
-    // else if(e.value.code=='HM') {
-    //   this.router.navigate(['/home']);
-    // }
   }
-
-  
 
 }

@@ -40,7 +40,7 @@
             <input type="text" (focus)='onfocus()'style="height: 36px;position: relative;left: -69px;" [(ngModel)]="username" placeholder="Enter Username">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <label class="required-field" style="position: relative;right: 54px;">Password</label> &nbsp;&nbsp;&nbsp; 
             <input type="text" (focus)='onfocus()' [(ngModel)]="password" style="height: 36px;position: relative;left: 254px;top: -39px;;" placeholder="Enter Password"><br>
-            <label style="color:red;margin-left: 106px;" *ngIf="enterDetails">* Please fill all the fields</label>
+            <label style="color:red;margin-left: 106px;" *ngIf="enterDetails">{{errormessage}}</label>
              </div>
           <div class="btnCls">
           <button  type="submit" class="btn btn-primary btnSty" (click)="submit()">
@@ -49,11 +49,15 @@
            <button  type="submit" class="btn btn-primary btnSty" (click)="login()">
             Login
            </button>
+           
           </div>
-
-         
         </p-card>      
     </div>
   </div>
+  <p-dialog header="Registration Successfull" [closable]="false" [(visible)]="display">
+    Go to &nbsp;&nbsp; <button  type="submit" class="btn btn-primary loginbtnSty" (click)="login()">
+      Login
+     </button>
+</p-dialog>
 </div>
-<p-toast position="top-left"></p-toast>
+

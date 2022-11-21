@@ -24,6 +24,8 @@ export class SignUpComponent implements OnInit {
   password:any|undefined;
   enterDetails:boolean=false;
   result:any=[];
+  display:boolean=false;
+  errormessage:string="Please fill all the fields"
 
   constructor(private router:Router,private nftService:NftserService,private messageService: MessageService) { }
 
@@ -49,6 +51,15 @@ export class SignUpComponent implements OnInit {
       }
       this.nftService.SignupApi(this.user).subscribe(data=>{
         console.log('data',data);
+        this.result=data;
+        if(this.result.res=="success"){
+          this.display=true;
+        }
+        else{
+          this.enterDetails=true;
+          this.errormessage=this.result.message;
+          
+        }
         this.messageService.add({key: 'myKey1', severity:'success', summary: 'Summary Text', detail: 'Detail Text'});
         // this.router.navigate(['/login']);
         
