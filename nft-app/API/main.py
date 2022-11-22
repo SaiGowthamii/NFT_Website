@@ -76,16 +76,28 @@ def convertUSDtoEth():
     res = {"amountUSD" : amount_in_USD}
     return Response(json.dumps(res),mimetype='application/json')
 
-@app.route("/addToWallet",methods=['POST'])
+def convertETHtoUSD(amount_in_eth):
+    amount_in_USD = amount_in_eth * 1170.69
+    return amount_in_USD
+    
+@app.route("/modifyWallet",methods=['POST'])
 def addToWallet():
     data = request.get_json(force=True)
     trader_id = int(data['initiator_id'])
+    wallet_trans_type = data['wallet_trans_type']
     amount_in_eth = float(data['amount_in_eth'])
-    amount_in_usd = float(data['amount_in_usd'])
+    amount_in_usd = float(convertETHtoUSD(amount_in_eth))
     payment_addr = data['payment_addr']
-    wt = WalletTransaction.WalletTransaction(trader_id,"wallet",amount_in_eth,amount_in_usd,payment_addr)
-    out = wt.addToWallet()
+    wt = WalletTransaction.WalletTransaction(trader_id,"wallet",wallet_trans_type,amount_in_eth,amount_in_usd,payment_addr)
+    if wallet_trans_type == "add":
+        out = wt.addToWallet()
+    elif wallet_trans_type == "withdraw":
+        out = wt.removeFromWallet()
+    else:
+        out = {"res":"failed","message":"Unknown option for wallet_trans_type"}
     return Response(out,mimetype='application/json')
+
+
 
 
 if __name__ == '__main__':
