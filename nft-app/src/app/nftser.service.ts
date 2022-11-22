@@ -10,6 +10,8 @@ import { map } from 'rxjs/operators';
 export class NftserService {
  headers = { 'content-type': 'application/json'}
  url='http://localhost:4000/getNFTDataForHome';
+ ownNft='http://localhost:4000/getNFTDataForTrader';
+ conversion='http://localhost:4000/convertETH';
   constructor(private http: HttpClient) { }
   loginApi(params:any){
     console.log("Successful");
@@ -20,7 +22,6 @@ export class NftserService {
     
   }
   SignupApi(params:any){
-    console.log("Successful");
      return this.http.post('http://localhost:4000/signUp',{
       "first_name":params.first_name,
       "last_name":params.last_name,
@@ -39,4 +40,21 @@ export class NftserService {
     public homeApi(id :any) : Observable<any>{  
       return this.http.get(this.url + '?trader_id=' + id);
   }
+  public ownNftApi(id :any) : Observable<any>{  
+    return this.http.get(this.ownNft + '?trader_id=' + id);
+  }
+  public amountConversion(id :any) : Observable<any>{  
+    return this.http.get(this.conversion + '?amount_in_eth=' + id);
+  }
+  walletApi(params:any){
+    console.log("Successful");
+     return this.http.post('http://localhost:4000/addToWallet',{
+        "initiator_id":params.initiator_id,
+        "amount_in_eth":params.amount_in_eth,
+        "amount_in_usd":params.amount_in_usd,
+        "payment_addr":params.payment_addr,
+        
+     })
+  }
+
 }

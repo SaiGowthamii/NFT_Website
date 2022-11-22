@@ -27,14 +27,24 @@
     position: relative;
     top: -13px;
  }
+ .btnSty{
+    width: 110px;
+    height: 39px;
+    border-radius: 9px;
+    background: transparent;
+    border-color: white !important;
+    color: white;
+    margin-top: 26px;
+    margin-left: -29px;
+    cursor: pointer;
+ }
  .centered {
-  position: relative;
-  left: 622px;
-  top: 40px;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  color: whitesmoke;
-   
+    position: absolute;
+    top: 56%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color:whitesmoke;
   }
   .cardCont {
     position: relative;
@@ -73,23 +83,15 @@
     padding: 7px;
     border-radius: 21px;
 }
+.Span1Sty{
+  float: right;
+    margin-top: 32px;
+    background: silver;
+    color: black;
+    padding: 7px;
+    border-radius: 21px;
+}
 .logsty{
   border:1px solid black;
   border-radius:4px;
 }
-.SpanSty{
-    float: right;
-      margin-top: 32px;
-      background: #debc05;
-      color: black;
-      padding: 7px;
-      border-radius: 21px;
-  }
-  .Span1Sty{
-    float: right;
-      margin-top: 32px;
-      background: silver;
-      color: black;
-      padding: 7px;
-      border-radius: 21px;
-  }

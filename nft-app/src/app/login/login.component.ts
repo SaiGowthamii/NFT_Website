@@ -40,6 +40,10 @@ inCorrect:boolean=false;
         this.result=data;
         if(this.result.res=='success'){
           localStorage.setItem('t_id', this.result.t_id);
+          localStorage.setItem('fname', this.result.fname);
+          localStorage.setItem('lname', this.result.lname);
+          localStorage.setItem('trader_level', this.result.trader_level);
+          localStorage.setItem('wallet_balance', this.result.wallet_balance);
           this.router.navigate(['/home']);
         }
         else{

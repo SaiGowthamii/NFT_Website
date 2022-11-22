@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import {NftserService} from '../nftser.service';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  selector: 'app-add-towallet',
+  templateUrl: './add-towallet.component.html',
+  styleUrls: ['./add-towallet.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class AddTowalletComponent implements OnInit {
   menuopt: any[] ;
   ethadd:any;
   token_id:any;
@@ -14,26 +15,32 @@ export class HomeComponent implements OnInit {
   sales: any=[];
   result:any[]=[];
   userDetails:any=[];
+  paymentDetails:any=[];
   display:boolean=false;
   showData:boolean=false;
   showLoader:boolean=false;
   selected:any;
+  accNo:any;
+  amount:any='';
+  usdAmount:any;
+  showusd:boolean=false;
   name:any=localStorage.getItem('fname');
   level:any=localStorage.getItem('trader_level');
   balance:any=localStorage.getItem('wallet_balance');
-  
+  selectedValue: string = 'add';
+
   constructor(private router:Router,private nftService:NftserService) {
     this.homepage();
     this.menuopt = [
+      {name: 'Wallet (Add/Withdraw)', code:'WA'},
       {name: 'Home', code: 'HM',},
       {name: 'Own NFT', code: 'OT'},
       {name: 'Transaction History', code: 'TRH'},
-      {name: 'Wallet (Add/Withdraw)', code:'WA'}
+      
   ];
-}
+   }
 
   ngOnInit(): void {
-    
   }
   login(){
     this.router.navigate(['/login']);
@@ -41,6 +48,13 @@ export class HomeComponent implements OnInit {
   buy(event:any){
     console.log("event",event);
     this.display=true
+  }
+  onfocusamount(){
+    this.showusd=false;
+    this.conversion();
+  }
+  onfocusIn(){
+    this.showusd=false;
   }
   homepage(){
    this.userDetails=localStorage.getItem('t_id');
@@ -77,7 +91,7 @@ export class HomeComponent implements OnInit {
           this.result.push(temp);
         }
         else if(this.result.length <0) {
-          this.result=[];
+          this.sales=[];
         }
       }
       this.showLoader=false;
@@ -93,12 +107,55 @@ export class HomeComponent implements OnInit {
   onChange(e:any){
     console.log("Event",e);
     if(e.value.code=='OT') {
-      this.selected=e.value.name;
       this.router.navigate(['/own']);
+    }else if(e.value.code=='HM') {
+      this.router.navigate(['/home']);
     }
     else if(e.value.code=='WA') {
       this.router.navigate(['/addTowallet']);
     }
+  }
+
+  conversion(){
+    if(this.amount!=''){
+      this.nftService.amountConversion(this.amount).subscribe(data=>{
+          this.usdAmount=data.amountUSD;
+          console.log("The amountt",this.usdAmount);
+      })
+    }
+  }
+  amountConv(){
+    if(this.amount!=''){
+      this.showusd=true;
+      this.conversion();
+    }
+    else{
+      alert('Enter the amount');
+    }
+   
+  }
+  submit(){
+    console.log("change",this.usdAmount);
+    this.paymentDetails={
+      "initiator_id":localStorage.getItem('t_id'),
+      "amount_in_eth":this.amount,
+      "amount_in_usd":this.usdAmount,
+      "payment_addr":this.accNo
+
+    }
+    this.showLoader=true;
+     this.nftService.walletApi(this.paymentDetails).subscribe(data=>{
+     let result:any
+     result=data;
+     if(result.res=='success'){
+      alert('Transaction Successfull');
+     }
+     else{
+      alert('Transcation Failed');
+     }
+       
+    });
+
   }
 
   

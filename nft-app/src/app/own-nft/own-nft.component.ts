@@ -18,12 +18,16 @@ export class OwnNftComponent implements OnInit {
   display:boolean=false;
   showData:boolean=false;
   showLoader:boolean=false;
+  name:any=localStorage.getItem('fname');
+  level:any=localStorage.getItem('trader_level');
+  balance:any=localStorage.getItem('wallet_balance');
   constructor(private router:Router,private nftService:NftserService) { 
     this.homepage();
     this.menuopt = [
       {name: 'Own NFT', code: 'OT'},
       {name: 'Home', code: 'HM',},
       {name: 'Transaction History', code: 'TRH'},
+      {name: 'Wallet (Add/Withdraw)', code:'WA'}
   ];
   }
 
@@ -37,23 +41,23 @@ export class OwnNftComponent implements OnInit {
     this.display=true
   }
   homepage(){
-  //  this.userDetails=localStorage.getItem('t_id');
-  //  console.log(this.userDetails);
-  //  this.showLoader=true;
-  //   this.nftService.homeApi(this.userDetails).subscribe(data=>{
-  //     this.showLoader=false;
-  //        for(let i in data){
-  //         let temp={
-  //               'nft_name':data[i].nft_name,
-  //               'contract_addr':data[i].contract_addr,
-  //               'token_id' :data[i].token_id,
-  //               'current_price':data[i].current_price
-  //             }
-  //             this.sales.push(temp);
-  //        }
-  //     console.log(this.sales)
+   this.userDetails=localStorage.getItem('t_id');
+   console.log(this.userDetails);
+   this.showLoader=true;
+    this.nftService.ownNftApi(this.userDetails).subscribe(data=>{
+      this.showLoader=false;
+         for(let i in data){
+          let temp={
+                'nft_name':data[i].nft_name,
+                'contract_addr':data[i].contract_addr,
+                'token_id' :data[i].token_id,
+                'current_price':data[i].current_price
+              }
+              this.sales.push(temp);
+         }
+      console.log(this.sales)
       
-  //      });
+       });
 
   }
 
@@ -90,6 +94,9 @@ export class OwnNftComponent implements OnInit {
       this.router.navigate(['/own']);
     }else if(e.value.code=='HM') {
       this.router.navigate(['/home']);
+    }
+    else if(e.value.code=='WA') {
+      this.router.navigate(['/addTowallet']);
     }
   }
 

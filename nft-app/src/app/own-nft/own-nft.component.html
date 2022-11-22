@@ -6,25 +6,13 @@
         padding-left: 7px;margin-left: 27px;">
         <span class="menusty">
        <p-dropdown [options]="menuopt" optionLabel="name"  (onChange)="onChange($event)"></p-dropdown>
-       <span class="SpanSty" (click)="op.toggle($event)">
+       <span [ngClass]="level=='silver' ? 'Span1Sty' : 'SpanSty'" (click)="op.toggle($event)">
             <i class="pi pi-user"></i>
         </span>
         </span>
        
     </div>
     </p-card>
-    </div>
-    <div class="centered">
-        <label>Ethereum Address</label>&nbsp;&nbsp;
-        <input type="text" style="height: 36px;" [(ngModel)]="ethadd" placeholder="Enter Ethereum Address">&nbsp;&nbsp;
-        <label>Token Id</label>&nbsp;&nbsp;
-        <input type="text" style="height: 36px;" [(ngModel)]="token_id" placeholder="Enter TokenID">&nbsp;&nbsp;
-        <button  type="submit" (click)="search()" class="btn btn-primary btnSty" >
-            Search
-        </button>
-        <button  type="submit" (click)="reset()" class="btn btn-primary btnSty" >
-            Reset
-        </button> 
     </div>
     <div class="tableProp">
         <p-table [value]="sales" [showLoader]="true" [scrollable]="true" scrollHeight="400px" [tableStyle]="{'min-width': '50rem'}">
@@ -43,7 +31,7 @@
                     <td>{{sales.contract_addr}}</td>
                     <td>{{sales.token_id}}</td>
                     <td>{{sales.current_price}}</td>
-                    <td><button  type="submit" class="btn btn-primary logsty" (click)="buy($event)">Buy</button> </td>
+                    <td><button  type="submit" class="btn btn-primary logsty" (click)="buy($event)">Sell</button> </td>
                 </tr>
             </ng-template>
             <ng-template pTemplate="emptymessage">
@@ -56,10 +44,9 @@
 </div>
 <p-overlayPanel #op>
     <ng-template pTemplate>
-        <label>Name</label><br>
-        <label>Level</label><br>
-        <label>Ethereum Address</label><br>
-        <label>Wallet Amount</label><br>
+        <label>Name: </label>&nbsp;<label>{{name}}</label><br>
+        <label>Level: </label>&nbsp;<label>{{level}}</label><br>
+        <label>Wallet Amount: </label>&nbsp;<label>{{balance}}</label><br>
         <button  type="submit" class="btn btn-primary logsty" (click)="login()">
             Logout
         </button>

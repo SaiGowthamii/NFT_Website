@@ -6,7 +6,7 @@
         padding-left: 7px;margin-left: 27px;">
         <span class="menusty">
             <p-dropdown [options]="menuopt" [(ngModel)]="selected" optionLabel="name" (onChange)="onChange($event)"></p-dropdown>
-       <span class="SpanSty" (click)="op.toggle($event)">
+       <span  [ngClass]="level=='silver' ? 'Span1Sty' : 'SpanSty'" (click)="op.toggle($event)">
             <i class="pi pi-user"></i>
         </span>
         </span>
@@ -46,7 +46,7 @@
                     <td><button  type="submit" class="btn btn-primary logsty" (click)="buy($event)">Buy</button> </td>
                 </tr>
             </ng-template>
-            <ng-template pTemplate="emptymessage">
+            <ng-template pTemplate="emptymessage" let-sales>
                     <label style="position: relative;left: 516px;">No records found</label> 
 
               </ng-template>
@@ -56,10 +56,9 @@
 </div>
 <p-overlayPanel #op>
     <ng-template pTemplate>
-        <label>Name</label><br>
-        <label>Level</label><br>
-        <label>Ethereum Address</label><br>
-        <label>Wallet Amount</label><br>
+        <label>Name: </label>&nbsp;<label>{{name}}</label><br>
+        <label>Level: </label>&nbsp;<label>{{level}}</label><br>
+        <label>Wallet Amount: </label>&nbsp;<label>{{balance}}</label><br>
         <button  type="submit" class="btn btn-primary logsty" (click)="login()">
             Logout
         </button>

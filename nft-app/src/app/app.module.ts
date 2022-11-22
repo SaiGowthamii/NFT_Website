@@ -17,6 +17,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import {ToastModule} from 'primeng/toast';
 import { OwnNftComponent } from './own-nft/own-nft.component';
+import { AddTowalletComponent } from './add-towallet/add-towallet.component';
+import {RadioButtonModule} from 'primeng/radiobutton';
 
 
 
@@ -28,7 +30,8 @@ import { OwnNftComponent } from './own-nft/own-nft.component';
     LoginComponent,
     SignUpComponent,
     HomeComponent,
-    OwnNftComponent
+    OwnNftComponent,
+    AddTowalletComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -42,6 +45,7 @@ import { OwnNftComponent } from './own-nft/own-nft.component';
     OverlayPanelModule,
     DialogModule,
     HttpClientModule,
+    RadioButtonModule,
     FormsModule,
     ToastModule,
     ReactiveFormsModule
