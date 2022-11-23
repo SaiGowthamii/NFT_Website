@@ -47,11 +47,13 @@ export class NftserService {
     return this.http.get(this.conversion + '?amount_in_eth=' + id);
   }
   walletApi(params:any){
+    console.log(params);
     console.log("Successful");
-     return this.http.post('http://localhost:4000/addToWallet',{
+    console.log('selected',params.wallet_trans_type)
+     return this.http.post('http://localhost:4000/modifyWallet',{
         "initiator_id":params.initiator_id,
         "amount_in_eth":params.amount_in_eth,
-        "amount_in_usd":params.amount_in_usd,
+        "wallet_trans_type":params.type,
         "payment_addr":params.payment_addr,
         
      })

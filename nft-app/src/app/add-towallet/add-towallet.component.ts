@@ -51,7 +51,6 @@ export class AddTowalletComponent implements OnInit {
   }
   onfocusamount(){
     this.showusd=false;
-    this.conversion();
   }
   onfocusIn(){
     this.showusd=false;
@@ -120,27 +119,23 @@ export class AddTowalletComponent implements OnInit {
     if(this.amount!=''){
       this.nftService.amountConversion(this.amount).subscribe(data=>{
           this.usdAmount=data.amountUSD;
+          this.showusd=true;
           console.log("The amountt",this.usdAmount);
       })
-    }
-  }
-  amountConv(){
-    if(this.amount!=''){
-      this.showusd=true;
-      this.conversion();
     }
     else{
       alert('Enter the amount');
     }
-   
   }
+  
   submit(){
     console.log("change",this.usdAmount);
+    let id=localStorage.getItem('t_id');
     this.paymentDetails={
-      "initiator_id":localStorage.getItem('t_id'),
+      "initiator_id":id,
       "amount_in_eth":this.amount,
-      "amount_in_usd":this.usdAmount,
-      "payment_addr":this.accNo
+      "payment_addr":this.accNo,
+      "type":this.selectedValue,
 
     }
     this.showLoader=true;

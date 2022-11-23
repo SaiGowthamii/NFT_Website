@@ -28,12 +28,12 @@
         </div><br><br>
         <div class="field">
             <label for="username2" class="block">Amount</label>&nbsp;&nbsp;
-            <input id="username2" type="username" aria-describedby="username2-help" (focus)="onfocusIn()" (focusout)='onfocusamount()' [(ngModel)]="amount" class="ng-invalid ng-dirty" pInputText class="input_style"  placeholder="Enter the username" style="padding: 0.75rem 2.75rem !important;    position: relative;
+            <input id="username2" type="username" aria-describedby="username2-help" (focus)="onfocusIn()" [(ngModel)]="amount" class="ng-invalid ng-dirty" pInputText class="input_style"  placeholder="Enter the username" style="padding: 0.75rem 2.75rem !important;    position: relative;
             left: 31px;" /><br>
         </div><br>
         <div class="field">
             <a style="text-decoration:underline;
-            cursor: pointer;margin-left: 6px;" (click)="amountConv()">Convert Entered Amount into USD</a><br><br>
+            cursor: pointer;margin-left: 6px;" (click)="conversion()">Convert Entered Amount into USD</a><br><br>
             <div *ngIf="showusd">{{usdAmount}}</div>
         </div>
         <button  type="submit" class="btn btn-primary btnSty" (click)="submit()">
