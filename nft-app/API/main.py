@@ -107,6 +107,7 @@ def buyNFT():
         token_id = data['token_id']
         nftTrans = NFTTransaction.NFTTransaction()
         out = nftTrans.getBuyDetails(trader_id,contract_addr,token_id)
+        print("test")
         return Response(out,mimetype='application/json')
     elif request.method == "POST":
         print("")
