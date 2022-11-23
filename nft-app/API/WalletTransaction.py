@@ -5,7 +5,10 @@ import sys
 
 class WalletTransaction:
 
-    def __init__(self,initiator_id,trans_type,wallet_trans_type,amount_in_eth,amount_in_usd,payment_addr):
+    def __init__(self) -> None:
+        pass
+
+    def __init__(self,initiator_id=None,trans_type=None,wallet_trans_type=None,amount_in_eth=None,amount_in_usd=None,payment_addr=None):
         self.initiator_id=initiator_id
         self.trans_type=trans_type
         self.wallet_trans_type=wallet_trans_type
@@ -68,6 +71,22 @@ class WalletTransaction:
             cursor.close()
             res = {"res":"success","message":"transaction successful","updated_balance":updated_balance}
             return json.dumps(res)
+        except Exception as e:
+            res = {"res":"failed","message":str(e)}
+            return json.dumps(res)
+    
+    def getWalletTransactions(self,trader_id):
+        conn = cg.connect_to_mySQL()
+        try:
+            cursor = conn.connect()
+            # write our query here
+            sqlQuery = f"SELECT T.trans_id,trans_time,trans_type,initiator_id,wallet_trans_type,amount_in_eth,amount_in_usd,payment_addr FROM transaction T , wallet_transaction W where T.trans_id = W.trans_id AND W.initiator_id = {trader_id} "
+            df = pd.read_sql(sqlQuery,conn)
+            print(df, file=sys.stderr)
+            if not df.empty:
+                json_nft_data = df.to_json(orient = "index")
+                parsed_json = json.loads(json_nft_data)
+                return json.dumps(parsed_json)
         except Exception as e:
             res = {"res":"failed","message":str(e)}
             return json.dumps(res)
