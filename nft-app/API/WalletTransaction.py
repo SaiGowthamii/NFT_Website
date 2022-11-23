@@ -36,7 +36,7 @@ class WalletTransaction:
             qry3 = f"UPDATE test.trader SET wallet_balance={updated_balance} where t_id={self.initiator_id}"
             cursor.execute(qry3)
             cursor.close()
-            res = {"res":"success","message":"transaction successful"}
+            res = {"res":"success","message":"transaction successful","updated_balance":updated_balance}
             return json.dumps(res)
         except Exception as e:
             res = {"res":"failed","message":str(e)}
