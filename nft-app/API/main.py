@@ -8,6 +8,7 @@ import SignUp
 import Home
 import WalletTransaction
 from flask import Response
+import NFTTransaction
 
 # initialize flask API
 app = Flask(__name__)
@@ -97,8 +98,34 @@ def addToWallet():
         out = {"res":"failed","message":"Unknown option for wallet_trans_type"}
     return Response(out,mimetype='application/json')
 
+@app.route("/buyNFT",methods=['GET','POST'])
+def buyNFT():
+    if request.method == 'GET':
+        data = request.get_json(force=True)
+        trader_id = int(data['trader_id'])
+        contract_addr = data['contract_addr']
+        token_id = data['token_id']
+        nftTrans = NFTTransaction.NFTTransaction()
+        out = nftTrans.getBuyDetails(trader_id,contract_addr,token_id)
+        return Response(out,mimetype='application/json')
+    elif request.method == "POST":
+        print("")
+    else:
+        print("")
+    return
 
-
+@app.route("/getTransactionHistory",methods =['GET'])
+def getTransactions():
+    args = request.args
+    trader_id = args['trader_id']
+    walletTransaction = WalletTransaction.WalletTransaction()
+    walletOut = walletTransaction.getWalletTransactions(trader_id)
+    nftTransactionOut = NFTTransaction.NFTTransaction()
+    nftOut = nftTransactionOut.getNFTTransactionDetails(trader_id)
+    print(walletOut, file=sys.stderr)
+    print(nftOut, file=sys.stderr)
+    return "success"
+    # make a union of jsons and return
 
 if __name__ == '__main__':
     app.run(
