@@ -2,6 +2,7 @@ import pandas as pd
 from pandas.io import json
 import config as cg
 import sys
+from datetime import datetime as dt
 
 class WalletTransaction:
 
@@ -86,7 +87,10 @@ class WalletTransaction:
             if not df.empty:
                 json_nft_data = df.to_json(orient = "index")
                 parsed_json = json.loads(json_nft_data)
-                return json.dumps(parsed_json)
+                for iter in parsed_json:
+                    transTime = parsed_json[iter]['trans_time']
+                    parsed_json[iter].update({"trans_dateTime":str(dt.fromtimestamp(transTime/1000))})
+                return parsed_json
         except Exception as e:
             res = {"res":"failed","message":str(e)}
             return json.dumps(res)
