@@ -126,10 +126,17 @@ def getTransactions():
     walletOut = walletTransaction.getWalletTransactions(trader_id)
     nftTransactionOut = NFTTransaction.NFTTransaction()
     nftOut = nftTransactionOut.getNFTTransactionDetails(trader_id)
-    print(walletOut, file=sys.stderr)
-    print(nftOut, file=sys.stderr)
-    return "success"
     # make a union of jsons and return
+    i = 0
+    out = {}
+    for each in walletOut:
+        out[i] = walletOut[each]
+        i=i+1
+    for eac in nftOut:
+        out[i] = nftOut[eac]
+        i=i+1
+    print(json.dumps(out),file=sys.stderr)
+    return Response(json.dumps(out),mimetype='application/json')
 
 if __name__ == '__main__':
     app.run(
