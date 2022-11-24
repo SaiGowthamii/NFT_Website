@@ -109,10 +109,14 @@ def buyNFT():
         out = nftTrans.getBuyDetails(trader_id,contract_addr,token_id)
         return Response(out,mimetype='application/json')
     elif request.method == "POST":
-        print("")
-    else:
-        print("")
-    return
+        data = request.get_json(force=True)
+        trader_id = int(data['trader_id'])
+        contract_addr = data['contract_addr']
+        token_id = data['token_id']
+        commission_type = data['commission_type']
+        nftTrans = NFTTransaction.NFTTransaction()
+        out = nftTrans.buyNFT(trader_id,contract_addr,token_id,commission_type)
+        return Response(out,mimetype='application/json')
 
 @app.route("/getTransactionHistory",methods =['GET'])
 def getTransactions():
