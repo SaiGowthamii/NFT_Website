@@ -13,7 +13,7 @@ class Login:
     def check_type(self):
         conn = cg.connect_to_mySQL()
         #cursor = conn.cursor()
-        query = f"SELECT * FROM test.user WHERE username='{self.username}' and password='{self.password}'"
+        query = f"SELECT * FROM user WHERE username='{self.username}' and password='{self.password}'"
         #cursor.execute(chk)
         self.df1 = pd.read_sql(query,conn)
         #self.id = int(self.df1['userid'][0])
