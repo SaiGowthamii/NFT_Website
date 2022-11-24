@@ -2,6 +2,7 @@ import pandas as pd
 from pandas.io import json
 import config as cg
 import sys
+from datetime import datetime as dt
 
 class NFTTransaction:
     def __init__(self,initator_id=None,receiver_id=None,contract_address=None,token_id=None,total_amount=None,commission=None,commission_type=None,nft_trans_type=None,trans_status=None):
@@ -19,13 +20,16 @@ class NFTTransaction:
         conn = cg.connect_to_mySQL()
         try:
             cursor = conn.connect()
-            sqlQuery = f"SELECT T.trans_id,T.trans_time,T.trans_type,W.initiator_id,W.receiver_id,W.contract_addr,W.token_id,W.total_amount,W.commission,W.commission_type,W.nft_trans_type,W.trans_status FROM transaction T , nft_transaction W where T.trans_id = W.trans_id AND W.initiator_id = {trader_id} "
+            sqlQuery = f"SELECT T.trans_id,T.trans_time,T.trans_type,W.initiator_id,W.receiver_id,W.contract_addr,W.token_id,W.total_amount,W.commission_in_eth,W.commission_in_usd,W.commission_type,W.nft_trans_type,W.trans_status FROM transaction T , nft_transaction W where T.trans_id = W.trans_id AND W.initiator_id = {trader_id} "
             df = pd.read_sql(sqlQuery,conn)
             print(df, file=sys.stderr)
             if not df.empty:
                 json_nft_data = df.to_json(orient = "index")
                 parsed_json = json.loads(json_nft_data)
-                return json.dumps(parsed_json)
+                for iter in parsed_json:
+                    transTime = parsed_json[iter]['trans_time']
+                    parsed_json[iter].update({"trans_dateTime":str(dt.fromtimestamp(transTime/1000))})
+                return parsed_json
         except Exception as e:
             res = {"res":"failed","message":str(e)}
             return json.dumps(res)
