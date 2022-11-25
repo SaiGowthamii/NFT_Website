@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
@@ -57,6 +57,14 @@ export class NftserService {
         "payment_addr":params.payment_addr,
         
      })
+  }
+  
+  buy_get(params:any){
+    let queryParams = new HttpParams();
+   queryParams = queryParams.append("trader_id",params.t_id);
+   queryParams = queryParams.append("contract_addr",params.contract_addr);
+   queryParams = queryParams.append("token_id",params.token_id);
+    return this.http.get('http://localhost:4000/buyNFT',{params:queryParams})
   }
 
 }

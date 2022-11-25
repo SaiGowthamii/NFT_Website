@@ -21,6 +21,7 @@ import { AddTowalletComponent } from './add-towallet/add-towallet.component';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import { TransHistoryComponent } from './trans-history/trans-history.component';
 import {SidebarModule} from 'primeng/sidebar';
+import { PaymentComponent } from './payment/payment.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +30,8 @@ import {SidebarModule} from 'primeng/sidebar';
     HomeComponent,
     OwnNftComponent,
     AddTowalletComponent,
-    TransHistoryComponent
+    TransHistoryComponent,
+    PaymentComponent
   ],
   imports: [
     BrowserAnimationsModule,

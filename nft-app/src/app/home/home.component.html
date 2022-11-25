@@ -43,7 +43,7 @@
                     <td>{{sales.contract_addr}}</td>
                     <td>{{sales.token_id}}</td>
                     <td>{{sales.current_price}}</td>
-                    <td><button  type="submit" class="btn btn-primary logsty" (click)="buy($event)">Buy</button> </td>
+                    <td><button  type="submit" class="btn btn-primary logsty" (click)="buy(sales.contract_addr,sales.token_id)">Buy</button> </td>
                 </tr>
             </ng-template>
             <ng-template pTemplate="emptymessage" let-sales>
@@ -64,6 +64,11 @@
         </button>
     </ng-template>
 </p-overlayPanel>
-<p-dialog header="Transcation" [(visible)]="display" [style]="{width: '50vw'}">
-    Content
+<p-dialog header="Verification" [modal]=true [(visible)]="display" [style]="{width: '30vw'}">
+    <label>Enter Password</label> <br><br>
+    <input id="password1" type="password" aria-describedby="username2-help" [(ngModel)]="passWord" class="ng-invalid ng-dirty" pInputText class="input_style"  placeholder="Enter the Password" style="float:left ;margin-top: 8px;padding: 0.75rem 2.75rem !important;" /><br>
+    <button  type="submit" class="btn btn-primary btnSty" (click)="submit()">
+        Submit
+       </button>
+
 </p-dialog>

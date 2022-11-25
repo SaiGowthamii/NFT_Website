@@ -76,3 +76,16 @@
     background: transparent !important;
     border: 0px !important;
 }
+.p-dialog .p-dialog-content {
+    background: #090806 !important;
+    color: white !important;
+    padding: 0 1.5rem 2rem 1.5rem;
+}
+.p-dialog .p-dialog-header {
+    border-bottom: 0 none;
+    background: #090806 !important;
+    color: white !important;
+    padding: 1.5rem;
+    border-top-right-radius: 6px;
+    border-top-left-radius: 6px;
+}

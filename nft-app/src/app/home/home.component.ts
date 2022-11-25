@@ -18,6 +18,13 @@ export class HomeComponent implements OnInit {
   showData:boolean=false;
   showLoader:boolean=false;
   selected:any;
+  userName:any=localStorage.getItem('username');
+  passWord:any|undefined;
+  user:any={}
+  eth:any|undefined;
+  td:any|undefined;
+  data_result:any=[];
+  buy_data:any=[];
   name:any=localStorage.getItem('fname');
   level:any=localStorage.getItem('trader_level');
   balance:any=localStorage.getItem('wallet_balance');
@@ -38,8 +45,11 @@ export class HomeComponent implements OnInit {
   login(){
     this.router.navigate(['/login']);
   }
-  buy(event:any){
-    console.log("event",event);
+  buy(eth:any,tid:any){
+    this.td=tid;
+    this.eth=eth;
+    localStorage.setItem("row_eth",eth);
+    localStorage.setItem("row_tid",tid);
     this.display=true
   }
   homepage(){
@@ -84,6 +94,41 @@ export class HomeComponent implements OnInit {
       this.sales=this.result;
     }
 
+  }
+  submit(){
+    if(this.userName=="" || this.passWord=="") {
+      console.log("Nothing");
+    }
+    else{
+      this.user={
+        "username":this.userName,
+        "password":this.passWord
+      }
+      this.nftService.loginApi(this.user).subscribe(data=>{
+        console.log('data',data);
+        this.data_result=data;
+        if(this.data_result.res=='success'){
+          let eth=this.eth;
+          let tk=this.td;
+          this.userDetails=localStorage.getItem('t_id');
+          let params={
+            "trader_id":this.userDetails,
+            "contract_addr":eth,
+            "token_id":tk }
+          this.nftService.buy_get(params).subscribe(data=>{
+            this.buy_data=data;
+            if(this.buy_data=='success'){
+              this.router.navigate(['/payment']);
+            }
+            this.router.navigate(['/payment']);
+          }) 
+        }
+        else{
+          alert('Enter Correct Password');
+          this.passWord='';
+        }
+      })
+    }
   }
   reset(){
    this.ethadd=null;

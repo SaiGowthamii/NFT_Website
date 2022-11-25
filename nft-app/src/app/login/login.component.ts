@@ -44,6 +44,7 @@ inCorrect:boolean=false;
           localStorage.setItem('lname', this.result.lname);
           localStorage.setItem('trader_level', this.result.trader_level);
           localStorage.setItem('wallet_balance', this.result.wallet_balance);
+          localStorage.setItem('username',this.result.username);
           this.router.navigate(['/home']);
         }
         else{
