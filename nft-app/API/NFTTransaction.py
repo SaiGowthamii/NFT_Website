@@ -134,3 +134,99 @@ class NFTTransaction:
         except Exception as e:
             res = {"res":"failed","message":str(e)}
             return json.dumps(res)
+    
+    def getSellDetails(self,trader_id,contract_addr,token_id):
+        try:
+            conn = cg.connect_to_mySQL()
+            cursor = conn.connect()
+            qry = f"SELECT * FROM nft where contract_addr = '{contract_addr}' and token_id = '{token_id}'"
+            df1 = pd.read_sql(qry,conn)
+            current_owner = int(df1['owner_id'][0])
+            nft_price = float(df1['current_price'][0])
+            qry1 = f"SELECT t_id,trader_level,wallet_balance FROM trader where t_id = '{trader_id}'"
+            df2 = pd.read_sql(qry1,conn)
+            initiator_wallet_balance = int(df2['wallet_balance'][0])
+            trader_level = df2['trader_level'][0]
+            if trader_level == 'gold':
+                commission_in_eth = (0.5 * nft_price)/100
+            elif trader_level == 'silver':
+                commission_in_eth = (nft_price)/100
+            else:
+                commission_in_eth = (nft_price)/100
+            commission_in_usd = self.convertETHtoUSD(commission_in_eth)
+            if current_owner != trader_id:
+                res = {"res":"failed","message":"Unable to proceed, NFT is owned by someone else"}
+                return json.dumps(res)
+            df3 = df1.join(df2)
+            json_data = df3.to_json(orient = "index")
+            parsed_data = json.loads(json_data)
+            parsed_data = parsed_data['0']
+            if initiator_wallet_balance < commission_in_eth:
+                parsed_data.update({"options":1})
+            else:
+                parsed_data.update({"options":2})
+            parsed_data.update({"commission_in_eth":commission_in_eth})
+            parsed_data.update({"commission_in_usd":commission_in_usd})
+            return json.dumps(parsed_data)
+        except Exception as e:
+            res = {"res":"failed","message":str(e)}
+            return json.dumps(res)
+    
+
+    def sellNFT(self,trader_id,contract_addr,token_id,receiver_eth_address,commission_type):
+        try:
+            conn = cg.connect_to_mySQL()
+            cursor = conn.connect()
+            qry = f"SELECT * FROM nft where contract_addr = '{contract_addr}' and token_id = '{token_id}'"
+            df1 = pd.read_sql(qry,conn)
+            current_owner = int(df1['owner_id'][0])
+            nft_price = float(df1['current_price'][0])
+            qry1 = f"SELECT t_id,trader_level,wallet_balance FROM trader WHERE t_id = '{trader_id}'"
+            df2 = pd.read_sql(qry1,conn)
+            initiator_wallet_balance = int(df2['wallet_balance'][0])
+            trader_level = df2['trader_level'][0]
+            if trader_level == 'gold':
+                commission_in_eth = (0.5 * nft_price)/100
+            elif trader_level == 'silver':
+                commission_in_eth = (nft_price)/100
+            else:
+                commission_in_eth = (nft_price)/100
+            commission_in_usd = self.convertETHtoUSD(commission_in_eth)
+            total_amount = nft_price + commission_in_eth
+            if current_owner != trader_id:
+                res = {"res":"failed","message":"Unable to proceed, NFT is owned by someone else"}
+                return json.dumps(res)
+            qry2 = f"SELECT t_id,wallet_balance FROM trader WHERE eth_addr = '{receiver_eth_address}'"
+            df3 = pd.read_sql(qry2,conn)
+            receiver_id = df3['t_id'][0]
+            receiver_wallet_balance = df3['wallet_balance'][0]
+            if receiver_wallet_balance < nft_price:
+                res = {"res":"failed","message":"Unable to proceed with transaction: Insufficent Wallet balance on buyer's end"}
+                return json.dumps(res)
+            if commission_type == 'fiat':
+                    receiver_updated_balance = receiver_wallet_balance - nft_price
+                    initiator_updated_balance = initiator_wallet_balance + nft_price
+            elif commission_type == 'eth':
+                receiver_updated_balance = receiver_wallet_balance - nft_price
+                initiator_updated_balance = initiator_wallet_balance + nft_price - commission_in_eth
+            else:
+                res = {"res":"failed","message":"Unable to proceed with transaction: Insufficent Wallet balance to pay commission in ethereum"}
+                return json.dumps(res)
+            qry3 = f"INSERT INTO transaction(trans_type) values ('nft')"
+            cursor.execute(qry3)
+            qry_trans_id = f"SELECT * FROM transaction ORDER BY trans_id DESC LIMIT 1"
+            df = pd.read_sql(qry_trans_id,conn)
+            trans_id = int(df['trans_id'][0])
+            qry4 = f"INSERT INTO nft_transaction(trans_id,initiator_id,receiver_id,contract_addr,token_id,total_amount,commission_in_eth,commission_in_usd,commission_type,nft_trans_type,trans_status) values ({trans_id},{trader_id},{receiver_id},'{contract_addr}','{token_id}',{total_amount},{commission_in_eth},{commission_in_usd},'{commission_type}','sell','successful')"
+            cursor.execute(qry4)
+            qry5 = f"UPDATE trader SET wallet_balance={initiator_updated_balance} where t_id={trader_id}"
+            cursor.execute(qry5)
+            qry6 = f"UPDATE trader SET wallet_balance={receiver_updated_balance} where t_id={receiver_id}"
+            cursor.execute(qry6)
+            qry7 = f"UPDATE nft SET owner_id={receiver_id} where contract_addr = '{contract_addr}' and token_id = '{token_id}'"
+            cursor.execute(qry7)
+            res = {"res":"successful","message":"Transaction Successful","trans_id":trans_id}
+            return json.dumps(res)
+        except Exception as e:
+            res = {"res":"failed","message":str(e)}
+            return json.dumps(res)
