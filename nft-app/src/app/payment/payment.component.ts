@@ -8,14 +8,14 @@ import { NftserService } from '../nftser.service';
   styleUrls: ['./payment.component.scss']
 })
 export class PaymentComponent implements OnInit {
-  menuopt: any[] ;
   ethadd:any;
   token_id:any;
   selectedCity:any;
-  sales: any=[];
-  result:any[]=[];
-  userDetails:any=[];
-  paymentDetails:any=[];
+  buy_data: any=[];
+  nft_name:any;
+  nft_add:any;
+  nft_tk:any;
+  nft_price:any;
   display:boolean=false;
   showData:boolean=false;
   showLoader:boolean=false;
@@ -23,24 +23,21 @@ export class PaymentComponent implements OnInit {
   accNo:any;
   amount:any='';
   usdAmount:any;
+  ethAmount:any;
   showusd:boolean=false;
   name:any=localStorage.getItem('fname');
   level:any=localStorage.getItem('trader_level');
   balance:any=localStorage.getItem('wallet_balance');
   selectedValue: string = 'add';
+  display_usd:boolean=false;
+  display_eth:boolean=true;
 
   constructor(private router:Router,private nftService:NftserService) { 
-    this.homepage();
-    this.menuopt = [
-      {name: 'Wallet (Add/Withdraw)', code:'WA'},
-      {name: 'Home', code: 'HM',},
-      {name: 'Own NFT', code: 'OT'},
-      {name: 'Transaction History', code: 'TRH'},
-      
-  ];
+    
   }
 
   ngOnInit(): void {
+    this.submit();
   }
   login(){
     this.router.navigate(['/login']);
@@ -55,53 +52,14 @@ export class PaymentComponent implements OnInit {
   onfocusIn(){
     this.showusd=false;
   }
-  homepage(){
-   this.userDetails=localStorage.getItem('t_id');
-   console.log(this.userDetails);
-   this.showLoader=true;
-    this.nftService.homeApi(this.userDetails).subscribe(data=>{
-      this.showLoader=false;
-         for(let i in data){
-          let temp={
-                'nft_name':data[i].nft_name,
-                'contract_addr':data[i].contract_addr,
-                'token_id' :data[i].token_id,
-                'current_price':data[i].current_price
-              }
-              this.sales.push(temp);
-         }
-      console.log(this.sales)
-      
-       });
 
+  fiat(){
+    this.display_usd=true;
+    this.display_eth=false;
   }
-
-  search(){
-    this.showLoader=true;
-    if(this.token_id!='' || this.ethadd!=''){
-      for(let i=0;i<this.sales.length;i++){
-        if(this.sales[i].contract_addr==this.ethadd && this.sales[i].token_id==this.token_id){
-          let temp={
-            'nft_name':this.sales[i].nft_name,
-            'contract_addr':this.sales[i].contract_addr,
-            'token_id' :this.sales[i].token_id,
-            'current_price':this.sales[i].current_price
-          }
-          this.result.push(temp);
-        }
-        else if(this.result.length <0) {
-          this.sales=[];
-        }
-      }
-      this.showLoader=false;
-      this.sales=this.result;
-    }
-
-  }
-  reset(){
-   this.ethadd=null;
-   this.token_id=null;
-   this.homepage();
+  etherum(){
+    this.display_eth=true;
+    this.display_usd=false;
   }
   onChange(e:any){
     console.log("Event",e);
@@ -117,46 +75,62 @@ export class PaymentComponent implements OnInit {
       this.router.navigate(['/history']);
     }
   }
+  submit(){
+          let eth=localStorage.getItem('row_eth');
+          let tk=localStorage.getItem('row_tid');
+          let tid=localStorage.getItem('t_id');
+          let params={
+            "trader_id":tid,
+            "contract_addr":eth,
+            "token_id":tk }
+          this.nftService.buy_get(params).subscribe(data=>{
+            console.log("data",data)
+            this.buy_data=data;
+            if(this.buy_data.res=='successful'){
+             this.nft_name=this.buy_data.nft_name;
+             this.nft_add=this.buy_data.contract_addr; 
+             this.nft_tk=this.buy_data.token_id;
+             this.nft_price=this.buy_data.current_price;
 
-  conversion(){
-    if(this.amount!=''){
-      this.nftService.amountConversion(this.amount).subscribe(data=>{
-          this.usdAmount=data.amountUSD;
-          this.showusd=true;
-          console.log("The amountt",this.usdAmount);
-      })
+             this.usdAmount=this.buy_data.commission_in_usd;
+             this.ethAmount=this.buy_data.commission_in_eth;
+            }
+            else{
+              alert('You dont have Sufficient Balance');
+              this.display=false;
+            }
+          }) 
+
+  }
+  proceed(){
+    let type:any;
+    if(this.display_eth==true){
+      type='eth'
     }
     else{
-      alert('Enter the amount');
+      type='fiat'
     }
-  }
-  
-  submit(){
-    console.log("change",this.usdAmount);
-    let id=localStorage.getItem('t_id');
-    this.paymentDetails={
-      "initiator_id":id,
-      "amount_in_eth":this.amount,
-      "payment_addr":this.accNo,
-      "type":this.selectedValue,
-
-    }
-    this.showLoader=true;
-     this.nftService.walletApi(this.paymentDetails).subscribe(data=>{
-     let result:any
-     result=data;
-     console.log('res',result.updated_balance)
-     if(result.res=='success'){
-      this.balance=result.updated_balance;
-      localStorage.setItem('wallet_balance',this.balance);
-      alert('Transaction Successfull');
-     }
-     else{
-      alert('Transcation Failed');
-     }
-       
-    });
-
+    let eth=localStorage.getItem('row_eth');
+          let tk=localStorage.getItem('row_tid');
+          let tid=localStorage.getItem('t_id');
+          let params={
+            "trader_id":tid,
+            "contract_addr":eth,
+            "token_id":tk,
+          "commission_type":type }
+    this.nftService.buy_post(params).subscribe(data=>{
+      let result:any=[];
+      result=data;
+      if(result.res=='successful')
+      {
+        alert(result.message);
+      }
+      else{
+        alert(result.message);
+      }
+      this.router.navigate(['/home']);
+      
+    })
   }
 
 }

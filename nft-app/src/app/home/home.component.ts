@@ -116,8 +116,9 @@ export class HomeComponent implements OnInit {
             "contract_addr":eth,
             "token_id":tk }
           this.nftService.buy_get(params).subscribe(data=>{
+            console.log("data",data)
             this.buy_data=data;
-            if(this.buy_data=='success'){
+            if(this.buy_data.res=='successful'){
               this.router.navigate(['/payment']);
             }
             else{

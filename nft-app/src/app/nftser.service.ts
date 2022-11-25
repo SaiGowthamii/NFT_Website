@@ -48,7 +48,7 @@ export class NftserService {
   }
   walletApi(params:any){
      return this.http.post('http://localhost:4000/modifyWallet',{
-        "initiator_id":params.t_id,
+        "initiator_id":params.initiator_id,
         "amount_in_eth":params.amount_in_eth,
         "wallet_trans_type":params.type,
         "payment_addr":params.payment_addr,
@@ -65,10 +65,10 @@ export class NftserService {
   }
   buy_post(params:any) {
     return this.http.post('http://localhost:4000/buyNFT',{
-        "trader_id":params.t_id,
-        "contract_addr":params.eth,
-        "token_id":params.tk,
-        "commission_type":params.cm    
+        "trader_id":params.trader_id,
+        "contract_addr":params.contract_addr,
+        "token_id":params.token_id,
+        "commission_type":params.commission_type    
      })
   }
   sell_get(params:any){

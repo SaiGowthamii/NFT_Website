@@ -5,7 +5,7 @@
         <img src="\assets\images\home_img.png" width="100px" style="padding-top: 15px;
         padding-left: 7px;margin-left: 27px;">
         <span class="menusty">
-            <p-dropdown [options]="menuopt" [(ngModel)]="selected" optionLabel="name" (onChange)="onChange($event)"></p-dropdown>
+            <label style="position: relative;top: 11px;">Payment Transcation</label>
        <span  [ngClass]="level=='silver' ? 'Span1Sty' : 'SpanSty'" (click)="op.toggle($event)">
             <i class="pi pi-user"></i>
         </span>
@@ -15,30 +15,35 @@
     </p-card>
     </div>
     <div class="centered">
-       <label>Total Balance Available :</label>&nbsp;<label>{{balance}}</label><br><br><br>
-       <p-card  class="menu_card" [style]="{'width': '500px'}">
+       <p-card  class="menu_card" [style]="{'width': '500px','padding-bottom': '3px'}">
+        <div style="padding:17px">
         <div class="field">
-         <p-radioButton name="group1" value="add" label="Deposit" [(ngModel)]="selectedValue" inputId="opt1"></p-radioButton> &nbsp;
-         <p-radioButton name="group1" value="withdraw" label="Withdraw"[(ngModel)]="selectedValue" inputId="opt2"></p-radioButton>
-            </div><br><br>
-        <div class="field">
-            <label for="username2" class="block">Account Number</label>&nbsp;&nbsp;
-            <input id="username2" type="username" aria-describedby="username2-help"  [(ngModel)]="accNo" class="ng-invalid ng-dirty" pInputText class="input_style"  placeholder="Enter the username" style="padding: 0.75rem 2.75rem !important;" /><br>
-            <!-- <small id="username2-help" class="p-error block">Username is not available.</small> -->
+       <label class="labelSty">Name : </label><label class="nftsty">{{nft_name}}</label>
         </div><br><br>
         <div class="field">
-            <label for="username2" class="block">Amount</label>&nbsp;&nbsp;
-            <input id="username2" type="username" aria-describedby="username2-help" (focus)="onfocusIn()" [(ngModel)]="amount" class="ng-invalid ng-dirty" pInputText class="input_style"  placeholder="Enter the username" style="padding: 0.75rem 2.75rem !important;    position: relative;
-            left: 31px;" /><br>
-        </div><br>
-        <div class="field">
-            <a style="text-decoration:underline;
-            cursor: pointer;margin-left: 6px;" (click)="conversion()">Convert Entered Amount into USD</a><br><br>
-            <div *ngIf="showusd">{{usdAmount}}</div>
-        </div>
-        <button  type="submit" class="btn btn-primary btnSty" (click)="submit()">
-            Submit
-           </button>
+       <label class="labelSty">Token ID : </label><label class="nftsty">{{nft_tk}}</label>
+       </div><br><br>
+       <div class="field">
+       <label class="labelSty">Smart contract Address : </label><label class="nftsty">{{nft_add}}</label>
+       </div><br><br>
+       <div class="field">
+       <label class="labelSty">Price : </label><label class="nftsty">{{nft_price}}</label>
+       </div><br><br>
+       <div class="field">
+       <label >How do you want to pay commission fee ?</label><br>
+       <button  type="submit"  [ngClass]="display_usd==false ? 'btnSty' : 'transSty'" class="btn btn-primary" (click)="fiat()">Fiat</button> 
+       <button  type="submit" [ngClass]="display_eth==false ? 'btnSty' : 'transSty'" style="position: relative;top: -7px;" (click)="etherum()" class="btn btn-primary">Ethereum wallet</button>
+       </div><br>
+       <div class="field">
+        <label >Commission Fee : </label><label *ngIf="display_usd">{{usdAmount}}</label>
+        <label *ngIf="display_eth">{{ethAmount}}</label><br>
+        <button  type="submit"   class="btn btn-primary btnSty" (click)="proceed()">Proceed</button> 
+       </div>
+       <!-- <div class="field">
+        <button  type="submit"   class="btn btn-primary btnSty" (click)="fiat()">Proceed</button> 
+       </div> -->
+       </div>
+
 
        </p-card>
     </div>
