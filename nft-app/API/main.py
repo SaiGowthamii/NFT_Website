@@ -138,6 +138,27 @@ def getTransactions():
     print(json.dumps(out),file=sys.stderr)
     return Response(json.dumps(out),mimetype='application/json')
 
+@app.route("/sellNFT",methods =['GET','POST'])
+def getsellDetails():
+    if request.method == 'GET':
+        data = request.get_json(force=True)
+        trader_id = int(data['trader_id'])
+        contract_addr = data['contract_addr']
+        token_id = data['token_id']
+        nftTrans = NFTTransaction.NFTTransaction()
+        out = nftTrans.getSellDetails(trader_id,contract_addr,token_id)
+        return Response(out,mimetype='application/json')
+    elif request.method == 'POST':
+        data = request.get_json(force=True)
+        trader_id = int(data['trader_id'])
+        contract_addr = data['contract_addr']
+        token_id = data['token_id']
+        commission_type = data['commission_type']
+        receiver_eth_addr = data['receiver_eth_addr']
+        nftTrans = NFTTransaction.NFTTransaction()
+        out = nftTrans.sellNFT(trader_id,contract_addr,token_id,receiver_eth_addr,commission_type)
+        return Response(out,mimetype='application/json')
+
 if __name__ == '__main__':
     app.run(
         debug=True,
