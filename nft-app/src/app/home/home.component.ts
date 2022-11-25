@@ -110,9 +110,9 @@ export class HomeComponent implements OnInit {
         if(this.data_result.res=='success'){
           let eth=this.eth;
           let tk=this.td;
-          this.userDetails=localStorage.getItem('t_id');
+          let tid=localStorage.getItem('t_id');
           let params={
-            "trader_id":this.userDetails,
+            "trader_id":tid,
             "contract_addr":eth,
             "token_id":tk }
           this.nftService.buy_get(params).subscribe(data=>{
@@ -120,7 +120,10 @@ export class HomeComponent implements OnInit {
             if(this.buy_data=='success'){
               this.router.navigate(['/payment']);
             }
-            this.router.navigate(['/payment']);
+            else{
+              alert('You dont have Sufficient Balance');
+              this.display=false;
+            }
           }) 
         }
         else{

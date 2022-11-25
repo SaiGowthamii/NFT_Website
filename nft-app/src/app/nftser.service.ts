@@ -47,11 +47,8 @@ export class NftserService {
     return this.http.get(this.conversion + '?amount_in_eth=' + id);
   }
   walletApi(params:any){
-    console.log(params);
-    console.log("Successful");
-    console.log('selected',params.wallet_trans_type)
      return this.http.post('http://localhost:4000/modifyWallet',{
-        "initiator_id":params.initiator_id,
+        "initiator_id":params.t_id,
         "amount_in_eth":params.amount_in_eth,
         "wallet_trans_type":params.type,
         "payment_addr":params.payment_addr,
@@ -61,10 +58,34 @@ export class NftserService {
   
   buy_get(params:any){
     let queryParams = new HttpParams();
-   queryParams = queryParams.append("trader_id",params.t_id);
+   queryParams = queryParams.append("trader_id",params.trader_id);
    queryParams = queryParams.append("contract_addr",params.contract_addr);
    queryParams = queryParams.append("token_id",params.token_id);
     return this.http.get('http://localhost:4000/buyNFT',{params:queryParams})
+  }
+  buy_post(params:any) {
+    return this.http.post('http://localhost:4000/buyNFT',{
+        "trader_id":params.t_id,
+        "contract_addr":params.eth,
+        "token_id":params.tk,
+        "commission_type":params.cm    
+     })
+  }
+  sell_get(params:any){
+    let queryParams = new HttpParams();
+   queryParams = queryParams.append("trader_id",params.trader_id);
+   queryParams = queryParams.append("contract_addr",params.contract_addr);
+   queryParams = queryParams.append("token_id",params.token_id);
+    return this.http.get('http://localhost:4000/sellNFT',{params:queryParams})
+  }
+  sell_post(params:any) {
+    return this.http.post('http://localhost:4000/sellNFT',{
+      "trader_id":params.t_id,
+      "contract_addr":params.contract_addr,
+      "token_id":params.tk,
+      "receiver_eth_addr":params.eth,
+      "commission_type":params.type   
+     })
   }
 
 }
