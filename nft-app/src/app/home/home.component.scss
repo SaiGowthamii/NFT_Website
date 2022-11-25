@@ -24,8 +24,9 @@
     cursor: pointer;
  }
  .menusty{
-    position: relative;
-    top: -13px;
+  position: absolute;
+  top: 11px;
+  left: 142px;
  }
  .centered {
   position: relative;
@@ -66,12 +67,13 @@
   /* display: inline-table; */
 }
 .SpanSty{
-  float: right;
-    margin-top: 32px;
-    background: #debc05;
-    color: black;
-    padding: 7px;
-    border-radius: 21px;
+  position: fixed;
+  right: 58px;
+  top: 28px;
+  background: #debc05;
+  color: black;
+  padding: 7px;
+  border-radius: 21px;
 }
 .Span1Sty{
   float: right;

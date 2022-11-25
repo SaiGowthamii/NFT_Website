@@ -5,6 +5,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { HomeComponent } from './home/home.component';
 import { OwnNftComponent } from './own-nft/own-nft.component';
 import { AddTowalletComponent } from './add-towallet/add-towallet.component';
+import { TransHistoryComponent } from './trans-history/trans-history.component';
 
 const routes: Routes = [
   {path: 'login', component:LoginComponent },
@@ -12,7 +13,8 @@ const routes: Routes = [
   {path: 'signUp', component:SignUpComponent},
   {path: 'home', component:HomeComponent},
   {path: 'own', component:OwnNftComponent},
-  {path:'addTowallet',component:AddTowalletComponent}
+  {path:'addTowallet',component:AddTowalletComponent},
+  {path:'history',component:TransHistoryComponent}
 
 ];
 

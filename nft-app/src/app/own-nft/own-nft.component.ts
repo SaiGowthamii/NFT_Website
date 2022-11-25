@@ -98,6 +98,9 @@ export class OwnNftComponent implements OnInit {
     else if(e.value.code=='WA') {
       this.router.navigate(['/addTowallet']);
     }
+    else if(e.value.code=='TRH') {
+      this.router.navigate(['/history']);
+    }
   }
 
 }

@@ -1,0 +1,60 @@
+<div class="split left">
+    <div style="padding-top: 12px;padding-left: 7px;padding-right: 12px;">
+        <p-card class="menu_card" [style]="{'width': 'auto','height':'74px'}">
+        <div class="cardCont">
+        <img src="\assets\images\home_img.png" width="100px" style="padding-top: 15px;
+        padding-left: 7px;margin-left: 27px;">
+        <span class="menusty">
+            <p-dropdown [options]="menuopt" [(ngModel)]="selected" optionLabel="name" (onChange)="onChange($event)"></p-dropdown>
+       <span  [ngClass]="level=='silver' ? 'Span1Sty' : 'SpanSty'" (click)="op.toggle($event)">
+            <i class="pi pi-user"></i>
+        </span>
+        </span>
+    </div>
+    </p-card>
+    </div>
+    <div class="split_left" >
+         <button  type="submit"  for="Button1"  [ngClass]="selectedwBtn==false ? 'btnSty' : 'transSty'" class="btn btn-primary" (click)="walletTrans()">
+            Wallet Transcations
+        </button>
+        <button  type="submit" [ngClass]="selectedNBtn==false ? 'btnSty' : 'transSty'" (click)="nftTrans()"  class="btn btn-primary " >
+            NFT Transcations
+        </button> 
+
+    </div>
+    <div class="split_right">
+        <div *ngIf="selectedwBtn">
+        <p-table  [value]="sales" [tableStyle]="{'min-width': '10rem'}">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Name</th>
+                    <th>Ethereum Address</th>
+                    <th>Token Id</th>
+                    <th>Current Price</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-sales>
+                <tr>
+                    <td>{{sales.nft_name}}</td>
+                    <td>{{sales.contract_addr}}</td>
+                    <td>{{sales.token_id}}</td>
+                    <td>{{sales.current_price}}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    </div>
+</div>
+<p-overlayPanel #op>
+    <ng-template pTemplate>
+        <label>Name: </label>&nbsp;<label>{{name}}</label><br>
+        <label>Level: </label>&nbsp;<label>{{level}}</label><br>
+        <label>Wallet Amount: </label>&nbsp;<label>{{balance}}</label><br>
+        <button  type="submit" class="btn btn-primary logsty" (click)="login()">
+            Logout
+        </button>
+    </ng-template>
+</p-overlayPanel>
+<p-dialog header="Transcation" [(visible)]="display" [style]="{width: '50vw'}">
+    Content
+</p-dialog>

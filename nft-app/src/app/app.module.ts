@@ -19,11 +19,8 @@ import {ToastModule} from 'primeng/toast';
 import { OwnNftComponent } from './own-nft/own-nft.component';
 import { AddTowalletComponent } from './add-towallet/add-towallet.component';
 import {RadioButtonModule} from 'primeng/radiobutton';
-
-
-
-
-
+import { TransHistoryComponent } from './trans-history/trans-history.component';
+import {SidebarModule} from 'primeng/sidebar';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +28,8 @@ import {RadioButtonModule} from 'primeng/radiobutton';
     SignUpComponent,
     HomeComponent,
     OwnNftComponent,
-    AddTowalletComponent
+    AddTowalletComponent,
+    TransHistoryComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -48,7 +46,8 @@ import {RadioButtonModule} from 'primeng/radiobutton';
     RadioButtonModule,
     FormsModule,
     ToastModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SidebarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -113,6 +113,9 @@ export class AddTowalletComponent implements OnInit {
     else if(e.value.code=='WA') {
       this.router.navigate(['/addTowallet']);
     }
+    else if(e.value.code=='TRH') {
+      this.router.navigate(['/history']);
+    }
   }
 
   conversion(){
@@ -142,7 +145,10 @@ export class AddTowalletComponent implements OnInit {
      this.nftService.walletApi(this.paymentDetails).subscribe(data=>{
      let result:any
      result=data;
+     console.log('res',result.updated_balance)
      if(result.res=='success'){
+      this.balance=result.updated_balance;
+      localStorage.setItem('wallet_balance',this.balance);
       alert('Transaction Successfull');
      }
      else{
