@@ -8,8 +8,8 @@ import {NftserService} from '../nftser.service';
 })
 export class HomeComponent implements OnInit {
   menuopt: any[] ;
-  ethadd:any;
-  token_id:any;
+  ethadd:any='';
+  token_id:any='';
   selectedCity:any;
   sales: any=[];
   result:any[]=[];
@@ -53,6 +53,7 @@ export class HomeComponent implements OnInit {
     this.display=true
   }
   homepage(){
+    this.sales=[];
    this.userDetails=localStorage.getItem('t_id');
    console.log(this.userDetails);
    this.showLoader=true;
@@ -77,7 +78,7 @@ export class HomeComponent implements OnInit {
     this.showLoader=true;
     if(this.token_id!='' || this.ethadd!=''){
       for(let i=0;i<this.sales.length;i++){
-        if(this.sales[i].contract_addr==this.ethadd && this.sales[i].token_id==this.token_id){
+        if((this.sales[i].contract_addr==this.ethadd && this.sales[i].token_id==this.token_id)||(this.sales[i].contract_addr==this.ethadd || this.sales[i].token_id==this.token_id)){
           let temp={
             'nft_name':this.sales[i].nft_name,
             'contract_addr':this.sales[i].contract_addr,
@@ -93,6 +94,11 @@ export class HomeComponent implements OnInit {
       this.showLoader=false;
       this.sales=this.result;
     }
+    else{
+      alert('Enter the details to search');
+      
+    }
+    
 
   }
   submit(){
@@ -135,8 +141,8 @@ export class HomeComponent implements OnInit {
     }
   }
   reset(){
-   this.ethadd=null;
-   this.token_id=null;
+   this.ethadd='';
+   this.token_id='';
    this.homepage();
   }
   onChange(e:any){

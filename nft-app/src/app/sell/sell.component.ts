@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { NftserService } from '../nftser.service';
 
 @Component({
-  selector: 'app-payment',
-  templateUrl: './payment.component.html',
-  styleUrls: ['./payment.component.scss']
+  selector: 'app-sell',
+  templateUrl: './sell.component.html',
+  styleUrls: ['./sell.component.scss']
 })
-export class PaymentComponent implements OnInit {
+export class SellComponent implements OnInit {
   ethadd:any;
   token_id:any;
   selectedCity:any;
@@ -20,7 +20,7 @@ export class PaymentComponent implements OnInit {
   showData:boolean=false;
   showLoader:boolean=false;
   selected:any;
-  accNo:any;
+  accNo:any='';
   amount:any='';
   usdAmount:any;
   ethAmount:any;
@@ -33,9 +33,7 @@ export class PaymentComponent implements OnInit {
   display_eth:boolean=true;
   disable_eth:boolean=false;
 
-  constructor(private router:Router,private nftService:NftserService) { 
-    
-  }
+  constructor(private router:Router,private nftService:NftserService) { }
 
   ngOnInit(): void {
     this.submit();
@@ -80,14 +78,14 @@ export class PaymentComponent implements OnInit {
     }
   }
   submit(){
-          let eth=localStorage.getItem('row_eth');
-          let tk=localStorage.getItem('row_tid');
+          let eth=localStorage.getItem('sell_eth');
+          let tk=localStorage.getItem('sell_tid');
           let tid=localStorage.getItem('t_id');
           let params={
             "trader_id":tid,
             "contract_addr":eth,
             "token_id":tk }
-          this.nftService.buy_get(params).subscribe(data=>{
+          this.nftService.sell_get(params).subscribe(data=>{
             console.log("data",data)
             this.buy_data=data;
             if(this.buy_data.res=='successful'){
@@ -100,7 +98,6 @@ export class PaymentComponent implements OnInit {
              this.nft_add=this.buy_data.contract_addr; 
              this.nft_tk=this.buy_data.token_id;
              this.nft_price=this.buy_data.current_price;
-
              this.usdAmount=this.buy_data.commission_in_usd;
              this.ethAmount=this.buy_data.commission_in_eth;
             }
@@ -113,21 +110,28 @@ export class PaymentComponent implements OnInit {
   }
   proceed(){
     let type:any;
+    let eth_add:any;
+    if(this.accNo==''){
+      alert('Enter Ethereum Address');
+    }
+    else{
+      eth_add=this.accNo;
     if(this.display_eth==true){
       type='eth'
     }
     else{
       type='fiat'
     }
-    let eth=localStorage.getItem('row_eth');
-          let tk=localStorage.getItem('row_tid');
+    let eth=localStorage.getItem('sell_eth');
+          let tk=localStorage.getItem('sell_tid');
           let tid=localStorage.getItem('t_id');
           let params={
             "trader_id":tid,
             "contract_addr":eth,
             "token_id":tk,
+            "receiver_eth_addr":eth_add,
           "commission_type":type }
-    this.nftService.buy_post(params).subscribe(data=>{
+    this.nftService.sell_post(params).subscribe(data=>{
       let result:any=[];
       result=data;
       if(result.res=='successful')
@@ -138,9 +142,9 @@ export class PaymentComponent implements OnInit {
       else{
         alert(result.message);
       }
-      this.router.navigate(['/home']);
-      
+      this.router.navigate(['/own']);
     })
+  }
   }
 
 }

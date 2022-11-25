@@ -80,11 +80,11 @@ export class NftserService {
   }
   sell_post(params:any) {
     return this.http.post('http://localhost:4000/sellNFT',{
-      "trader_id":params.t_id,
+      "trader_id":params.trader_id,
       "contract_addr":params.contract_addr,
-      "token_id":params.tk,
-      "receiver_eth_addr":params.eth,
-      "commission_type":params.type   
+      "token_id":params.token_id,
+      "receiver_eth_addr":params.receiver_eth_addr,
+      "commission_type":params.commission_type   
      })
   }
 

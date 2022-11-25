@@ -15,9 +15,16 @@ export class OwnNftComponent implements OnInit {
   sales: any=[];
   result:any[]=[];
   userDetails:any=[];
+  td:any='';
+  eth:any='';
   display:boolean=false;
   showData:boolean=false;
   showLoader:boolean=false;
+  sell_data:any=[];
+  userName:any=localStorage.getItem('username');
+  passWord:any|undefined;
+  data_result:any=[];
+  user={};
   name:any=localStorage.getItem('fname');
   level:any=localStorage.getItem('trader_level');
   balance:any=localStorage.getItem('wallet_balance');
@@ -36,8 +43,11 @@ export class OwnNftComponent implements OnInit {
   login(){
     this.router.navigate(['/login']);
   }
-  buy(event:any){
-    console.log("event",event);
+  sell(eth:any,tid:any){
+    this.td=tid;
+    this.eth=eth;
+    localStorage.setItem("sell_eth",eth);
+    localStorage.setItem("sell_tid",tid);
     this.display=true
   }
   homepage(){
@@ -100,6 +110,45 @@ export class OwnNftComponent implements OnInit {
     }
     else if(e.value.code=='TRH') {
       this.router.navigate(['/history']);
+    }
+  }
+  submit(){
+    if(this.userName=="" || this.passWord=="") {
+      console.log("Nothing");
+    }
+    else{
+      this.user={
+        "username":this.userName,
+        "password":this.passWord
+      }
+      this.nftService.loginApi(this.user).subscribe(data=>{
+        console.log('data',data);
+        this.data_result=data;
+        if(this.data_result.res=='success'){
+          let eth=this.eth;
+          let tk=this.td;
+          let tid=localStorage.getItem('t_id');
+          let params={
+            "trader_id":tid,
+            "contract_addr":eth,
+            "token_id":tk }
+          this.nftService.sell_get(params).subscribe(data=>{
+            console.log("data",data)
+            this.sell_data=data;
+            if(this.sell_data.res=='successful'){
+              this.router.navigate(['/sell']);
+            }
+            else{
+              alert('You dont have Sufficient Balance');
+              this.display=false;
+            }
+          }) 
+        }
+        else{
+          alert('Enter Correct Password');
+          this.passWord='';
+        }
+      })
     }
   }
 

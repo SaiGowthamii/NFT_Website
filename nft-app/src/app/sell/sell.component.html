@@ -15,8 +15,8 @@
     </p-card>
     </div>
     <div class="centered">
-       <p-card  class="menu_card" [style]="{'width': '500px','padding-bottom': '3px'}">
-        <div style="padding:17px">
+       <p-card  class="menu_card" [style]="{'width': '500px','height': '498px'}">
+        <div style="padding:10px">
         <div class="field">
        <label class="labelSty">Name : </label><label class="nftsty">{{nft_name}}</label>
         </div><br><br>
@@ -30,6 +30,9 @@
        <label class="labelSty">Price : </label><label class="nftsty">{{nft_price}}</label>
        </div><br><br>
        <div class="field">
+        <div class="field">
+            <label class="labelSty">Reciever Ethereum Address : </label><input id="username2" type="username" aria-describedby="username2-help"  [(ngModel)]="accNo" class="ng-invalid ng-dirty" pInputText class="input_style"  placeholder="Enter the username" style="margin-left: 54px;padding: 10px;"/><br>
+        </div><br>
        <label >How do you want to pay commission fee ?</label><br>
        <button  type="submit"  [ngClass]="display_usd==false ? 'btnSty' : 'transSty'" class="btn btn-primary" (click)="fiat()">Fiat</button> 
        <button *ngIf="disable_eth==true" type="submit" [ngClass]="disable_eth==true ? 'disable' : 'btnSty'" [disabled]="disable_eth"      style="position: relative;top: -7px;" (click)="etherum()" class="btn btn-primary">Ethereum wallet</button>

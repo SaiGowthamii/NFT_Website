@@ -20,7 +20,7 @@ export class AddTowalletComponent implements OnInit {
   showData:boolean=false;
   showLoader:boolean=false;
   selected:any;
-  accNo:any;
+  accNo:any='';
   amount:any='';
   usdAmount:any;
   showusd:boolean=false;
@@ -28,6 +28,7 @@ export class AddTowalletComponent implements OnInit {
   level:any=localStorage.getItem('trader_level');
   balance:any=localStorage.getItem('wallet_balance');
   selectedValue: string = 'add';
+  validboolean:boolean=false;
 
   constructor(private router:Router,private nftService:NftserService) {
     this.homepage();
@@ -50,10 +51,11 @@ export class AddTowalletComponent implements OnInit {
     this.display=true
   }
   onfocusamount(){
-    this.showusd=false;
+    this.validboolean=false;
   }
   onfocusIn(){
     this.showusd=false;
+    this.validboolean=false;
   }
   homepage(){
    this.userDetails=localStorage.getItem('t_id');
@@ -132,6 +134,7 @@ export class AddTowalletComponent implements OnInit {
   }
   
   submit(){
+    if(this.accNo!=''&& this.amount!=''){
     console.log("change",this.usdAmount);
     let id=localStorage.getItem('t_id');
     this.paymentDetails={
@@ -150,12 +153,25 @@ export class AddTowalletComponent implements OnInit {
       this.balance=result.updated_balance;
       localStorage.setItem('wallet_balance',this.balance);
       alert('Transaction Successfull');
+      this.reset_window();
      }
      else{
-      alert('Transcation Failed');
+      alert(result.res.message);
+      this.reset_window();
+      
      }
        
     });
+  }
+  else{
+    this.validboolean=true;
+  }
+  }
+  reset_window(){
+    this.accNo='';
+    this.amount='';
+    this.showusd=false;
+    this.selectedValue='add';
 
   }
 
