@@ -69,6 +69,7 @@ class NFTTransaction:
                 parsed_data.update({"commission_in_eth":commission_in_eth})
                 parsed_data.update({"commission_in_usd":commission_in_usd})
                 parsed_data.update({"total_trans_amount":total_amount})
+                parsed_data.update({"res":"successful"})
                 return json.dumps(parsed_data)
         except Exception as e:
             res = {"res":"failed","message":str(e)}
@@ -167,6 +168,7 @@ class NFTTransaction:
                 parsed_data.update({"options":2})
             parsed_data.update({"commission_in_eth":commission_in_eth})
             parsed_data.update({"commission_in_usd":commission_in_usd})
+            parsed_data.update({"res":"successful"})
             return json.dumps(parsed_data)
         except Exception as e:
             res = {"res":"failed","message":str(e)}
