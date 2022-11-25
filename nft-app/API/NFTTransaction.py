@@ -130,7 +130,7 @@ class NFTTransaction:
                 cursor.execute(qry6)
                 qry7 = f"UPDATE nft SET owner_id={trader_id} where contract_addr = '{contract_addr}' and token_id = '{token_id}'"
                 cursor.execute(qry7)
-                res = {"res":"successful","message":"Transaction Successful","trans_id":trans_id}
+                res = {"res":"successful","message":"Transaction Successful","trans_id":trans_id,"updated_balance":updated_balance}
                 return json.dumps(res)
         except Exception as e:
             res = {"res":"failed","message":str(e)}
@@ -227,7 +227,7 @@ class NFTTransaction:
             cursor.execute(qry6)
             qry7 = f"UPDATE nft SET owner_id={receiver_id} where contract_addr = '{contract_addr}' and token_id = '{token_id}'"
             cursor.execute(qry7)
-            res = {"res":"successful","message":"Transaction Successful","trans_id":trans_id}
+            res = {"res":"successful","message":"Transaction Successful","trans_id":trans_id,"updated_balance":initiator_updated_balance}
             return json.dumps(res)
         except Exception as e:
             res = {"res":"failed","message":str(e)}
