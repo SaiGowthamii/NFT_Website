@@ -101,7 +101,8 @@ def addToWallet():
 @app.route("/buyNFT",methods=['GET','POST'])
 def buyNFT():
     if request.method == 'GET':
-        data = request.get_json(force=True)
+        #data = request.get_json(force=True)
+        data = request.args
         trader_id = int(data['trader_id'])
         contract_addr = data['contract_addr']
         token_id = data['token_id']
@@ -141,7 +142,8 @@ def getTransactions():
 @app.route("/sellNFT",methods =['GET','POST'])
 def getsellDetails():
     if request.method == 'GET':
-        data = request.get_json(force=True)
+        #data = request.get_json(force=True)
+        data = request.args
         trader_id = int(data['trader_id'])
         contract_addr = data['contract_addr']
         token_id = data['token_id']
