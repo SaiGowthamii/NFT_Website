@@ -132,12 +132,15 @@ def getTransactions():
     # make a union of jsons and return
     i = 0
     out = {}
-    for each in walletOut:
-        out[i] = walletOut[each]
-        i=i+1
-    for eac in nftOut:
-        out[i] = nftOut[eac]
-        i=i+1
+    if walletOut != None:
+        for each in walletOut:
+            out[i] = walletOut[each]
+            i=i+1
+    if nftTransactionOut != None:
+        for eac in nftOut:
+            out[i] = nftOut[eac]
+            i=i+1
+    
     print(json.dumps(out),file=sys.stderr)
     return Response(json.dumps(out),mimetype='application/json')
 
