@@ -29,7 +29,7 @@ class Transaction:
             else:
                td = (timeStampInt) - (transTimeInt)
             print(td)
-            if td > 15*60 :
+            if td <= 15*60 :
                 print("transaction update executed " ,file=sys.stderr)
                 nftTransaction = NFTTransaction.NFTTransaction()
                 out = nftTransaction.cancelNFTTransaction(transactionID,timestamp,logInfo)
