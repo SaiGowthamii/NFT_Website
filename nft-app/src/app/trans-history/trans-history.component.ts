@@ -62,10 +62,12 @@ export class TransHistoryComponent implements OnInit {
   walletTrans(){
     this.selectedwBtn=true;
     this.selectedNBtn=false;
+    this.homepage();
   }
   nftTrans(){
     this.selectedwBtn=false;
     this.selectedNBtn=true;
+    this.homepage();
   }
   homepage(){
     this.userDetails=localStorage.getItem('t_id');
@@ -115,7 +117,6 @@ export class TransHistoryComponent implements OnInit {
     }
     else{
     this.userDetails=localStorage.getItem('t_id');
-
     this.log_time={
       "trans_id":this.userDetails,
       "log_info":this.cancelText,
