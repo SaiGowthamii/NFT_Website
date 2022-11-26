@@ -130,14 +130,21 @@ def getTransactions():
     nftTransactionOut = NFTTransaction.NFTTransaction()
     nftOut = nftTransactionOut.getNFTTransactionDetails(trader_id)
     # make a union of jsons and return
+    print(walletOut,file=sys.stderr)
+    print(nftOut ,file=sys.stderr)
     i = 0
     out = {}
-    for each in walletOut:
-        out[i] = walletOut[each]
-        i=i+1
-    for eac in nftOut:
-        out[i] = nftOut[eac]
-        i=i+1
+    if walletOut != None:
+        print("loop1" ,file=sys.stderr)
+        for each in walletOut:
+            out[i] = walletOut[each]
+            i=i+1
+    if nftOut != None:
+        print("loop2" ,file=sys.stderr)
+        for eac in nftOut:
+            out[i] = nftOut[eac]
+            i=i+1
+    
     print(json.dumps(out),file=sys.stderr)
     return Response(json.dumps(out),mimetype='application/json')
 
@@ -156,7 +163,9 @@ def cancelNFTTransactions():
     print("timestamp:"+str(timeStamp), file=sys.stderr)
     trans = Transaction.Transaction()
     transout = trans.cancelTransaction(transactionId,timeStamp,logInfo)
-    return Response(json.dumps(transout),mimetype='application/json')
+    print(transout, file= sys.stderr)
+    out = json.loads(transout)
+    return Response(json.dumps(out),mimetype='application/json')
 
 @app.route("/sellNFT",methods =['GET','POST'])
 def getsellDetails():

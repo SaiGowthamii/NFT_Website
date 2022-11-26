@@ -34,14 +34,14 @@ class NFTTransaction:
                 cl= cancelledLogs.cancelledLogs(trans_id=transactionID,log_info=logInfo,log_trans_time=timestamp)
                 clout = cl.addLogs()
                 res = {"res":"successful","message":"Transaction Successful","trans_id":{transactionID}}
-                return json.dumps(res)
+                return res
             else:
                 res = {"res":"failed","message":"Transaction has already been cancelled"}
-                return json.dumps(res)
+                return res
             
         except Exception as e:
             res = {"res":"failed","message":str(e)}
-            return json.dumps(res)
+            return res
 
 
     def getNFTTransactionDetails(self,trader_id):
@@ -58,6 +58,8 @@ class NFTTransaction:
                     transTime = parsed_json[iter]['trans_time']
                     parsed_json[iter].update({"trans_dateTime":str(dt.fromtimestamp(transTime/1000))})
                 return parsed_json
+            else:
+                return None
         except Exception as e:
             res = {"res":"failed","message":str(e)}
             return json.dumps(res)
