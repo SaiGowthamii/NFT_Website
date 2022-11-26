@@ -28,14 +28,24 @@
   top: 11px;
   left: 142px;
  }
+ .btnSty{
+    width: 110px;
+    height: 39px;
+    border-radius: 9px;
+    background: transparent;
+    border-color: white !important;
+    color: white;
+    margin-top: 26px;
+    margin-left: -29px;
+    cursor: pointer;
+ }
  .centered {
-  position: relative;
-  left: 622px;
-  top: 40px;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  color: whitesmoke;
-   
+    position: absolute;
+    top: 56%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color:whitesmoke;
   }
   .cardCont {
     position: relative;
@@ -86,5 +96,8 @@
 .logsty{
   border:1px solid black;
   border-radius:4px;
-  cursor: pointer;
 }
+.error{
+  color:red;
+  // margin-right: 43px;
+ }

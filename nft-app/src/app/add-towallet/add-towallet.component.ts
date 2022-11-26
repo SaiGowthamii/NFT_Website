@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import {NftserService} from '../nftser.service';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
-  selector: 'app-own-nft',
-  templateUrl: './own-nft.component.html',
-  styleUrls: ['./own-nft.component.scss']
+  selector: 'app-add-towallet',
+  templateUrl: './add-towallet.component.html',
+  styleUrls: ['./add-towallet.component.scss']
 })
-export class OwnNftComponent implements OnInit {
+export class AddTowalletComponent implements OnInit {
   menuopt: any[] ;
   ethadd:any;
   token_id:any;
@@ -15,46 +15,53 @@ export class OwnNftComponent implements OnInit {
   sales: any=[];
   result:any[]=[];
   userDetails:any=[];
-  td:any='';
-  eth:any='';
+  paymentDetails:any=[];
   display:boolean=false;
   showData:boolean=false;
   showLoader:boolean=false;
-  sell_data:any=[];
-  userName:any=localStorage.getItem('username');
-  passWord:any|undefined;
-  data_result:any=[];
-  user={};
+  selected:any;
+  accNo:any='';
+  amount:any='';
+  usdAmount:any;
+  showusd:boolean=false;
   name:any=localStorage.getItem('fname');
   level:any=localStorage.getItem('trader_level');
   balance:any=localStorage.getItem('wallet_balance');
-  constructor(private router:Router,private nftService:NftserService) { 
+  selectedValue: string = 'add';
+  validboolean:boolean=false;
+
+  constructor(private router:Router,private nftService:NftserService) {
     this.homepage();
     this.menuopt = [
-      {name: 'Own NFT', code: 'OT'},
+      {name: 'Wallet (Add/Withdraw)', code:'WA'},
       {name: 'Home', code: 'HM',},
+      {name: 'Own NFT', code: 'OT'},
       {name: 'Transaction History', code: 'TRH'},
-      {name: 'Wallet (Add/Withdraw)', code:'WA'}
+      
   ];
-  }
+   }
 
   ngOnInit(): void {
   }
   login(){
     this.router.navigate(['/login']);
   }
-  sell(eth:any,tid:any){
-    this.td=tid;
-    this.eth=eth;
-    localStorage.setItem("sell_eth",eth);
-    localStorage.setItem("sell_tid",tid);
+  buy(event:any){
+    console.log("event",event);
     this.display=true
+  }
+  onfocusamount(){
+    this.validboolean=false;
+  }
+  onfocusIn(){
+    this.showusd=false;
+    this.validboolean=false;
   }
   homepage(){
    this.userDetails=localStorage.getItem('t_id');
    console.log(this.userDetails);
    this.showLoader=true;
-    this.nftService.ownNftApi(this.userDetails).subscribe(data=>{
+    this.nftService.homeApi(this.userDetails).subscribe(data=>{
       this.showLoader=false;
          for(let i in data){
           let temp={
@@ -112,44 +119,62 @@ export class OwnNftComponent implements OnInit {
       this.router.navigate(['/history']);
     }
   }
-  submit(){
-    if(this.userName=="" || this.passWord=="") {
-      console.log("Nothing");
-    }
-    else{
-      this.user={
-        "username":this.userName,
-        "password":this.passWord
-      }
-      this.nftService.loginApi(this.user).subscribe(data=>{
-        console.log('data',data);
-        this.data_result=data;
-        if(this.data_result.res=='success'){
-          let eth=this.eth;
-          let tk=this.td;
-          let tid=localStorage.getItem('t_id');
-          let params={
-            "trader_id":tid,
-            "contract_addr":eth,
-            "token_id":tk }
-          this.nftService.sell_get(params).subscribe(data=>{
-            console.log("data",data)
-            this.sell_data=data;
-            if(this.sell_data.res=='successful'){
-              this.router.navigate(['/sell']);
-            }
-            else{
-              alert('You dont have Sufficient Balance');
-              this.display=false;
-            }
-          }) 
-        }
-        else{
-          alert('Enter Correct Password');
-          this.passWord='';
-        }
+
+  conversion(){
+    if(this.amount!=''){
+      this.nftService.amountConversion(this.amount).subscribe(data=>{
+          this.usdAmount=data.amountUSD;
+          this.showusd=true;
+          console.log("The amountt",this.usdAmount);
       })
     }
+    else{
+      alert('Enter the amount');
+    }
   }
+  
+  submit(){
+    if(this.accNo!=''&& this.amount!=''){
+    console.log("change",this.usdAmount);
+    let id=localStorage.getItem('t_id');
+    this.paymentDetails={
+      "initiator_id":id,
+      "amount_in_eth":this.amount,
+      "payment_addr":this.accNo,
+      "type":this.selectedValue,
+
+    }
+    this.showLoader=true;
+     this.nftService.walletApi(this.paymentDetails).subscribe(data=>{
+     let result:any
+     result=data;
+     console.log('res',result.updated_balance)
+     if(result.res=='success'){
+      this.balance=result.updated_balance;
+      localStorage.setItem('wallet_balance',this.balance);
+      alert('Transaction Successfull');
+      this.reset_window();
+     }
+     else{
+      alert(result.res.message);
+      this.reset_window();
+      
+     }
+       
+    });
+  }
+  else{
+    this.validboolean=true;
+  }
+  }
+  reset_window(){
+    this.accNo='';
+    this.amount='';
+    this.showusd=false;
+    this.selectedValue='add';
+
+  }
+
+  
 
 }

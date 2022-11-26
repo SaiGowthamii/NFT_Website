@@ -1,0 +1,60 @@
+<div class="split left">
+    <div style="padding-top: 12px;padding-left: 7px;padding-right: 12px;">
+        <p-card class="menu_card" [style]="{'width': 'auto','height':'74px'}">
+        <div class="cardCont">
+        <img src="\assets\images\home_img.png" width="100px" style="padding-top: 15px;
+        padding-left: 7px;margin-left: 27px;">
+        <span class="menusty">
+            <p-dropdown [options]="menuopt" [(ngModel)]="selected" optionLabel="name" (onChange)="onChange($event)"></p-dropdown>
+       <span  [ngClass]="level=='silver' ? 'Span1Sty' : 'SpanSty'" (click)="op.toggle($event)">
+            <i class="pi pi-user"></i>
+        </span>
+        </span>
+       
+    </div>
+    </p-card>
+    </div>
+    <div class="centered">
+       <label>Total Balance Available :</label>&nbsp;<label>{{balance}}</label><br><br>
+       <p-card  class="menu_card" [style]="{'width': '500px'}">
+        <div class="field">
+         <p-radioButton name="group1" value="add" label="Deposit" [(ngModel)]="selectedValue" inputId="opt1"></p-radioButton> &nbsp;
+         <p-radioButton name="group1" value="withdraw" label="Withdraw"[(ngModel)]="selectedValue" inputId="opt2"></p-radioButton>
+            </div><br><br>
+        <div class="field">
+            <label for="username2" class="block">Account Number</label>&nbsp;&nbsp;
+            <input id="username2" type="username" aria-describedby="username2-help"  (focus)="onfocusamount()" [(ngModel)]="accNo" class="ng-invalid ng-dirty" pInputText class="input_style"  placeholder="Enter the username" style="padding: 0.75rem 2.75rem !important;" /><br>
+            <!-- <small id="username2-help" class="p-error block">Username is not available.</small> -->
+        </div><br><br>
+        <div class="field">
+            <label for="username2" class="block">Amount</label>&nbsp;&nbsp;
+            <input id="username2" type="username" aria-describedby="username2-help" (focus)="onfocusIn()" [(ngModel)]="amount" class="ng-invalid ng-dirty" pInputText class="input_style"  placeholder="Enter the username" style="padding: 0.75rem 2.75rem !important;    position: relative;
+            left: 31px;" /><br>
+        </div><br>
+        <div class="field">
+            <a style="text-decoration:underline;
+            cursor: pointer;margin-left: 6px;" (click)="conversion()">Convert Entered Amount into USD</a><br><br>
+            <div *ngIf="showusd">{{usdAmount}}</div>
+        </div>
+        <label class="error" *ngIf="validboolean"> Please do enter the details</label><br>
+        <button  type="submit" class="btn btn-primary btnSty" (click)="submit()">
+            Submit
+           </button>
+
+       </p-card>
+    </div>
+   
+</div>
+<p-overlayPanel #op>
+    <ng-template pTemplate>
+        <label>Name: </label>&nbsp;<label>{{name}}</label><br>
+        <label>Level: </label>&nbsp;<label>{{level}}</label><br>
+        <label>Wallet Amount: </label>&nbsp;<label>{{balance}}</label><br>
+        <button  type="submit" class="btn btn-primary logsty" (click)="login()">
+            Logout
+        </button>
+    </ng-template>
+</p-overlayPanel>
+<p-dialog header="Transcation" [(visible)]="display" [style]="{width: '50vw'}">
+    Content
+</p-dialog>

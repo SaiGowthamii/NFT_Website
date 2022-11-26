@@ -103,7 +103,8 @@ def addToWallet():
 @app.route("/buyNFT",methods=['GET','POST'])
 def buyNFT():
     if request.method == 'GET':
-        data = request.get_json(force=True)
+        #data = request.get_json(force=True)
+        data = request.args
         trader_id = int(data['trader_id'])
         contract_addr = data['contract_addr']
         token_id = data['token_id']
@@ -140,6 +141,7 @@ def getTransactions():
     print(json.dumps(out),file=sys.stderr)
     return Response(json.dumps(out),mimetype='application/json')
 
+
 # code for cancelled logs
 # assumption is to get a transid ,time stamp, logInfo from client
 @app.route("/cancelNFTTransaction",methods=['POST'])
@@ -155,6 +157,29 @@ def cancelNFTTransactions():
     trans = Transaction.Transaction()
     transout = trans.cancelTransaction(transactionId,timeStamp,logInfo)
     return Response(json.dumps(transout),mimetype='application/json')
+
+@app.route("/sellNFT",methods =['GET','POST'])
+def getsellDetails():
+    if request.method == 'GET':
+        #data = request.get_json(force=True)
+        data = request.args
+        trader_id = int(data['trader_id'])
+        contract_addr = data['contract_addr']
+        token_id = data['token_id']
+        nftTrans = NFTTransaction.NFTTransaction()
+        out = nftTrans.getSellDetails(trader_id,contract_addr,token_id)
+        return Response(out,mimetype='application/json')
+    elif request.method == 'POST':
+        data = request.get_json(force=True)
+        trader_id = int(data['trader_id'])
+        contract_addr = data['contract_addr']
+        token_id = data['token_id']
+        commission_type = data['commission_type']
+        receiver_eth_addr = data['receiver_eth_addr']
+        nftTrans = NFTTransaction.NFTTransaction()
+        out = nftTrans.sellNFT(trader_id,contract_addr,token_id,receiver_eth_addr,commission_type)
+        return Response(out,mimetype='application/json')
+
 
 if __name__ == '__main__':
     app.run(

@@ -1,0 +1,66 @@
+<div class="split left">
+    <div style="padding-top: 12px;padding-left: 7px;padding-right: 12px;">
+        <p-card class="menu_card" [style]="{'width': 'auto','height':'74px'}">
+        <div class="cardCont">
+        <img src="\assets\images\home_img.png" width="100px" style="padding-top: 15px;
+        padding-left: 7px;margin-left: 27px;">
+        <span class="menusty">
+            <label style="position: relative;top: 11px;">Payment Transcation</label>
+       <span  [ngClass]="level=='silver' ? 'Span1Sty' : 'SpanSty'" (click)="op.toggle($event)">
+            <i class="pi pi-user"></i>
+        </span>
+        </span>
+       
+    </div>
+    </p-card>
+    </div>
+    <div class="centered">
+       <p-card  class="menu_card" [style]="{'width': '500px','padding-bottom': '3px'}">
+        <div style="padding:17px">
+        <div class="field">
+       <label class="labelSty">Name : </label><label class="nftsty">{{nft_name}}</label>
+        </div><br><br>
+        <div class="field">
+       <label class="labelSty">Token ID : </label><label class="nftsty">{{nft_tk}}</label>
+       </div><br><br>
+       <div class="field">
+       <label class="labelSty">Smart contract Address : </label><label class="nftsty">{{nft_add}}</label>
+       </div><br><br>
+       <div class="field">
+       <label class="labelSty">Price : </label><label class="nftsty">{{nft_price}}</label>
+       </div><br><br>
+       <div class="field">
+       <label >How do you want to pay commission fee ?</label><br>
+       <button  type="submit"  [ngClass]="display_usd==false ? 'btnSty' : 'transSty'" class="btn btn-primary" (click)="fiat()">Fiat</button> 
+       <button *ngIf="disable_eth==true" type="submit" [ngClass]="disable_eth==true ? 'disable' : 'btnSty'" [disabled]="disable_eth"      style="position: relative;top: -7px;" (click)="etherum()" class="btn btn-primary">Ethereum wallet</button>
+       <button *ngIf="disable_eth==false" type="submit" [ngClass]="display_eth==false ? 'btnSty' : 'transSty'" [disabled]="disable_eth"      style="position: relative;top: -7px;" (click)="etherum()" class="btn btn-primary">Ethereum wallet</button>
+       </div><br>
+       <div class="field">
+        <label >Commission Fee : </label><label *ngIf="display_usd">{{usdAmount}}</label>
+        <label *ngIf="display_eth">{{ethAmount}}</label><br>
+        <button  type="submit"   class="btn btn-primary btnSty" (click)="proceed()">Proceed</button>
+        <button  type="submit"   class="btn btn-primary btnSty" (click)="nav_home()">Cancel</button> 
+       </div>
+       <!-- <div class="field">
+        <button  type="submit"   class="btn btn-primary btnSty" (click)="fiat()">Proceed</button> 
+       </div> -->
+       </div>
+
+
+       </p-card>
+    </div>
+   
+</div>
+<p-overlayPanel #op>
+    <ng-template pTemplate>
+        <label>Name: </label>&nbsp;<label>{{name}}</label><br>
+        <label>Level: </label>&nbsp;<label>{{level}}</label><br>
+        <label>Wallet Amount: </label>&nbsp;<label>{{balance}}</label><br>
+        <button  type="submit" class="btn btn-primary logsty" (click)="login()">
+            Logout
+        </button>
+    </ng-template>
+</p-overlayPanel>
+<p-dialog header="Transcation" [(visible)]="display" [style]="{width: '50vw'}">
+    Content
+</p-dialog>
