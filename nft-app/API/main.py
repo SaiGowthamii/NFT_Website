@@ -9,6 +9,8 @@ import Home
 import WalletTransaction
 from flask import Response
 import NFTTransaction
+import Transaction
+import cancelledLogs
 
 # initialize flask API
 app = Flask(__name__)
@@ -137,6 +139,22 @@ def getTransactions():
         i=i+1
     print(json.dumps(out),file=sys.stderr)
     return Response(json.dumps(out),mimetype='application/json')
+
+# code for cancelled logs
+# assumption is to get a transid ,time stamp, logInfo from client
+@app.route("/cancelNFTTransaction",methods=['POST'])
+def cancelNFTTransactions():
+    data = request.get_json(force=True)
+    transactionId = data['trans_id']
+    logInfo = data['log_info']
+    timeStamp = data['time_stamp']
+    #nfttransaction 
+    print("trans:"+ str(transactionId), file=sys.stderr)
+    print("LOGINFO:"+logInfo, file=sys.stderr)
+    print("timestamp:"+str(timeStamp), file=sys.stderr)
+    trans = Transaction.Transaction()
+    transout = trans.cancelTransaction(transactionId,timeStamp,logInfo)
+    return Response(json.dumps(transout),mimetype='application/json')
 
 if __name__ == '__main__':
     app.run(
