@@ -12,6 +12,7 @@ export class NftserService {
  url='http://localhost:4000/getNFTDataForHome';
  ownNft='http://localhost:4000/getNFTDataForTrader';
  conversion='http://localhost:4000/convertETH';
+ history='http://localhost:4000/getTransactionHistory'
   constructor(private http: HttpClient) { }
   loginApi(params:any){
     console.log("Successful");
@@ -87,5 +88,16 @@ export class NftserService {
       "commission_type":params.commission_type   
      })
   }
+  public historyApi(id :any) : Observable<any>{  
+    return this.http.get(this.history + '?trader_id=' + id);
+}
+public cancelApi(params:any){
+  return this.http.post('http://localhost:4000/cancelNFTTransaction',{
+    "trans_id":params.trans_id,
+    "log_info":params.log_info,
+    "time_stamp": params.time_stamp
+     })
+
+}
 
 }

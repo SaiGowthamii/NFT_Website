@@ -27,18 +27,56 @@
         <p-table  [value]="sales" [tableStyle]="{'min-width': '10rem'}">
             <ng-template pTemplate="header">
                 <tr>
-                    <th>Name</th>
-                    <th>Ethereum Address</th>
-                    <th>Token Id</th>
-                    <th>Current Price</th>
+                    <th>Transaction Id</th>
+                    <th>Account NO</th>
+                    <th>Wallet Type</th>
+                    <th>Amount In ETH</th>
+                    <th>Amount In USD</th>
+                    <th>Date of Transaction</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-sales>
                 <tr>
-                    <td>{{sales.nft_name}}</td>
-                    <td>{{sales.contract_addr}}</td>
-                    <td>{{sales.token_id}}</td>
-                    <td>{{sales.current_price}}</td>
+                    <td>{{sales.trans_id}}</td>
+                    <td>{{sales.payment_addr}}</td>
+                    <td>{{sales.wallet_trans_type}}</td>
+                    <td>{{sales.amount_in_eth}} ETH </td>
+                    <td>{{sales.amount_in_usd}}</td>
+                    <td>{{sales.trans_dateTime}}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+    <div *ngIf="selectedNBtn">
+        <p-table  [value]="history"  [tableStyle]="{'min-width': '10rem'}">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Id</th>
+                    <th>Smart Contract Address</th>
+                    <th>Token ID</th>
+                    <th>NFT_Price </th>
+                    <th>CF_ETH</th>
+                    <th>CF_USD</th>
+                    <th>CF_Type</th>
+                    <th>Transaction_Type</th>
+                    <th>Status</th>
+                    <th>Date_time of Transaction</th>
+                    <th>Cancel Transaction</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-history>
+                <tr>
+                    <td>{{history.trans_id}}</td>
+                    <td>{{history.contract_addr}}</td>
+                    <td>{{history.token_id}}</td>
+                    <td>{{history.total_amount}} ETH </td>
+                    <td>{{history.commission_in_eth}}</td>
+                    <td>{{history.commission_in_usd}}</td>
+                    <td>{{history.commission_type}}</td>
+                    <td>{{history.nft_trans_type}} ETH </td>
+                    <td>{{history.trans_status}}</td>
+                    <td>{{history.trans_dateTime}}</td>
+                    <td><button  type="submit" class="btn btn-primary logsty" (click)="cancel()">Cancel</button> </td>
                 </tr>
             </ng-template>
         </p-table>
@@ -55,6 +93,11 @@
         </button>
     </ng-template>
 </p-overlayPanel>
-<p-dialog header="Transcation" [(visible)]="display" [style]="{width: '50vw'}">
-    Content
+<p-dialog header="Verification" [modal]=true [(visible)]="display" [style]="{width: '30vw'}">
+    <label>Reason for the Cancellation</label> <br><br>
+    <input  type="text" aria-describedby="username2-help" [(ngModel)]="cancelText" class="ng-invalid ng-dirty" pInputText class="input_style"  placeholder="Enter the reason" style="float:left ;margin-top: 8px;padding: 0.75rem 2.75rem !important;" /><br>
+    <button  type="submit" class="btn btn-primary btnSty" (click)="submit()">
+        Submit
+       </button>
+
 </p-dialog>
