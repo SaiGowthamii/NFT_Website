@@ -17,18 +17,23 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import {ToastModule} from 'primeng/toast';
 import { OwnNftComponent } from './own-nft/own-nft.component';
-
-
-
-
-
+import { AddTowalletComponent } from './add-towallet/add-towallet.component';
+import {RadioButtonModule} from 'primeng/radiobutton';
+import { TransHistoryComponent } from './trans-history/trans-history.component';
+import {SidebarModule} from 'primeng/sidebar';
+import { PaymentComponent } from './payment/payment.component';
+import { SellComponent } from './sell/sell.component';
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     SignUpComponent,
     HomeComponent,
-    OwnNftComponent
+    OwnNftComponent,
+    AddTowalletComponent,
+    TransHistoryComponent,
+    PaymentComponent,
+    SellComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -42,9 +47,11 @@ import { OwnNftComponent } from './own-nft/own-nft.component';
     OverlayPanelModule,
     DialogModule,
     HttpClientModule,
+    RadioButtonModule,
     FormsModule,
     ToastModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SidebarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

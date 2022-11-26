@@ -2,6 +2,7 @@ import pandas as pd
 from pandas.io import json
 import config as cg
 import sys
+import cancelledLogs
 from datetime import datetime as dt
 
 class NFTTransaction:
@@ -15,6 +16,33 @@ class NFTTransaction:
         self.commission_type = commission_type
         self.nft_trans_type = nft_trans_type
         self.trans_status = trans_status
+
+
+    def cancelNFTTransaction(self,transactionID,timestamp,logInfo):
+        conn = cg.connect_to_mySQL()
+        try:
+            cursor = conn.connect()
+            # check if the status is cancelled
+            sql1 = f"SELECT trans_status FROM nft_transaction WHERE trans_id = {transactionID}"
+            df1 = pd.read_sql(sql1,conn)
+            transStatusFromTable = df1['trans_status'][0]
+            if transStatusFromTable != "cancelled":
+                sql = f"UPDATE nft_transaction SET trans_status = 'cancelled'  WHERE trans_id = {transactionID}"
+                cursor.execute(sql)
+                print("NFTtransaction update executed " ,file=sys.stderr)
+                #cancelledlog
+                cl= cancelledLogs.cancelledLogs(trans_id=transactionID,log_info=logInfo,log_trans_time=timestamp)
+                clout = cl.addLogs()
+                res = {"res":"successful","message":"Transaction Successful","trans_id":{transactionID}}
+                return res
+            else:
+                res = {"res":"failed","message":"Transaction has already been cancelled"}
+                return res
+            
+        except Exception as e:
+            res = {"res":"failed","message":str(e)}
+            return res
+
 
     def getNFTTransactionDetails(self,trader_id):
         conn = cg.connect_to_mySQL()
@@ -30,6 +58,8 @@ class NFTTransaction:
                     transTime = parsed_json[iter]['trans_time']
                     parsed_json[iter].update({"trans_dateTime":str(dt.fromtimestamp(transTime/1000))})
                 return parsed_json
+            else:
+                return None
         except Exception as e:
             res = {"res":"failed","message":str(e)}
             return json.dumps(res)

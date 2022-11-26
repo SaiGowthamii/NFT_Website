@@ -1,13 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import {NftserService} from '../nftser.service';
-export interface Ipost {
-  nft_name:number,
-  contract_addr:string,
-  token_id:string,
-  current_price:string
-}
-
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -15,8 +8,8 @@ export interface Ipost {
 })
 export class HomeComponent implements OnInit {
   menuopt: any[] ;
-  ethadd:any;
-  token_id:any;
+  ethadd:any='';
+  token_id:any='';
   selectedCity:any;
   sales: any=[];
   result:any[]=[];
@@ -25,6 +18,16 @@ export class HomeComponent implements OnInit {
   showData:boolean=false;
   showLoader:boolean=false;
   selected:any;
+  userName:any=localStorage.getItem('username');
+  passWord:any|undefined;
+  user:any={}
+  eth:any|undefined;
+  td:any|undefined;
+  data_result:any=[];
+  buy_data:any=[];
+  name:any=localStorage.getItem('fname');
+  level:any=localStorage.getItem('trader_level');
+  balance:any=localStorage.getItem('wallet_balance');
   
   constructor(private router:Router,private nftService:NftserService) {
     this.homepage();
@@ -32,6 +35,7 @@ export class HomeComponent implements OnInit {
       {name: 'Home', code: 'HM',},
       {name: 'Own NFT', code: 'OT'},
       {name: 'Transaction History', code: 'TRH'},
+      {name: 'Wallet (Add/Withdraw)', code:'WA'}
   ];
 }
 
@@ -41,11 +45,15 @@ export class HomeComponent implements OnInit {
   login(){
     this.router.navigate(['/login']);
   }
-  buy(event:any){
-    console.log("event",event);
+  buy(eth:any,tid:any){
+    this.td=tid;
+    this.eth=eth;
+    localStorage.setItem("row_eth",eth);
+    localStorage.setItem("row_tid",tid);
     this.display=true
   }
   homepage(){
+    this.sales=[];
    this.userDetails=localStorage.getItem('t_id');
    console.log(this.userDetails);
    this.showLoader=true;
@@ -70,7 +78,7 @@ export class HomeComponent implements OnInit {
     this.showLoader=true;
     if(this.token_id!='' || this.ethadd!=''){
       for(let i=0;i<this.sales.length;i++){
-        if(this.sales[i].contract_addr==this.ethadd && this.sales[i].token_id==this.token_id){
+        if((this.sales[i].contract_addr==this.ethadd && this.sales[i].token_id==this.token_id)||(this.sales[i].contract_addr==this.ethadd || this.sales[i].token_id==this.token_id)){
           let temp={
             'nft_name':this.sales[i].nft_name,
             'contract_addr':this.sales[i].contract_addr,
@@ -80,17 +88,61 @@ export class HomeComponent implements OnInit {
           this.result.push(temp);
         }
         else if(this.result.length <0) {
-          this.sales=[];
+          this.result=[];
         }
       }
       this.showLoader=false;
       this.sales=this.result;
     }
+    else{
+      alert('Enter the details to search');
+      
+    }
+    
 
   }
+  submit(){
+    if(this.userName=="" || this.passWord=="") {
+      console.log("Nothing");
+    }
+    else{
+      this.user={
+        "username":this.userName,
+        "password":this.passWord
+      }
+      this.nftService.loginApi(this.user).subscribe(data=>{
+        console.log('data',data);
+        this.data_result=data;
+        if(this.data_result.res=='success'){
+          let eth=this.eth;
+          let tk=this.td;
+          let tid=localStorage.getItem('t_id');
+          let params={
+            "trader_id":tid,
+            "contract_addr":eth,
+            "token_id":tk }
+          this.nftService.buy_get(params).subscribe(data=>{
+            console.log("data",data)
+            this.buy_data=data;
+            if(this.buy_data.res=='successful'){
+              this.router.navigate(['/payment']);
+            }
+            else{
+              alert('You dont have Sufficient Balance');
+              this.display=false;
+            }
+          }) 
+        }
+        else{
+          alert('Enter Correct Password');
+          this.passWord='';
+        }
+      })
+    }
+  }
   reset(){
-   this.ethadd=null;
-   this.token_id=null;
+   this.ethadd='';
+   this.token_id='';
    this.homepage();
   }
   onChange(e:any){
@@ -99,9 +151,12 @@ export class HomeComponent implements OnInit {
       this.selected=e.value.name;
       this.router.navigate(['/own']);
     }
-    // else if(e.value.code=='HM') {
-    //   this.router.navigate(['/home']);
-    // }
+    else if(e.value.code=='WA') {
+      this.router.navigate(['/addTowallet']);
+    }
+    else if(e.value.code=='TRH') {
+      this.router.navigate(['/history']);
+    }
   }
 
   

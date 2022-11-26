@@ -1,0 +1,125 @@
+.split {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    overflow-x: hidden;
+    background-color: #090806;
+    color:white;
+  }
+  .left {
+    left: 0;
+    background-color: #090806;
+  }
+
+ .menusty{
+    position: absolute;
+    top: 11px;
+    left: 142px;
+ }
+ .centered {
+  position: relative;
+  left: 622px;
+  top: 40px;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: whitesmoke;
+   
+  }
+  .cardCont {
+    position: relative;
+    top: -35px;
+    left: -32px;
+  }
+  .btnSty{
+    width: 168px;
+    height: 55px;
+    border-radius: 9px;
+    background: transparent;
+    border-color: white !important;
+    color: white;
+    margin-top: 26px;
+    margin-left: 14px;
+    cursor: pointer;
+ }
+ .transSty{
+    width: 168px;
+    height: 55px;
+    border-radius: 9px;
+    background: whitesmoke;
+    border-color: white !important;
+    color: black;
+    margin-top: 26px;
+    margin-left: 14px;
+    cursor: pointer;
+
+ }
+ .tableProp{
+  position: relative;
+  left: 0px;
+  top: 20px;
+  padding-left: 27px;
+   padding-right: 36px;
+ }
+ .p-datatable table {
+  border-collapse: collapse;
+  min-width: 100% !important;
+  table-layout: auto;
+  /* display: inline-table; */
+}
+
+.SpanSty{
+    position: fixed;
+    right: 58px;
+    top: 28px;
+    background: #debc05;
+    color: black;
+    padding: 7px;
+    border-radius: 21px;
+}
+.Span1Sty{
+  float: right;
+    margin-top: 32px;
+    background: silver;
+    color: black;
+    padding: 7px;
+    border-radius: 21px;
+}
+.logsty{
+  border:1px solid black;
+  border-radius:4px;
+}
+.split_left {
+    height: 84%;
+    width: 16%;
+    position: fixed;
+    z-index: 1;
+    top: 90px;
+    left: 10px;
+    overflow-x: hidden;
+    background-color: #090806;
+    clip-path: inset(0px -15px 0px 0px);
+    border: 0px !important;
+    box-shadow: 0 0 15px rgb(145 140 140 / 75%);
+  }
+  .split_right {
+    height: 84%;
+    width: 78%;
+    position: fixed;
+    z-index: 1;
+    top: 117px;
+    left: 244px;
+    overflow-x: hidden;
+    background-color: #090806;
+    clip-path: inset(0px -15px 0px 0px);
+    border: 0px !important;
+  }
+  .left1 {
+    left: 0;
+    background-color: #090806;
+  }
+  .right {
+    right: 0;
+    background-color: #090806;
+  }

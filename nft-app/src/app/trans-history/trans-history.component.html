@@ -10,31 +10,27 @@
             <i class="pi pi-user"></i>
         </span>
         </span>
-       
     </div>
     </p-card>
     </div>
-    <div class="centered">
-        <label>Ethereum Address</label>&nbsp;&nbsp;
-        <input type="text" style="height: 36px;" [(ngModel)]="ethadd" placeholder="Enter Ethereum Address">&nbsp;&nbsp;
-        <label>Token Id</label>&nbsp;&nbsp;
-        <input type="text" style="height: 36px;" [(ngModel)]="token_id" placeholder="Enter TokenID">&nbsp;&nbsp;
-        <button  type="submit" (click)="search()" class="btn btn-primary btnSty" >
-            Search
+    <div class="split_left" >
+         <button  type="submit"  for="Button1"  [ngClass]="selectedwBtn==false ? 'btnSty' : 'transSty'" class="btn btn-primary" (click)="walletTrans()">
+            Wallet Transcations
         </button>
-        <button  type="submit" (click)="reset()" class="btn btn-primary btnSty" >
-            Reset
+        <button  type="submit" [ngClass]="selectedNBtn==false ? 'btnSty' : 'transSty'" (click)="nftTrans()"  class="btn btn-primary " >
+            NFT Transcations
         </button> 
+
     </div>
-    <div class="tableProp">
-        <p-table [value]="sales" [showLoader]="true" [scrollable]="true" scrollHeight="400px" [tableStyle]="{'min-width': '50rem'}">
+    <div class="split_right">
+        <div *ngIf="selectedwBtn">
+        <p-table  [value]="sales" [tableStyle]="{'min-width': '10rem'}">
             <ng-template pTemplate="header">
                 <tr>
                     <th>Name</th>
-                    <th>Smart Contract Address</th>
+                    <th>Ethereum Address</th>
                     <th>Token Id</th>
                     <th>Current Price</th>
-                    <th>Checkout</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-sales>
@@ -43,15 +39,10 @@
                     <td>{{sales.contract_addr}}</td>
                     <td>{{sales.token_id}}</td>
                     <td>{{sales.current_price}}</td>
-                    <td><button  type="submit" class="btn btn-primary logsty" (click)="buy(sales.contract_addr,sales.token_id)">Buy</button> </td>
                 </tr>
             </ng-template>
-            <ng-template pTemplate="emptymessage" let-sales>
-                    <label style="position: relative;left: 516px;">No records found</label> 
-
-              </ng-template>
-            
         </p-table>
+    </div>
     </div>
 </div>
 <p-overlayPanel #op>
@@ -64,11 +55,6 @@
         </button>
     </ng-template>
 </p-overlayPanel>
-<p-dialog header="Verification" [modal]=true [(visible)]="display" [style]="{width: '30vw'}">
-    <label>Enter Password</label> <br><br>
-    <input id="password1" type="password" aria-describedby="username2-help" [(ngModel)]="passWord" class="ng-invalid ng-dirty" pInputText class="input_style"  placeholder="Enter the Password" style="float:left ;margin-top: 8px;padding: 0.75rem 2.75rem !important;" /><br>
-    <button  type="submit" class="btn btn-primary btnSty" (click)="submit()">
-        Submit
-       </button>
-
+<p-dialog header="Transcation" [(visible)]="display" [style]="{width: '50vw'}">
+    Content
 </p-dialog>

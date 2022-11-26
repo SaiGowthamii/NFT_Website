@@ -64,7 +64,7 @@ create table nft_transaction(
 );
 
 create table wallet_transaction(
-		trans_id int primary key,
+	trans_id int primary key,
         initiator_id int not null,
         wallet_trans_type varchar(10),
         amount_in_usd float,
@@ -72,6 +72,14 @@ create table wallet_transaction(
         payment_addr varchar(50),
         foreign key(trans_id) references transaction(trans_id),
         foreign key(initiator_id) references trader(t_id)
+);
+
+create table cancelledLogs(
+	log_id int auto_increment primary key,
+        trans_id int not null,
+        log_info varchar(100),
+        log_trans_time datetime default current_timestamp,
+        foreign key(trans_id) references nft_transaction(trans_id)
 );
 
 

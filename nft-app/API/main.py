@@ -9,6 +9,8 @@ import Home
 import WalletTransaction
 from flask import Response
 import NFTTransaction
+import Transaction
+import cancelledLogs
 
 # initialize flask API
 app = Flask(__name__)
@@ -128,15 +130,41 @@ def getTransactions():
     nftTransactionOut = NFTTransaction.NFTTransaction()
     nftOut = nftTransactionOut.getNFTTransactionDetails(trader_id)
     # make a union of jsons and return
+    print(walletOut,file=sys.stderr)
+    print(nftOut ,file=sys.stderr)
     i = 0
     out = {}
-    for each in walletOut:
-        out[i] = walletOut[each]
-        i=i+1
-    for eac in nftOut:
-        out[i] = nftOut[eac]
-        i=i+1
+    if walletOut != None:
+        print("loop1" ,file=sys.stderr)
+        for each in walletOut:
+            out[i] = walletOut[each]
+            i=i+1
+    if nftOut != None:
+        print("loop2" ,file=sys.stderr)
+        for eac in nftOut:
+            out[i] = nftOut[eac]
+            i=i+1
+    
     print(json.dumps(out),file=sys.stderr)
+    return Response(json.dumps(out),mimetype='application/json')
+
+
+# code for cancelled logs
+# assumption is to get a transid ,time stamp, logInfo from client
+@app.route("/cancelNFTTransaction",methods=['POST'])
+def cancelNFTTransactions():
+    data = request.get_json(force=True)
+    transactionId = data['trans_id']
+    logInfo = data['log_info']
+    timeStamp = data['time_stamp']
+    #nfttransaction 
+    print("trans:"+ str(transactionId), file=sys.stderr)
+    print("LOGINFO:"+logInfo, file=sys.stderr)
+    print("timestamp:"+str(timeStamp), file=sys.stderr)
+    trans = Transaction.Transaction()
+    transout = trans.cancelTransaction(transactionId,timeStamp,logInfo)
+    print(transout, file= sys.stderr)
+    out = json.loads(transout)
     return Response(json.dumps(out),mimetype='application/json')
 
 @app.route("/sellNFT",methods =['GET','POST'])
@@ -160,6 +188,7 @@ def getsellDetails():
         nftTrans = NFTTransaction.NFTTransaction()
         out = nftTrans.sellNFT(trader_id,contract_addr,token_id,receiver_eth_addr,commission_type)
         return Response(out,mimetype='application/json')
+
 
 if __name__ == '__main__':
     app.run(
