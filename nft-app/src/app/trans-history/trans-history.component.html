@@ -45,10 +45,14 @@
                     <td>{{sales.trans_dateTime}}</td>
                 </tr>
             </ng-template>
+            <ng-template pTemplate="emptymessage" let-sales>
+                <label style="position: relative;left: 516px;">No records found</label> 
+
+          </ng-template>
         </p-table>
     </div>
     <div *ngIf="selectedNBtn">
-        <p-table  [value]="history"  [tableStyle]="{'min-width': '10rem'}">
+        <p-table  [value]="history"  [tableStyle]="{'min-width': '163rem !important'}">
             <ng-template pTemplate="header">
                 <tr>
                     <th>Id</th>
@@ -79,6 +83,10 @@
                     <td><button  type="submit" class="btn btn-primary logsty" (click)="cancel()">Cancel</button> </td>
                 </tr>
             </ng-template>
+            <ng-template pTemplate="emptymessage" let-history>
+                <label style="position: relative;left: 516px;">No records found</label> 
+
+          </ng-template>
         </p-table>
     </div>
     </div>

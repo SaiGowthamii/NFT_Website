@@ -73,8 +73,13 @@ export class TransHistoryComponent implements OnInit {
     this.userDetails=localStorage.getItem('t_id');
     console.log(this.userDetails);
     this.showLoader=true;
+    this.sales=[];
+    this.history=[];
      this.nftService.historyApi(this.userDetails).subscribe(data=>{
        this.showLoader=false;
+       let result:any=[]
+       result=data;
+       if(result.length!=0){
           for(let i in data){
             if(data[i].trans_type=='wallet') {
               let temp={
@@ -104,7 +109,14 @@ export class TransHistoryComponent implements OnInit {
 
             }    
           }
+        }
         });
+        if(this.sales.length==0){
+          this.sales=[];
+        }
+        if(this.history.length==0){
+          this.history=[];
+        }
  
    }
 
@@ -122,8 +134,18 @@ export class TransHistoryComponent implements OnInit {
       "log_info":this.cancelText,
       "time_stamp": Date.now() }
       this.nftService.cancelApi(this.log_time).subscribe(data=>{
-        console.log('Cancel',data)
-     
+        let cancel_res:any=[];
+        cancel_res=data;
+        if(cancel_res.res=='success'){
+          alert('Transaction Cancelled Successfull');
+          this.homepage();
+          this.display=false;
+        }
+        else{
+          alert(cancel_res.message);
+          this.homepage();
+          this.display=false;
+        }
       })
     }
     }
