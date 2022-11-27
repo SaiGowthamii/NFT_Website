@@ -4,6 +4,7 @@ import config as cg
 import sys
 import cancelledLogs
 from datetime import datetime as dt
+import requests
 
 class NFTTransaction:
     def __init__(self,initator_id=None,receiver_id=None,contract_address=None,token_id=None,total_amount=None,commission=None,commission_type=None,nft_trans_type=None,trans_status=None):
@@ -106,7 +107,10 @@ class NFTTransaction:
             return json.dumps(res)
 
     def convertETHtoUSD(self,amount_in_eth):
-        amount_in_USD = amount_in_eth * 1170.69
+        response = requests.get("https://api.coinbase.com/v2/prices/ETH-USD/spot")
+        json_data = response.json()
+        eth_in_USD = float(json_data['data']['amount'])
+        amount_in_USD = amount_in_eth * eth_in_USD
         return amount_in_USD
 
     def buyNFT(self,trader_id,contract_addr,token_id,commission_type):
