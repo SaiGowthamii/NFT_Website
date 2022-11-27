@@ -229,9 +229,13 @@ class NFTTransaction:
                 res = {"res":"failed","message":"Unable to proceed, NFT is owned by someone else"}
                 return json.dumps(res)
             qry2 = f"SELECT t_id,wallet_balance FROM trader WHERE eth_addr = '{receiver_eth_address}'"
-            df3 = pd.read_sql(qry2,conn)
-            receiver_id = df3['t_id'][0]
-            receiver_wallet_balance = df3['wallet_balance'][0]
+            if not df3.empty:
+                df3 = pd.read_sql(qry2,conn)
+                receiver_id = df3['t_id'][0]
+                receiver_wallet_balance = df3['wallet_balance'][0]
+            else:
+                res = {"res":"failed","message":"Unable to proceed, Buyer's Ethereum Address not found"}
+                return json.dumps(res)
             if receiver_wallet_balance < nft_price:
                 res = {"res":"failed","message":"Unable to proceed with transaction: Insufficent Wallet balance on buyer's end"}
                 return json.dumps(res)
