@@ -156,7 +156,7 @@ export class AddTowalletComponent implements OnInit {
       this.reset_window();
      }
      else{
-      alert(result.res.message);
+      alert(result.message);
       this.reset_window();
       
      }
