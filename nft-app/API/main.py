@@ -15,12 +15,13 @@ from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 from flask_jwt_extended import jwt_required,get_jwt_identity
 import sys
+import requests
 
 # initialize flask API
 app = Flask(__name__)
 api = CORS(app)
 bcrypt = Bcrypt(app)
-app.config.from_envvar("ENV_FILE_LOCATION")
+app.config['JWT_SECRET_KEY']= 'ueir09uf9DSHKJDHW92bkFEF0329RFEWRzd'
 jwt = JWTManager(app)
 
 @jwt.expired_token_loader
@@ -72,19 +73,27 @@ def getNFTDataforHome():
     #data = request.get_json(force=True)
     args = request.args
     #t_id = data['t_id']
-    trader_id = args['trader_id']
-    uid = get_jwt_identity()
+    trader_id = int(args['trader_id'])
+    uid = int(get_jwt_identity())
+    if trader_id != uid:
+        res = {"res":"failed","message":"UnAuthorized, Please logout and login again"}
+        return Response(json.dumps(res),mimetype='application/json')
     print(uid,file=sys.stderr)
     oHome = Home.Home()
     out = oHome.getnftDataForHome(trader_id)
     return Response(out,mimetype='application/json')
 
 @app.route("/getNFTDataForTrader",methods=['GET'])
+@jwt_required()
 def getNFTDataforTrader():
     #data = request.get_json(force=True)
     args = request.args
     #t_id = data['t_id']
-    trader_id = args['trader_id']
+    trader_id = int(args['trader_id'])
+    uid = int(get_jwt_identity())
+    if trader_id != uid:
+        res = {"res":"failed","message":"UnAuthorized, Please logout and login again"}
+        return Response(json.dumps(res),mimetype='application/json')
     oHome = Home.Home()
     out = oHome.getnftDataForTrader(trader_id)
     return Response(out,mimetype='application/json')
@@ -93,18 +102,29 @@ def getNFTDataforTrader():
 def convertUSDtoEth():
     args = request.args
     amount_in_eth =  float(args['amount_in_eth'])
-    amount_in_USD = amount_in_eth * 1170.69
+    response = requests.get("https://api.coinbase.com/v2/prices/ETH-USD/spot")
+    json_data = response.json()
+    eth_in_USD = float(json_data['data']['amount'])
+    amount_in_USD = amount_in_eth * eth_in_USD
     res = {"amountUSD" : amount_in_USD}
     return Response(json.dumps(res),mimetype='application/json')
 
 def convertETHtoUSD(amount_in_eth):
-    amount_in_USD = amount_in_eth * 1170.69
+    response = requests.get("https://api.coinbase.com/v2/prices/ETH-USD/spot")
+    json_data = response.json()
+    eth_in_USD = float(json_data['data']['amount'])
+    amount_in_USD = amount_in_eth * eth_in_USD
     return amount_in_USD
     
 @app.route("/modifyWallet",methods=['POST'])
+@jwt_required()
 def addToWallet():
     data = request.get_json(force=True)
     trader_id = int(data['initiator_id'])
+    uid = int(get_jwt_identity())
+    if trader_id != uid:
+        res = {"res":"failed","message":"UnAuthorized, Please logout and login again"}
+        return Response(json.dumps(res),mimetype='application/json')
     wallet_trans_type = data['wallet_trans_type']
     amount_in_eth = float(data['amount_in_eth'])
     amount_in_usd = float(convertETHtoUSD(amount_in_eth))
@@ -119,6 +139,7 @@ def addToWallet():
     return Response(out,mimetype='application/json')
 
 @app.route("/buyNFT",methods=['GET','POST'])
+@jwt_required()
 def buyNFT():
     if request.method == 'GET':
         #data = request.get_json(force=True)
@@ -126,6 +147,10 @@ def buyNFT():
         trader_id = int(data['trader_id'])
         contract_addr = data['contract_addr']
         token_id = data['token_id']
+        uid = int(get_jwt_identity())
+        if trader_id != uid:
+            res = {"res":"failed","message":"UnAuthorized, Please logout and login again"}
+            return Response(json.dumps(res),mimetype='application/json')
         nftTrans = NFTTransaction.NFTTransaction()
         out = nftTrans.getBuyDetails(trader_id,contract_addr,token_id)
         return Response(out,mimetype='application/json')
@@ -135,14 +160,23 @@ def buyNFT():
         contract_addr = data['contract_addr']
         token_id = data['token_id']
         commission_type = data['commission_type']
+        uid = int(get_jwt_identity())
+        if trader_id != uid:
+            res = {"res":"failed","message":"UnAuthorized, Please logout and login again"}
+            return Response(json.dumps(res),mimetype='application/json')
         nftTrans = NFTTransaction.NFTTransaction()
         out = nftTrans.buyNFT(trader_id,contract_addr,token_id,commission_type)
         return Response(out,mimetype='application/json')
 
 @app.route("/getTransactionHistory",methods =['GET'])
+@jwt_required()
 def getTransactions():
     args = request.args
-    trader_id = args['trader_id']
+    trader_id = int(args['trader_id'])
+    uid = int(get_jwt_identity())
+    if trader_id != uid:
+        res = {"res":"failed","message":"UnAuthorized, Please logout and login again"}
+        return Response(json.dumps(res),mimetype='application/json')
     walletTransaction = WalletTransaction.WalletTransaction()
     walletOut = walletTransaction.getWalletTransactions(trader_id)
     nftTransactionOut = NFTTransaction.NFTTransaction()
@@ -170,6 +204,7 @@ def getTransactions():
 # code for cancelled logs
 # assumption is to get a transid ,time stamp, logInfo from client
 @app.route("/cancelNFTTransaction",methods=['POST'])
+@jwt_required()
 def cancelNFTTransactions():
     data = request.get_json(force=True)
     transactionId = data['trans_id']
@@ -186,11 +221,16 @@ def cancelNFTTransactions():
     return Response(json.dumps(out),mimetype='application/json')
 
 @app.route("/sellNFT",methods =['GET','POST'])
+@jwt_required()
 def getsellDetails():
     if request.method == 'GET':
         #data = request.get_json(force=True)
         data = request.args
         trader_id = int(data['trader_id'])
+        uid = int(get_jwt_identity())
+        if trader_id != uid:
+            res = {"res":"failed","message":"UnAuthorized, Please logout and login again"}
+            return Response(json.dumps(res),mimetype='application/json')
         contract_addr = data['contract_addr']
         token_id = data['token_id']
         nftTrans = NFTTransaction.NFTTransaction()
@@ -199,6 +239,10 @@ def getsellDetails():
     elif request.method == 'POST':
         data = request.get_json(force=True)
         trader_id = int(data['trader_id'])
+        uid = int(get_jwt_identity())
+        if trader_id != uid:
+            res = {"res":"failed","message":"UnAuthorized, Please logout and login again"}
+            return Response(json.dumps(res),mimetype='application/json')
         contract_addr = data['contract_addr']
         token_id = data['token_id']
         commission_type = data['commission_type']

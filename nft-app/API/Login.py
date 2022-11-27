@@ -57,7 +57,7 @@ class Login:
         temp_json = json.loads(json_trader_data)
         parsed_json = temp_json["0"]
         parsed_json.update({"res":"success"})
-        expires = datetime.timedelta(minutes=10)
+        expires = datetime.timedelta(minutes=60)
         access_token = create_access_token(identity=str(uid), expires_delta=expires)
         parsed_json.update({"token":access_token})
         return json.dumps(parsed_json)
