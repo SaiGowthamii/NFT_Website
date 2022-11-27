@@ -11,10 +11,12 @@ from flask import Response
 import NFTTransaction
 import Transaction
 import cancelledLogs
+from flask_bcrypt import Bcrypt
 
 # initialize flask API
 app = Flask(__name__)
 api = CORS(app)
+bcrypt = Bcrypt(app)
 
 
 @app.route("/")

@@ -1,6 +1,7 @@
 import config as cg
 from flask import json
 import pandas as pd
+from flask_bcrypt import generate_password_hash, check_password_hash
 
 class SignUp:
 
@@ -42,6 +43,7 @@ class SignUp:
             if not df.empty:
                 res = {"res":"failed","message":"email id already exists"}
                 return json.dumps(res)
+            self.password = generate_password_hash(self.password).decode('utf8')
             qry1 = f"INSERT INTO user(username,password,user_type) VALUES ('{self.username}','{self.password}',{self.user_type})"
             cursor.execute(qry1)
             qry_id = f"SELECT uid FROM user WHERE username = '{self.username}' and password = '{self.password}'"
