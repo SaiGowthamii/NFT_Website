@@ -12,12 +12,25 @@ import NFTTransaction
 import Transaction
 import cancelledLogs
 from flask_bcrypt import Bcrypt
+from flask_jwt_extended import JWTManager
+from flask_jwt_extended import jwt_required,get_jwt_identity
+import sys
 
 # initialize flask API
 app = Flask(__name__)
 api = CORS(app)
 bcrypt = Bcrypt(app)
+app.config.from_envvar("ENV_FILE_LOCATION")
+jwt = JWTManager(app)
 
+@jwt.expired_token_loader
+def app_expired_token_callback(jwt_header, jwt_payload):
+    return jsonify(res="failed", message="Token has Expired, Please logout and login again"), 401
+
+@jwt.unauthorized_loader
+@jwt.invalid_token_loader
+def app_unauthorized_callback(jwt_payload):
+    return jsonify(res="failed", message="UnAuthorized, Please logout and login again"), 401
 
 @app.route("/")
 def home():
@@ -54,11 +67,14 @@ def signUp():
     return Response(out,mimetype='application/json')
 
 @app.route("/getNFTDataForHome",methods=['GET'])
+@jwt_required()
 def getNFTDataforHome():
     #data = request.get_json(force=True)
     args = request.args
     #t_id = data['t_id']
     trader_id = args['trader_id']
+    uid = get_jwt_identity()
+    print(uid,file=sys.stderr)
     oHome = Home.Home()
     out = oHome.getnftDataForHome(trader_id)
     return Response(out,mimetype='application/json')
