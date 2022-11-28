@@ -4,6 +4,7 @@ import config as cg
 import sys
 import cancelledLogs
 from datetime import datetime as dt
+import requests
 
 class NFTTransaction:
     def __init__(self,initator_id=None,receiver_id=None,contract_address=None,token_id=None,total_amount=None,commission=None,commission_type=None,nft_trans_type=None,trans_status=None):
@@ -106,7 +107,10 @@ class NFTTransaction:
             return json.dumps(res)
 
     def convertETHtoUSD(self,amount_in_eth):
-        amount_in_USD = amount_in_eth * 1170.69
+        response = requests.get("https://api.coinbase.com/v2/prices/ETH-USD/spot")
+        json_data = response.json()
+        eth_in_USD = float(json_data['data']['amount'])
+        amount_in_USD = amount_in_eth * eth_in_USD
         return amount_in_USD
 
     def buyNFT(self,trader_id,contract_addr,token_id,commission_type):
@@ -135,6 +139,7 @@ class NFTTransaction:
                     commission_in_eth = (nft_price)/100
                 commission_in_usd = self.convertETHtoUSD(commission_in_eth)
                 total_amount = nft_price + commission_in_eth
+                total_amount_in_usd = self.convertETHtoUSD(total_amount)
                 if commission_type == 'fiat':
                     updated_balance = wallet_balance - nft_price
                 elif commission_type == 'eth':
@@ -148,7 +153,7 @@ class NFTTransaction:
                 qry_trans_id = f"SELECT * FROM transaction ORDER BY trans_id DESC LIMIT 1"
                 df = pd.read_sql(qry_trans_id,conn)
                 trans_id = int(df['trans_id'][0])
-                qry3 = f"INSERT INTO nft_transaction(trans_id,initiator_id,receiver_id,contract_addr,token_id,total_amount,commission_in_eth,commission_in_usd,commission_type,nft_trans_type,trans_status) values ({trans_id},{trader_id},{current_owner_id},'{contract_addr}','{token_id}',{total_amount},{commission_in_eth},{commission_in_usd},'{commission_type}','buy','successful')"
+                qry3 = f"INSERT INTO nft_transaction(trans_id,initiator_id,receiver_id,contract_addr,token_id,total_amount,total_amount_in_usd,commission_in_eth,commission_in_usd,commission_type,nft_trans_type,trans_status) values ({trans_id},{trader_id},{current_owner_id},'{contract_addr}','{token_id}',{total_amount},{total_amount_in_usd},{commission_in_eth},{commission_in_usd},'{commission_type}','buy','successful')"
                 cursor.execute(qry3)
                 qry4 = f"UPDATE trader SET wallet_balance={updated_balance} where t_id={trader_id}"
                 cursor.execute(qry4)
@@ -225,13 +230,18 @@ class NFTTransaction:
                 commission_in_eth = (nft_price)/100
             commission_in_usd = self.convertETHtoUSD(commission_in_eth)
             total_amount = nft_price + commission_in_eth
+            total_amount_in_usd = self.convertETHtoUSD(total_amount)
             if current_owner != trader_id:
                 res = {"res":"failed","message":"Unable to proceed, NFT is owned by someone else"}
                 return json.dumps(res)
             qry2 = f"SELECT t_id,wallet_balance FROM trader WHERE eth_addr = '{receiver_eth_address}'"
-            df3 = pd.read_sql(qry2,conn)
-            receiver_id = df3['t_id'][0]
-            receiver_wallet_balance = df3['wallet_balance'][0]
+            if not df3.empty:
+                df3 = pd.read_sql(qry2,conn)
+                receiver_id = df3['t_id'][0]
+                receiver_wallet_balance = df3['wallet_balance'][0]
+            else:
+                res = {"res":"failed","message":"Unable to proceed, Buyer's Ethereum Address not found"}
+                return json.dumps(res)
             if receiver_wallet_balance < nft_price:
                 res = {"res":"failed","message":"Unable to proceed with transaction: Insufficent Wallet balance on buyer's end"}
                 return json.dumps(res)
@@ -249,7 +259,7 @@ class NFTTransaction:
             qry_trans_id = f"SELECT * FROM transaction ORDER BY trans_id DESC LIMIT 1"
             df = pd.read_sql(qry_trans_id,conn)
             trans_id = int(df['trans_id'][0])
-            qry4 = f"INSERT INTO nft_transaction(trans_id,initiator_id,receiver_id,contract_addr,token_id,total_amount,commission_in_eth,commission_in_usd,commission_type,nft_trans_type,trans_status) values ({trans_id},{trader_id},{receiver_id},'{contract_addr}','{token_id}',{total_amount},{commission_in_eth},{commission_in_usd},'{commission_type}','sell','successful')"
+            qry4 = f"INSERT INTO nft_transaction(trans_id,initiator_id,receiver_id,contract_addr,token_id,total_amount,total_amount_in_usd,commission_in_eth,commission_in_usd,commission_type,nft_trans_type,trans_status) values ({trans_id},{trader_id},{receiver_id},'{contract_addr}','{token_id}',{total_amount},{total_amount_in_usd},{commission_in_eth},{commission_in_usd},'{commission_type}','sell','successful')"
             cursor.execute(qry4)
             qry5 = f"UPDATE trader SET wallet_balance={initiator_updated_balance} where t_id={trader_id}"
             cursor.execute(qry5)
