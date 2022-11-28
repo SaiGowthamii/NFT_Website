@@ -51,6 +51,7 @@ export class HomeComponent implements OnInit {
     localStorage.setItem("row_eth",eth);
     localStorage.setItem("row_tid",tid);
     this.display=true
+    this.token_id=''
   }
   homepage(){
     this.sales=[];
@@ -59,6 +60,11 @@ export class HomeComponent implements OnInit {
    this.showLoader=true;
     this.nftService.homeApi(this.userDetails).subscribe(data=>{
       this.showLoader=false;
+      if(data.res!=undefined){
+        alert(data.res);
+      }
+      else{
+
          for(let i in data){
           let temp={
                 'nft_name':data[i].nft_name,
@@ -69,6 +75,7 @@ export class HomeComponent implements OnInit {
               this.sales.push(temp);
          }
       console.log(this.sales)
+        }
       
        });
 
@@ -128,13 +135,13 @@ export class HomeComponent implements OnInit {
               this.router.navigate(['/payment']);
             }
             else{
-              alert('You dont have Sufficient Balance');
+              alert(this.data_result.message);
               this.display=false;
             }
           }) 
         }
         else{
-          alert('Enter Correct Password');
+          alert(this.data_result.message);
           this.passWord='';
         }
       })

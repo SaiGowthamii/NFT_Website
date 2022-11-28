@@ -63,6 +63,10 @@ export class AddTowalletComponent implements OnInit {
    this.showLoader=true;
     this.nftService.homeApi(this.userDetails).subscribe(data=>{
       this.showLoader=false;
+      if(data.res=='failed'){
+        alert(data.res);
+      }
+      else{
          for(let i in data){
           let temp={
                 'nft_name':data[i].nft_name,
@@ -73,31 +77,9 @@ export class AddTowalletComponent implements OnInit {
               this.sales.push(temp);
          }
       console.log(this.sales)
+        }
       
        });
-
-  }
-
-  search(){
-    this.showLoader=true;
-    if(this.token_id!='' || this.ethadd!=''){
-      for(let i=0;i<this.sales.length;i++){
-        if(this.sales[i].contract_addr==this.ethadd && this.sales[i].token_id==this.token_id){
-          let temp={
-            'nft_name':this.sales[i].nft_name,
-            'contract_addr':this.sales[i].contract_addr,
-            'token_id' :this.sales[i].token_id,
-            'current_price':this.sales[i].current_price
-          }
-          this.result.push(temp);
-        }
-        else if(this.result.length <0) {
-          this.sales=[];
-        }
-      }
-      this.showLoader=false;
-      this.sales=this.result;
-    }
 
   }
   reset(){
