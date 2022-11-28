@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
@@ -13,6 +13,7 @@ export class NftserService {
  ownNft='http://localhost:4000/getNFTDataForTrader';
  conversion='http://localhost:4000/convertETH';
  history='http://localhost:4000/getTransactionHistory'
+
   constructor(private http: HttpClient) { }
   loginApi(params:any){
     console.log("Successful");
@@ -39,7 +40,13 @@ export class NftserService {
      })
   }
     public homeApi(id :any) : Observable<any>{  
-      return this.http.get(this.url + '?trader_id=' + id);
+      const token=localStorage.getItem("token");
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      })
+      const requestOptions = { headers: headers };
+      return this.http.get(this.url + '?trader_id=' + id,requestOptions);
   }
   public ownNftApi(id :any) : Observable<any>{  
     return this.http.get(this.ownNft + '?trader_id=' + id);

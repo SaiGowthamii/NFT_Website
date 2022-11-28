@@ -20,7 +20,7 @@ import sys
 app = Flask(__name__)
 api = CORS(app)
 bcrypt = Bcrypt(app)
-app.config.from_envvar("ENV_FILE_LOCATION")
+app.config['JWT_SECRET_KEY']= 'ueir09uf9DSHKJDHW92bkFEF0329RFEWRzd'
 jwt = JWTManager(app)
 
 @jwt.expired_token_loader
