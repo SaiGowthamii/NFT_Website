@@ -112,8 +112,14 @@ export class PaymentComponent implements OnInit {
     },error => {
       // You can access status:
       console.log(error.status);
-      alert("Session has expired")
-    this.login();})
+      if(error.status==401){
+        alert("Session has expired")
+        this.login();
+      }
+      else{
+        alert(error.message);
+      }
+     })
 
   }
   proceed() {
@@ -148,8 +154,14 @@ export class PaymentComponent implements OnInit {
     },error => {
       // You can access status:
       console.log(error.status);
-      alert("Session has expired")
-    this.login();})
+      if(error.status==401){
+        alert("Session has expired")
+        this.login();
+      }
+      else{
+        alert(error.message);
+      }
+     })
   }
 
 }

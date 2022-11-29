@@ -56,7 +56,7 @@ inCorrect:boolean=false;
             localStorage.setItem('t_id', this.result.t_id);
           localStorage.setItem('fname', this.result.fname);
           localStorage.setItem('lname', this.result.lname);
-          localStorage.setItem('trader_level', this.result.uid);
+          localStorage.setItem('trader_level', this.result.manager_level);
           localStorage.setItem('username',this.result.username);
           localStorage.setItem('token',this.result.token);
           this.router.navigate(['/manager']);

@@ -47,6 +47,7 @@ export class ManagerComponent implements OnInit {
   totalWithdrawnWalletAmountinETH:any='';
   totalWithdrawnWalletAmountinUSD:any='';
   totalwithdraws:any='';
+  visiblecreate:boolean=false;
   nftName:any='';
   ethAdd:any='';
   ownerId:any='';
@@ -58,6 +59,9 @@ export class ManagerComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    if(this.level==3){
+      this.visiblecreate=true;
+    }
   }
   login(){
     this.router.navigate(['/login']);
@@ -175,8 +179,14 @@ export class ManagerComponent implements OnInit {
       },error => {
         // You can access status:
         console.log(error.status);
-        alert("Session has expired")
-      this.login();})
+        if(error.status==401){
+          alert("Session has expired")
+          this.login();
+        }
+        else{
+          alert(error.message);
+        }
+       })
     }
     }
 
@@ -184,36 +194,6 @@ export class ManagerComponent implements OnInit {
    cancel(){
     this.display=true;
    }
-   submit(){
-    if(this.cancelText=='') {
-      alert("Please Do Enter The Reason");
-    }
-    else{
-    this.userDetails=localStorage.getItem('t_id');
-    this.log_time={
-      "trans_id":this.userDetails,
-      "log_info":this.cancelText,
-      "time_stamp": Date.now() }
-      this.nftService.cancelApi(this.log_time).subscribe(data=>{
-        let cancel_res:any=[];
-        cancel_res=data;
-        if(cancel_res.res=='success'){
-          alert('Transaction Cancelled Successfull');
-          this.homepage();
-          this.display=false;
-        }
-        else{
-          alert(cancel_res.message);
-          this.homepage();
-          this.display=false;
-        }
-      },error => {
-        // You can access status:
-        console.log(error.status);
-        alert("Session has expired")
-      this.login();})
-    }
-    }
     addNft(){
       if(this.nftName==''||this.ethAdd==''||this.tkId==''||this.ownerId==''||this.current_price==''){
         this.addenterDetails=true;
@@ -231,10 +211,8 @@ export class ManagerComponent implements OnInit {
         }
         console.log("user",user)
         this.nftService.addNftApi(user).subscribe(data=>{
-          console.log('data',data);
-          this.create_res=data;
           if(this.create_res.res=="success"){
-            this.display=true;
+            alert(this.create_res.message)
           }
           else{
             this.addenterDetails=true;

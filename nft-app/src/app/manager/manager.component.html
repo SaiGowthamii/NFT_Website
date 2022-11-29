@@ -20,7 +20,7 @@
         <button  type="submit" [ngClass]="selectedABtn==false ? 'btnSty' : 'transSty'" (click)="add_nft()"  class="btn btn-primary " >
             Add NFT
         </button> 
-        <button  type="submit"  for="Button1"  [ngClass]="selectedNBtn==false ? 'btnSty' : 'transSty'" class="btn btn-primary" (click)="create_manager()">
+        <button  type="submit"  for="Button1" *ngIf="visiblecreate" [ngClass]="selectedNBtn==false ? 'btnSty' : 'transSty'" class="btn btn-primary" (click)="create_manager()">
             Create Manager
           </button>
 
@@ -35,9 +35,9 @@
              <label class="required-field" style="position: relative;right: 21px;"> Level</label> &nbsp;&nbsp; 
              <input type="text" (focus)='onfocus()' style="height: 36px;position: relative;left: 76px;" [(ngModel)]="level_manager" placeholder="Enter Level"><br><br>
              <label class="required-field">Username</label> &nbsp;&nbsp;
-             <input type="text" (focus)='onfocus()'class="city" [(ngModel)]="username" placeholder="Enter username" ><br><br>
+             <input type="text"  style="left:62px !important"(focus)='onfocus()'class="city" [(ngModel)]="username" placeholder="Enter username" ><br><br>
              <label class="required-field" style="position: relative;left: 14px;"> Password</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  
-             <input type="text" (focus)='onfocus()' class="state" [(ngModel)]="password" placeholder="Enter Password"><br><br><br>
+             <input type="text"style="left:51px !important" (focus)='onfocus()' class="state" [(ngModel)]="password" placeholder="Enter Password"><br><br><br>
                 <label style="color:red;position: relative;top: -22px;left: 20px;" *ngIf="enterDetails">{{errormessage}}</label>
               <div class="btnCls">
               <button  type="submit" class="btn btn-primary btnSty" (click)="homepage()">
@@ -82,7 +82,6 @@
     <ng-template pTemplate>
         <label>Name: </label>&nbsp;<label>{{name}}</label><br>
         <label>Level: </label>&nbsp;<label>{{level}}</label><br>
-        <label>Wallet Amount: </label>&nbsp;<label>{{balance}}</label><br>
         <button  type="submit" class="btn btn-primary logsty" (click)="login()">
             Logout
         </button>
