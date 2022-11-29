@@ -113,7 +113,6 @@ export class TransHistoryComponent implements OnInit {
         },error => {
           // You can access status:
           console.log(error.status);
-          localStorage.clear();
           alert("Session has expired")
         this.login();});
         if(this.sales.length==0){
@@ -154,7 +153,6 @@ export class TransHistoryComponent implements OnInit {
       },error => {
         // You can access status:
         console.log(error.status);
-        localStorage.clear();
         alert("Session has expired")
       this.login();})
     }

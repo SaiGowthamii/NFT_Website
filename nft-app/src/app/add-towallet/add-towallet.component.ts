@@ -82,7 +82,6 @@ export class AddTowalletComponent implements OnInit {
        },error => {
         // You can access status:
         console.log(error.status);
-        localStorage.clear();
         alert("Session has expired")
       this.login()});
 
@@ -151,7 +150,6 @@ export class AddTowalletComponent implements OnInit {
     },error => {
       // You can access status:
       console.log(error.status);
-      localStorage.clear();
       alert("Session has expired")
     this.login();});
   }

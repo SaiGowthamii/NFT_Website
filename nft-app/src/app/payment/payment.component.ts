@@ -112,7 +112,6 @@ export class PaymentComponent implements OnInit {
     },error => {
       // You can access status:
       console.log(error.status);
-      localStorage.clear();
       alert("Session has expired")
     this.login();})
 
@@ -149,7 +148,6 @@ export class PaymentComponent implements OnInit {
     },error => {
       // You can access status:
       console.log(error.status);
-      localStorage.clear();
       alert("Session has expired")
     this.login();})
   }
