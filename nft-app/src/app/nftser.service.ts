@@ -128,7 +128,8 @@ public cancelApi(params:any){
   return this.http.post('http://localhost:4000/cancelNFTTransaction',{
     "trans_id":params.trans_id,
     "log_info":params.log_info,
-    "time_stamp": params.time_stamp
+    "time_stamp": params.time_stamp,
+    "trader_id":params.trader_id
      },{ headers: headers })
 
 }
