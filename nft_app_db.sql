@@ -5,7 +5,7 @@ use test;
 create table user(
 	uid int auto_increment primary key,
 	username varchar(50) unique,
-    password varchar(50),
+    password varchar(255),
     user_type int default 0
 );
 
@@ -80,6 +80,13 @@ create table cancelledLogs(
         log_info varchar(100),
         log_trans_time datetime default current_timestamp,
         foreign key(trans_id) references nft_transaction(trans_id)
+);
+
+create table manager(
+	t_id int primary key,
+    fname varchar(50),
+	lname varchar(50),
+    manager_level int default 1
 );
 
 
