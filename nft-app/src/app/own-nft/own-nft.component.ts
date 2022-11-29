@@ -72,7 +72,12 @@ export class OwnNftComponent implements OnInit {
         console.log(this.sales)
       }
 
-    });
+    },error => {
+      // You can access status:
+      console.log(error.status);
+      localStorage.clear();
+      alert("Session has expired")
+    this.login();});
 
   }
 
@@ -132,7 +137,12 @@ export class OwnNftComponent implements OnInit {
           alert(this.data_result.message);
           this.passWord = '';
         }
-      })
+      },error => {
+        // You can access status:
+        console.log(error.status);
+        localStorage.clear();
+        alert("Session has expired")
+      this.login();})
     }
   }
 

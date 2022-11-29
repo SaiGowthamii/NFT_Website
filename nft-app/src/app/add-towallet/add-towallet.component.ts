@@ -79,7 +79,12 @@ export class AddTowalletComponent implements OnInit {
       console.log(this.sales)
         }
       
-       });
+       },error => {
+        // You can access status:
+        console.log(error.status);
+        localStorage.clear();
+        alert("Session has expired")
+      this.login()});
 
   }
   reset(){
@@ -143,7 +148,12 @@ export class AddTowalletComponent implements OnInit {
       
      }
        
-    });
+    },error => {
+      // You can access status:
+      console.log(error.status);
+      localStorage.clear();
+      alert("Session has expired")
+    this.login();});
   }
   else{
     this.validboolean=true;
@@ -154,7 +164,6 @@ export class AddTowalletComponent implements OnInit {
     this.amount='';
     this.showusd=false;
     this.selectedValue='add';
-
   }
 
   

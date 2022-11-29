@@ -96,7 +96,8 @@ export class NftserService {
      },{ headers: this.headers })
   }
   public historyApi(id :any) : Observable<any>{  
-    return this.http.get(this.history + '?trader_id=' + id);
+    const requestOptions = { headers: this.headers };
+    return this.http.get(this.history + '?trader_id=' + id,requestOptions);
 }
 public cancelApi(params:any){
   return this.http.post('http://localhost:4000/cancelNFTTransaction',{

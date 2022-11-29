@@ -110,7 +110,12 @@ export class TransHistoryComponent implements OnInit {
             }    
           }
         }
-        });
+        },error => {
+          // You can access status:
+          console.log(error.status);
+          localStorage.clear();
+          alert("Session has expired")
+        this.login();});
         if(this.sales.length==0){
           this.sales=[];
         }
@@ -146,7 +151,12 @@ export class TransHistoryComponent implements OnInit {
           this.homepage();
           this.display=false;
         }
-      })
+      },error => {
+        // You can access status:
+        console.log(error.status);
+        localStorage.clear();
+        alert("Session has expired")
+      this.login();})
     }
     }
   }

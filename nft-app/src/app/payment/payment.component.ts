@@ -109,7 +109,12 @@ export class PaymentComponent implements OnInit {
         alert(this.buy_data.message);
         this.display = false;
       }
-    })
+    },error => {
+      // You can access status:
+      console.log(error.status);
+      localStorage.clear();
+      alert("Session has expired")
+    this.login();})
 
   }
   proceed() {
@@ -141,7 +146,12 @@ export class PaymentComponent implements OnInit {
       }
       this.router.navigate(['/home']);
 
-    })
+    },error => {
+      // You can access status:
+      console.log(error.status);
+      localStorage.clear();
+      alert("Session has expired")
+    this.login();})
   }
 
 }

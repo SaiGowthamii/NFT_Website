@@ -105,7 +105,12 @@ export class SellComponent implements OnInit {
               alert('You dont have Sufficient Balance');
               this.display=false;
             }
-          }) 
+          },error => {
+            // You can access status:
+            console.log(error.status);
+            localStorage.clear();
+            alert("Session has expired")
+          this.login();}) 
 
   }
   proceed(){
@@ -143,7 +148,12 @@ export class SellComponent implements OnInit {
         alert(result.message);
       }
       this.router.navigate(['/own']);
-    })
+    },error => {
+      // You can access status:
+      console.log(error.status);
+      localStorage.clear();
+      alert("Session has expired")
+    this.login();})
   }
   }
 

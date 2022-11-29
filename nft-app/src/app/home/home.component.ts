@@ -76,8 +76,12 @@ export class HomeComponent implements OnInit {
          }
       console.log(this.sales)
         }
-      
-       });
+       },error => {
+        // You can access status:
+        console.log(error.status);
+        localStorage.clear();
+        alert("Session has expired")
+      this.login();});
 
   }
 
