@@ -110,7 +110,17 @@ export class TransHistoryComponent implements OnInit {
             }    
           }
         }
-        });
+        },error => {
+          // You can access status:
+          console.log(error.status);
+          if(error.status==401){
+            alert("Session has expired")
+            this.login();
+          }
+          else{
+            alert(error.message);
+          }
+         });
         if(this.sales.length==0){
           this.sales=[];
         }
@@ -146,7 +156,17 @@ export class TransHistoryComponent implements OnInit {
           this.homepage();
           this.display=false;
         }
-      })
+      },error => {
+        // You can access status:
+        console.log(error.status);
+        if(error.status==401){
+          alert("Session has expired")
+          this.login();
+        }
+        else{
+          alert(error.message);
+        }
+       })
     }
     }
   }

@@ -89,3 +89,16 @@
     border-top-right-radius: 6px;
     border-top-left-radius: 6px;
 }
+.p-calendar-w-btn .p-datepicker-trigger {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    background-color: white !important;
+    color: black !important;
+    border: white !important;
+}
+.p-dialog .p-dialog-content:last-of-type {
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+    /* height: 546px; */
+    overflow-y: hidden !important;
+}

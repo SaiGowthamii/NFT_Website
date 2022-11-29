@@ -1,0 +1,102 @@
+<div class="split left">
+    <div style="padding-top: 12px;padding-left: 7px;padding-right: 12px;">
+        <p-card class="menu_card" [style]="{'width': 'auto','height':'74px'}">
+        <div class="cardCont">
+        <img src="\assets\images\home_img.png" width="100px" style="padding-top: 15px;
+        padding-left: 7px;margin-left: 27px;">
+        <span class="menusty">
+            <!-- <p-dropdown [options]="menuopt" [(ngModel)]="selected" optionLabel="name" (onChange)="onChange($event)"></p-dropdown> -->
+       <span  [ngClass]="level=='silver' ? 'Span1Sty' : 'SpanSty'" (click)="op.toggle($event)">
+            <i class="pi pi-user"></i>
+        </span>
+        </span>
+    </div>
+    </p-card>
+    </div>
+    <div class="split_left" >
+        <button  type="submit" [ngClass]="selectedwBtn==false ? 'btnSty' : 'transSty'" (click)="report()"  class="btn btn-primary " >
+             Reports
+        </button> 
+        <button  type="submit" [ngClass]="selectedABtn==false ? 'btnSty' : 'transSty'" (click)="add_nft()"  class="btn btn-primary " >
+            Add NFT
+        </button> 
+        <button  type="submit"  for="Button1" *ngIf="visiblecreate" [ngClass]="selectedNBtn==false ? 'btnSty' : 'transSty'" class="btn btn-primary" (click)="create_manager()">
+            Create Manager
+          </button>
+
+    </div>
+    <div class="split_right">
+        <div class="centered" *ngIf="selectedNBtn">
+            <p-card class="create_card" [style]="{'width': '38rem', 'margin-bottom': '2em'}">
+             <label class="required-field"> First Name</label> &nbsp;&nbsp; 
+             <input type="text" (focus)='onfocus()' style="height: 36px;position: relative;left: 56px;" [(ngModel)]="first_name" placeholder="Enter FirstName"><br><br>
+             <label class="required-field"> Last Name</label> &nbsp;&nbsp; 
+             <input type="text" (focus)='onfocus()' class="last" [(ngModel)]="last_name" placeholder="Enter LastName"><br><br>
+             <label class="required-field" style="position: relative;right: 21px;"> Level</label> &nbsp;&nbsp; 
+             <input type="text" (focus)='onfocus()' style="height: 36px;position: relative;left: 76px;" [(ngModel)]="level_manager" placeholder="Enter Level"><br><br>
+             <label class="required-field">Username</label> &nbsp;&nbsp;
+             <input type="text"  style="left:62px !important"(focus)='onfocus()'class="city" [(ngModel)]="username" placeholder="Enter username" ><br><br>
+             <label class="required-field" style="position: relative;left: 14px;"> Password</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  
+             <input type="text"style="left:51px !important" (focus)='onfocus()' class="state" [(ngModel)]="password" placeholder="Enter Password"><br><br><br>
+                <label style="color:red;position: relative;top: -22px;left: 20px;" *ngIf="enterDetails">{{errormessage}}</label>
+              <div class="btnCls">
+              <button  type="submit" class="btn btn-primary btnSty" (click)="homepage()">
+                Submit
+               </button>
+               
+              </div>
+            </p-card>      
+        </div>
+        <div class="centered" *ngIf="selectedABtn">
+            <p-card class="create_card" [style]="{'width': '38rem', 'margin-bottom': '2em'}">
+             <label class="required-field"> NFT Name</label> &nbsp;&nbsp; 
+             <input type="text" (focus)='onfocus()' style="height: 36px;position: relative;left: 82px;" [(ngModel)]="nftName" placeholder="Enter FirstName"><br><br>
+             <label class="required-field"> Ethereum Address</label> &nbsp;&nbsp; 
+             <input type="text" (focus)='onfocus()' class="last" [(ngModel)]="ethAdd" placeholder="Enter LastName"><br><br>
+             <label class="required-field" style="position: relative;right: 21px;"> Token ID</label> &nbsp;&nbsp; 
+             <input type="text" (focus)='onfocus()' style="height: 36px;position: relative;left: 89px;" [(ngModel)]="tkId" placeholder="Enter Level"><br><br>
+             <label class="required-field" style="position: relative;left: -16px;">Owner ID</label> &nbsp;&nbsp;
+             <input type="text" (focus)='onfocus()'class="city" [(ngModel)]="ownerId" placeholder="Enter username" ><br><br>
+             <label class="required-field" style="position: relative;left: 14px;"> Current Price</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  
+             <input type="text" (focus)='onfocus()' class="state" [(ngModel)]="current_price" placeholder="Enter Password"><br><br><br>
+                <label style="color:red;position: relative;top: -22px;left: 20px;" *ngIf="addenterDetails">{{errormessage}}</label>
+              <div class="btnCls">
+              <button  type="submit" class="btn btn-primary btnSty" (click)="addNft()">
+                Submit
+               </button>
+               
+              </div>
+            </p-card>      
+        </div>
+        <div class="centere" *ngIf="selectedwBtn">
+            <div class="field col-12 md:col-4">
+                <label for="range">Calendar</label>&nbsp;&nbsp;&nbsp;
+                <p-calendar [(ngModel)]="rangeDates"  dateFormat="yy-mm-dd"  selectionMode="range" [readonlyInput]="true" inputId="range" [showIcon]="true" placeholder="Select the date range"></p-calendar> &nbsp;&nbsp;
+                <button class="rep_btn" (click)="report_details()">Submit</button> &nbsp;&nbsp;
+                <button class="rep_btn" (click)="reset_cal()">Reset</button>
+            </div>
+        </div>
+    </div>
+</div>
+<p-overlayPanel #op>
+    <ng-template pTemplate>
+        <label>Name: </label>&nbsp;<label>{{name}}</label><br>
+        <label>Level: </label>&nbsp;<label>{{level}}</label><br>
+        <button  type="submit" class="btn btn-primary logsty" (click)="login()">
+            Logout
+        </button>
+    </ng-template>
+</p-overlayPanel>
+<p-dialog header="Report" [modal]=true [closable]="true" [(visible)]="display" [style]="{width: '30vw'}">
+   <label>Successful Transaction : </label> &nbsp;&nbsp; <label>{{successfulTransactions}}</label><br><br>
+   <label>Canecelled Transaction : </label> &nbsp;&nbsp; <label>{{cancelledTransactions}}</label><br><br>
+   <label>No of NFT Transaction : </label> &nbsp;&nbsp; <label>{{totalNFTTransactions}}</label><br><br>
+   <label>Total Transactions : </label> &nbsp;&nbsp; <label>{{totalTransactions}}</label><br><br>
+   <label>No of Deposit Wallet Transaction: </label> &nbsp;&nbsp; <label>{{totalAdds}}</label><br><br>
+   <label>Total Deposit Wallet Amount in ETH : </label> &nbsp;&nbsp; <label>{{totalAddedWalletAmountinETH}}</label><br><br>
+   <label>Total Deposit Wallet Amount in USD : </label> &nbsp;&nbsp; <label>{{totalAddedWalletAmountinUSD}}</label><br><br>
+   <label>No of Wallet Transaction : </label> &nbsp;&nbsp; <label>{{totalWalletTransaction}}</label><br><br>
+   <label>No of Withdraw Wallet Transaction: </label> &nbsp;&nbsp; <label>{{totalwithdraws}}</label><br><br>
+   <label>Total Withdraw Wallet Amount in ETH: </label> &nbsp;&nbsp; <label>{{totalWithdrawnWalletAmountinETH}}</label><br><br>
+   <label>Total Withdraw Wallet Amount in ETH : </label> &nbsp;&nbsp; <label>{{totalWithdrawnWalletAmountinUSD}}</label><br><br>
+</p-dialog>

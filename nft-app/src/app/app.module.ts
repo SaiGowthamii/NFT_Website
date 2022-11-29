@@ -23,6 +23,9 @@ import { TransHistoryComponent } from './trans-history/trans-history.component';
 import {SidebarModule} from 'primeng/sidebar';
 import { PaymentComponent } from './payment/payment.component';
 import { SellComponent } from './sell/sell.component';
+import { ManagerComponent } from './manager/manager.component';
+import {CalendarModule} from 'primeng/calendar';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,7 +36,8 @@ import { SellComponent } from './sell/sell.component';
     AddTowalletComponent,
     TransHistoryComponent,
     PaymentComponent,
-    SellComponent
+    SellComponent,
+    ManagerComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -48,8 +52,10 @@ import { SellComponent } from './sell/sell.component';
     DialogModule,
     HttpClientModule,
     RadioButtonModule,
+    
     FormsModule,
     ToastModule,
+    CalendarModule,
     ReactiveFormsModule,
     SidebarModule
   ],
