@@ -80,7 +80,7 @@
                     <td>{{history.nft_trans_type}} ETH </td>
                     <td>{{history.trans_status}}</td>
                     <td>{{history.trans_dateTime}}</td>
-                    <td><button  type="submit" class="btn btn-primary logsty" (click)="cancel()">Cancel</button> </td>
+                    <td><button  type="submit" class="btn btn-primary logsty" (click)="cancel(history.trans_id)">Cancel</button> </td>
                 </tr>
             </ng-template>
             <ng-template pTemplate="emptymessage" let-history>

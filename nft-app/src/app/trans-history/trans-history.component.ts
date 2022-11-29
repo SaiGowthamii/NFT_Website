@@ -25,6 +25,7 @@ export class TransHistoryComponent implements OnInit {
   cancelText:any='';
   selected:any;
   log_time:any={};
+  trans_id:any='';
   name:any=localStorage.getItem('fname');
   level:any=localStorage.getItem('trader_level');
   balance:any=localStorage.getItem('wallet_balance');
@@ -130,7 +131,8 @@ export class TransHistoryComponent implements OnInit {
  
    }
 
-   cancel(){
+   cancel(transId:any){
+    this.userDetails=transId;
     this.display=true;
    }
    submit(){
@@ -138,11 +140,12 @@ export class TransHistoryComponent implements OnInit {
       alert("Please Do Enter The Reason");
     }
     else{
-    this.userDetails=localStorage.getItem('t_id');
+    let t_id=localStorage.getItem('t_id');
     this.log_time={
       "trans_id":this.userDetails,
       "log_info":this.cancelText,
-      "time_stamp": Date.now() }
+      "time_stamp": Date.now(),
+       "trader_id":t_id }
       this.nftService.cancelApi(this.log_time).subscribe(data=>{
         let cancel_res:any=[];
         cancel_res=data;
