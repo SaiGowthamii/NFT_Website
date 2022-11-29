@@ -60,4 +60,23 @@ class Login:
         expires = datetime.timedelta(minutes=60)
         access_token = create_access_token(identity=str(uid), expires_delta=expires)
         parsed_json.update({"token":access_token})
+        parsed_json.pop("password")
+        return json.dumps(parsed_json)
+
+    def get_manager_data(self,uid):
+        conn = cg.connect_to_mySQL()
+        qry = f"SELECT * FROM manager WHERE t_id={uid}"
+        self.df2 = pd.read_sql(qry,conn)
+        df3 = self.df1.join(self.df2)
+        # user_type = cursor.fetchone()[0]
+        # cursor.execute(chk)
+        # user_type = cursor.fetchone()
+        json_trader_data = df3.to_json(orient = "index")
+        temp_json = json.loads(json_trader_data)
+        parsed_json = temp_json["0"]
+        parsed_json.update({"res":"success"})
+        expires = datetime.timedelta(minutes=60)
+        access_token = create_access_token(identity=str(uid), expires_delta=expires)
+        parsed_json.update({"token":access_token})
+        parsed_json.pop("password")
         return json.dumps(parsed_json)

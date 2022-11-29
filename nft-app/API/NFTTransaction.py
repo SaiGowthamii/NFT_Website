@@ -19,6 +19,35 @@ class NFTTransaction:
         self.trans_status = trans_status
 
 
+    def getNFTTransAggregateInfo(self,fromDate,toDate):
+        conn = cg.connect_to_mySQL()
+        try:
+            cursor = conn.connect()
+            sql1 = f"SELECT COUNT(*) AS cancelledTrans  FROM nft_transaction W, transaction T WHERE W.trans_id = T.trans_id AND  T.trans_time > '{fromDate}' AND  T.trans_time < '{toDate}' AND W.trans_status = '{'cancelled'}'"
+            df1 = pd.read_sql(sql1,conn)
+            print(df1,file = sys.stderr)
+            cancelledTrans = int(df1['cancelledTrans'][0])
+            sql2 = f"SELECT COUNT(*) AS successTrans  FROM nft_transaction W, transaction T WHERE W.trans_id = T.trans_id AND  T.trans_time > '{fromDate}' AND  T.trans_time < '{toDate}' AND W.trans_status = '{'successful'}'"
+            df2 = pd.read_sql(sql2,conn)
+            print(df2,file = sys.stderr)
+            successTrans = int(df2['successTrans'][0])
+            sql3 = f"SELECT SUM(W.total_amount) AS total  FROM nft_transaction W, transaction T WHERE W.trans_id = T.trans_id AND  T.trans_time > '{fromDate}' AND  T.trans_time < '{toDate}' AND W.trans_status = '{'successful'}'"
+            df3 = pd.read_sql(sql3,conn)
+            print(df3,file = sys.stderr)
+            if df3['total'][0] != None:
+                total = float(df3['total'][0])
+            else:
+                total = 0.0
+            res = {"cancelledTransactions":cancelledTrans,"successfulTransactions":successTrans,"totalAmountInEth":total}
+            #res = {}
+            #res.update({"cancelledTransactions":cancelledTrans})
+            #res.update({"successfulTransactions":successTrans})
+            #res.update({"totalAmountInEth":total})
+            return res
+        except Exception as e:
+            res = {"res":"failed","message":str(e)}
+            return json.dumps(res)
+
     def cancelNFTTransaction(self,transactionID,timestamp,logInfo):
         conn = cg.connect_to_mySQL()
         try:
@@ -235,8 +264,8 @@ class NFTTransaction:
                 res = {"res":"failed","message":"Unable to proceed, NFT is owned by someone else"}
                 return json.dumps(res)
             qry2 = f"SELECT t_id,wallet_balance FROM trader WHERE eth_addr = '{receiver_eth_address}'"
-            df3 = pd.read_sql(qry2,conn)
             if not df3.empty:
+                df3 = pd.read_sql(qry2,conn)
                 receiver_id = df3['t_id'][0]
                 receiver_wallet_balance = df3['wallet_balance'][0]
             else:
