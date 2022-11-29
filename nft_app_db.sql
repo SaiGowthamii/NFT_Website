@@ -90,7 +90,7 @@ create table manager(
 );
 
 
-insert into user(username,password,user_type) values ('s',"abc",0),('r',"abc",0),('g',"abc",0),('a',"abc",0);
+insert into user(username,password,user_type) values ('s',"$2b$12$TON8AAG0N6IjHKfu4x8NXesLbzjEZsWUx1KlHcC9vLH1XrwQZmjy2",0),('r',"$2b$12$iSmL43wHYqGJE83.NnNnremtXiw1oQ9Y97ikkJh3lBJebVc3EuZ/.",0),('g',"$2b$12$Z5E06jBU0E3xn5k25DiieOW7jHWSVcbqbfSrmoQnLbb4p4rDj8lha",0),('a',"$2b$12$YWY4yr21V6VxelJLxsxDRuhTM6OBZIqARM6WY5vQQGPOWCUFQFP0O",0);
 
 insert into trader(t_id,eth_addr,trader_level,fname,lname,email_id,cell_no, phone_no,street_addr,city,state,zip_code,wallet_balance) values
 					(1,'0xb65913648136498291','silver','Suhaas','Kalisetty','s@gnmail.com','9999999999','9999999999','EOR','Richardson','Texas','75080',99.89),
