@@ -16,6 +16,7 @@ from flask_jwt_extended import JWTManager
 from flask_jwt_extended import jwt_required,get_jwt_identity
 import sys
 import requests
+import NFT
 
 
 # initialize flask API
@@ -140,6 +141,25 @@ def addToWallet():
     else:
         out = {"res":"failed","message":"Unknown option for wallet_trans_type"}
     return Response(out,mimetype='application/json')
+
+@app.route("/addNFT",methods=['POST'])
+@jwt_required()
+def addNFT():
+    data = request.get_json(force=True)
+    manager_id = int(data['initiator_id'])
+    uid = int(get_jwt_identity())
+    if manager_id != uid:
+        res = {"res":"failed","message":"UnAuthorized, Please logout and login again"}
+        return Response(json.dumps(res),mimetype='application/json')
+    nft_name = data['nft_name']
+    contract_addr = data['contract_addr']
+    token_id = data['token_id']
+    current_price = float(data['current_price'])
+    owner_id = int(data['owner_id'])
+    nft = NFT.NFT(nft_name,token_id,contract_addr,owner_id,current_price)
+    out = nft.addNFT()
+    return Response(out,mimetype='application/json')
+
 
 @app.route("/buyNFT",methods=['GET','POST'])
 @jwt_required()
@@ -266,6 +286,16 @@ def createManager():
         managerLevel = data['manager_level']
         initiator_id = int(data['initiator_id'])
         uid = int(get_jwt_identity())
+        try:
+            managerLevel = int(managerLevel)
+            print(type(managerLevel))
+            print(managerLevel)
+            if managerLevel != 1 and managerLevel != 2 and managerLevel != 3:
+                res = {"res":"failed","message":"Manager Level can be either 1, 2 or 3"}
+                return Response(json.dumps(res),mimetype='application/json')
+        except Exception as e:
+            res = {"res":"failed","message":"Manager Level can be either 1, 2 or 3"}
+            return Response(json.dumps(res),mimetype='application/json')
         if initiator_id != uid:
             res = {"res":"failed","message":"UnAuthorized, Please logout and login again"}
             return Response(json.dumps(res),mimetype='application/json',status=401)
