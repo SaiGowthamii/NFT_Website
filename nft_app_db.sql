@@ -5,7 +5,7 @@ use test;
 create table user(
 	uid int auto_increment primary key,
 	username varchar(50) unique,
-    password varchar(50),
+    password varchar(255),
     user_type int default 0
 );
 
@@ -32,7 +32,7 @@ create table nft(
 		nft_name varchar(50),
         token_id varchar(100),
         contract_addr varchar(100),
-        owner_id int,
+        owner_id int not null,
         current_price float,
         primary key(token_id,contract_addr),
         foreign key(owner_id) references trader(t_id)
@@ -53,6 +53,7 @@ create table nft_transaction(
         contract_addr varchar(50),
         token_id varchar(100),
         total_amount float,
+	total_amount_in_usd float,
         commission_in_eth float,
         commission_in_usd float,
         commission_type varchar(10),
@@ -82,8 +83,15 @@ create table cancelledLogs(
         foreign key(trans_id) references nft_transaction(trans_id)
 );
 
+create table manager(
+	t_id int primary key,
+    fname varchar(50),
+	lname varchar(50),
+    manager_level int default 1
+);
 
-insert into user(username,password,user_type) values ('s',"abc",0),('r',"abc",0),('g',"abc",0),('a',"abc",0);
+
+insert into user(username,password,user_type) values ('s',"$2b$12$TON8AAG0N6IjHKfu4x8NXesLbzjEZsWUx1KlHcC9vLH1XrwQZmjy2",0),('r',"$2b$12$iSmL43wHYqGJE83.NnNnremtXiw1oQ9Y97ikkJh3lBJebVc3EuZ/.",0),('g',"$2b$12$Z5E06jBU0E3xn5k25DiieOW7jHWSVcbqbfSrmoQnLbb4p4rDj8lha",0),('a',"$2b$12$YWY4yr21V6VxelJLxsxDRuhTM6OBZIqARM6WY5vQQGPOWCUFQFP0O",0);
 
 insert into trader(t_id,eth_addr,trader_level,fname,lname,email_id,cell_no, phone_no,street_addr,city,state,zip_code,wallet_balance) values
 					(1,'0xb65913648136498291','silver','Suhaas','Kalisetty','s@gnmail.com','9999999999','9999999999','EOR','Richardson','Texas','75080',99.89),

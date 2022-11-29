@@ -75,7 +75,52 @@ class WalletTransaction:
         except Exception as e:
             res = {"res":"failed","message":str(e)}
             return json.dumps(res)
-    
+
+    def getWalletTransAggregateInfo(self,fromDate,toDate):
+        conn = cg.connect_to_mySQL()
+        try:
+            cursor = conn.connect()
+            sql1 = f"SELECT SUM(W.amount_in_usd) as sumWithdrawWalletUSD,SUM(W.amount_in_eth) as sumWithdrawWalletETH FROM wallet_transaction W, transaction T WHERE W.trans_id = T.trans_id AND  T.trans_time > '{fromDate}' AND  T.trans_time < '{toDate}' AND W.wallet_trans_type='withdraw'"
+            df1 = pd.read_sql(sql1,conn)
+            print(df1,file = sys.stderr)
+            if df1['sumWithdrawWalletUSD'][0] != None:
+                sumWithdrawWalletUSD = float(df1['sumWithdrawWalletUSD'][0])
+            else:
+                sumWithdrawWalletUSD = 0.0
+            if df1['sumWithdrawWalletETH'][0] != None:
+                sumWithdrawWalletETH =  float(df1['sumWithdrawWalletETH'][0])
+            else:
+                sumWithdrawWalletETH = 0.0
+            sql1 = f"SELECT SUM(W.amount_in_usd) as sumAddWalletUSD,SUM(W.amount_in_eth) as sumAddWalletETH FROM wallet_transaction W, transaction T WHERE W.trans_id = T.trans_id AND  T.trans_time > '{fromDate}' AND  T.trans_time < '{toDate}' AND W.wallet_trans_type='add'"
+            df1 = pd.read_sql(sql1,conn)
+            print(df1,file = sys.stderr)
+            if df1['sumAddWalletUSD'][0] != None:
+                sumAddWalletUSD = float(df1['sumAddWalletUSD'][0])
+            else:
+                sumAddWalletUSD = 0.0
+            if df1['sumAddWalletETH'][0] != None:
+                sumAddWalletETH =  float(df1['sumAddWalletETH'][0])
+            else:
+                sumAddWalletETH = 0.0
+            sql2 = f"SELECT COUNT(*) AS addCount FROM wallet_transaction W, transaction T WHERE W.trans_id = T.trans_id AND T.trans_time > '{fromDate}' AND  T.trans_time < '{toDate}' AND W.wallet_trans_type = 'add'"
+            df2 = pd.read_sql(sql2,conn)
+            addCount = int(df2['addCount'][0])
+            print(df2,file = sys.stderr)
+            sql3 = f"SELECT COUNT(*) AS withdrawCount FROM wallet_transaction W, transaction T WHERE W.trans_id = T.trans_id AND T.trans_time > '{fromDate}' AND  T.trans_time < '{toDate}' AND W.wallet_trans_type = 'withdraw'"
+            df3 = pd.read_sql(sql3,conn)
+            withdrawCount = int(df3['withdrawCount'][0])
+            print(df3,file = sys.stderr)
+            res = {"totalAddedWalletAmountinUSD":sumAddWalletUSD,"totalAddedWalletAmountinETH":sumAddWalletETH,"totalWithdrawnWalletAmountinUSD":sumWithdrawWalletUSD,"totalWithdrawnWalletAmountinETH":sumWithdrawWalletETH,"totalAdds":addCount,"totalwithdraws":withdrawCount}
+            #res = {}
+            #res.update({"totalWalletAmountinUSD":sumWalletUSD})
+            #res.update({"totalWalletAmountinETH":sumWalletETH})
+            #res.update({"totalAdds":addCount})
+            #res.update({"totalwithdraws":withdrawCount})
+            return res
+        except Exception as e:
+            res = {"res":"failed","message":str(e)}
+            return json.dumps(res)
+        
     def getWalletTransactions(self,trader_id):
         conn = cg.connect_to_mySQL()
         try:

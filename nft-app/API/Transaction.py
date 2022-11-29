@@ -40,6 +40,40 @@ class Transaction:
         except Exception as e:
             res = {"res":"failed","message":str(e)}
             return json.dumps(res)
+
+    def getTransAggregateInfo(self,fromDate,toDate):
+        conn = cg.connect_to_mySQL()
+        try:
+            cursor = conn.connect()
+            # get no of transactions
+            sql1 = f"SELECT COUNT(*) as countTrans FROM transaction WHERE trans_time > '{fromDate}' AND  trans_time < '{toDate}'"
+            df1 = pd.read_sql(sql1,conn)
+            #print(df1,file = sys.stderr)
+            #print("transCount",file = sys.stderr)
+            transCount = int(df1['countTrans'][0])
+            print(df1,file = sys.stderr)
+            sql2 = f"SELECT COUNT(*) as countNFT FROM transaction WHERE trans_time > '{fromDate}' AND  trans_time < '{toDate}' AND trans_type = 'nft'"
+            df2 = pd.read_sql(sql2,conn)
+            nftCount = int(df2['countNFT'][0])
+            print(df2,file = sys.stderr)
+            sql3 = f"SELECT COUNT(*) as countWallet FROM transaction WHERE trans_time > '{fromDate}' AND  trans_time < '{toDate}' AND trans_type = 'wallet'"
+            df3 = pd.read_sql(sql3,conn)
+            walletCount = int(df3['countWallet'][0])
+            print(df3,file = sys.stderr)
+            res = {"totalTransactions":transCount,"totalNFTTransactions":nftCount,"totalWalletTransaction":walletCount}
+            #res = {}
+            #res.update({"totalTransactions":transCount})
+            #res.update({"totalNFTTransactions":nftCount})
+            #res.update({"totalWalletTransaction":walletCount})
+            #print(res,file = sys.stderr)
+            return res
+
+        except Exception as e:
+            res = {"res":"failed","message":str(e)}
+
+
+
+        
         
 
         
