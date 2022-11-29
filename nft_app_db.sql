@@ -87,18 +87,28 @@ create table manager(
 	t_id int primary key,
     fname varchar(50),
 	lname varchar(50),
-    manager_level int default 1
+    manager_level int default 1,
+    foreign key(t_id)references user(uid)
 );
 
 
-insert into user(username,password,user_type) values ('s',"$2b$12$TON8AAG0N6IjHKfu4x8NXesLbzjEZsWUx1KlHcC9vLH1XrwQZmjy2",0),('r',"$2b$12$iSmL43wHYqGJE83.NnNnremtXiw1oQ9Y97ikkJh3lBJebVc3EuZ/.",0),('g',"$2b$12$Z5E06jBU0E3xn5k25DiieOW7jHWSVcbqbfSrmoQnLbb4p4rDj8lha",0),('a',"$2b$12$YWY4yr21V6VxelJLxsxDRuhTM6OBZIqARM6WY5vQQGPOWCUFQFP0O",0);
+
+insert into user(username,password,user_type) values 
+('s',"$2b$12$TON8AAG0N6IjHKfu4x8NXesLbzjEZsWUx1KlHcC9vLH1XrwQZmjy2",0),
+('r',"$2b$12$iSmL43wHYqGJE83.NnNnremtXiw1oQ9Y97ikkJh3lBJebVc3EuZ/.",0),
+('g',"$2b$12$Z5E06jBU0E3xn5k25DiieOW7jHWSVcbqbfSrmoQnLbb4p4rDj8lha",0),
+('a',"$2b$12$YWY4yr21V6VxelJLxsxDRuhTM6OBZIqARM6WY5vQQGPOWCUFQFP0O",0);
 
 insert into trader(t_id,eth_addr,trader_level,fname,lname,email_id,cell_no, phone_no,street_addr,city,state,zip_code,wallet_balance) values
 					(1,'0xb65913648136498291','silver','Suhaas','Kalisetty','s@gnmail.com','9999999999','9999999999','EOR','Richardson','Texas','75080',99.89),
                     (2,'0xb24756384738465386','silver','Roshan','Rayudu','r@gnmail.com','9999999999','9999999999','EOR','Richardson','Texas','75080',67.73),
                     (3,'0xb72485642654985628','gold','Gowthami','Pavani','g@gnmail.com','9999999999','9999999999','Northside','Austin','Texas','75085',82.92),
                     (4,'0xb48527658483748593','gold','Abhi','A','a@gnmail.com','9999999999','9999999999','Axis','Manhattan','Newyork State','75090',71.45);
-                    
+ 
+ insert into user(uid,username,password,user_type) values
+(10,'ash','$2b$12$TON8AAG0N6IjHKfu4x8NXesLbzjEZsWUx1KlHcC9vLH1XrwQZmjy2',1);
+insert into manager(t_id,fname,lname,manager_level) values(10,'Ash','K',3);
+
 
 insert into nft(nft_name,token_id,contract_addr,owner_id,current_price) values ('CryptoPunks #1','2437486768674343252466','0xb02846592465482545',1,62.35),
 						('CryptoPunks #2','4867238447837246645988','0xb974975645485426385',2,47.90),
