@@ -3,6 +3,7 @@ from pandas.io import json
 import config as cg
 import sys
 from datetime import datetime as dt
+from pandas import Timestamp
 
 class WalletTransaction:
 
@@ -29,14 +30,10 @@ class WalletTransaction:
 
             qry1 = f"INSERT INTO test.wallet_transaction(trans_id,initiator_id,wallet_trans_type,amount_in_usd,amount_in_eth,payment_addr) values({trans_id},{self.initiator_id},'{self.wallet_trans_type}',{self.amount_in_usd},{self.amount_in_eth},'{self.payment_addr}')"
             cursor.execute(qry1)
-            print("before select wallet balance", file=sys.stderr)
             qry2 = f"SELECT wallet_balance FROM test.trader WHERE t_id={self.initiator_id}"
             df = pd.read_sql(qry2,conn)
-            print(df, file=sys.stderr)
             curr_balance = float(df['wallet_balance'][0])
-            print(curr_balance, file=sys.stderr)
             updated_balance = curr_balance + self.amount_in_eth
-            print(updated_balance, file=sys.stderr)
             qry3 = f"UPDATE test.trader SET wallet_balance={updated_balance} where t_id={self.initiator_id}"
             cursor.execute(qry3)
             cursor.close()
@@ -52,7 +49,6 @@ class WalletTransaction:
             cursor = conn.connect()
             qry2 = f"SELECT wallet_balance FROM test.trader WHERE t_id={self.initiator_id}"
             df = pd.read_sql(qry2,conn)
-            print(df, file=sys.stderr)
             curr_balance = float(df['wallet_balance'][0])
             if curr_balance < self.amount_in_eth:
                 res = {"res":"failed","message":"Cannot withdraw the amount (you don't have enough balance in your account)"}
@@ -66,7 +62,6 @@ class WalletTransaction:
             qry1 = f"INSERT INTO test.wallet_transaction(trans_id,initiator_id,wallet_trans_type,amount_in_usd,amount_in_eth,payment_addr) values({trans_id},{self.initiator_id},'{self.wallet_trans_type}',{self.amount_in_usd},{self.amount_in_eth},'{self.payment_addr}')"
             cursor.execute(qry1)
             updated_balance = curr_balance - self.amount_in_eth
-            print(updated_balance, file=sys.stderr)
             qry3 = f"UPDATE test.trader SET wallet_balance={updated_balance} where t_id={self.initiator_id}"
             cursor.execute(qry3)
             cursor.close()
@@ -82,7 +77,6 @@ class WalletTransaction:
             cursor = conn.connect()
             sql1 = f"SELECT SUM(W.amount_in_usd) as sumWithdrawWalletUSD,SUM(W.amount_in_eth) as sumWithdrawWalletETH FROM wallet_transaction W, transaction T WHERE W.trans_id = T.trans_id AND  T.trans_time > '{fromDate}' AND  T.trans_time < '{toDate}' AND W.wallet_trans_type='withdraw'"
             df1 = pd.read_sql(sql1,conn)
-            print(df1,file = sys.stderr)
             if df1['sumWithdrawWalletUSD'][0] != None:
                 sumWithdrawWalletUSD = float(df1['sumWithdrawWalletUSD'][0])
             else:
@@ -93,7 +87,6 @@ class WalletTransaction:
                 sumWithdrawWalletETH = 0.0
             sql1 = f"SELECT SUM(W.amount_in_usd) as sumAddWalletUSD,SUM(W.amount_in_eth) as sumAddWalletETH FROM wallet_transaction W, transaction T WHERE W.trans_id = T.trans_id AND  T.trans_time > '{fromDate}' AND  T.trans_time < '{toDate}' AND W.wallet_trans_type='add'"
             df1 = pd.read_sql(sql1,conn)
-            print(df1,file = sys.stderr)
             if df1['sumAddWalletUSD'][0] != None:
                 sumAddWalletUSD = float(df1['sumAddWalletUSD'][0])
             else:
@@ -105,17 +98,10 @@ class WalletTransaction:
             sql2 = f"SELECT COUNT(*) AS addCount FROM wallet_transaction W, transaction T WHERE W.trans_id = T.trans_id AND T.trans_time > '{fromDate}' AND  T.trans_time < '{toDate}' AND W.wallet_trans_type = 'add'"
             df2 = pd.read_sql(sql2,conn)
             addCount = int(df2['addCount'][0])
-            print(df2,file = sys.stderr)
             sql3 = f"SELECT COUNT(*) AS withdrawCount FROM wallet_transaction W, transaction T WHERE W.trans_id = T.trans_id AND T.trans_time > '{fromDate}' AND  T.trans_time < '{toDate}' AND W.wallet_trans_type = 'withdraw'"
             df3 = pd.read_sql(sql3,conn)
             withdrawCount = int(df3['withdrawCount'][0])
-            print(df3,file = sys.stderr)
             res = {"totalAddedWalletAmountinUSD":sumAddWalletUSD,"totalAddedWalletAmountinETH":sumAddWalletETH,"totalWithdrawnWalletAmountinUSD":sumWithdrawWalletUSD,"totalWithdrawnWalletAmountinETH":sumWithdrawWalletETH,"totalAdds":addCount,"totalwithdraws":withdrawCount}
-            #res = {}
-            #res.update({"totalWalletAmountinUSD":sumWalletUSD})
-            #res.update({"totalWalletAmountinETH":sumWalletETH})
-            #res.update({"totalAdds":addCount})
-            #res.update({"totalwithdraws":withdrawCount})
             return res
         except Exception as e:
             res = {"res":"failed","message":str(e)}
@@ -128,13 +114,13 @@ class WalletTransaction:
             # write our query here
             sqlQuery = f"SELECT T.trans_id,trans_time,trans_type,initiator_id,wallet_trans_type,amount_in_eth,amount_in_usd,payment_addr FROM transaction T , wallet_transaction W where T.trans_id = W.trans_id AND W.initiator_id = {trader_id} "
             df = pd.read_sql(sqlQuery,conn)
-            print(df, file=sys.stderr)
             if not df.empty:
                 json_nft_data = df.to_json(orient = "index")
                 parsed_json = json.loads(json_nft_data)
                 for iter in parsed_json:
-                    transTime = parsed_json[iter]['trans_time']
-                    parsed_json[iter].update({"trans_dateTime":str(dt.fromtimestamp(transTime/1000))})
+                    transTime = df['trans_time'][int(iter)]
+                    transTimeDT = Timestamp.to_pydatetime(transTime)
+                    parsed_json[iter].update({"trans_dateTime":str(transTimeDT)})
                 return parsed_json
         except Exception as e:
             res = {"res":"failed","message":str(e)}
