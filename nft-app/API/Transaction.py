@@ -24,6 +24,7 @@ class Transaction:
             transTimeDT = Timestamp.to_pydatetime(transTime)
             timeStampInt = int(float(timestamp)) 
             transTimeInt = int(dt.timestamp(transTimeDT) *1000)
+            print(transTimeInt,file= sys.stderr)
             if (transTimeInt) > (timeStampInt):
                 td = (transTimeInt) - (timeStampInt)
             else:

@@ -59,6 +59,55 @@ class NFTTransaction:
             df1 = pd.read_sql(sql1,conn)
             transStatusFromTable = df1['trans_status'][0]
             if transStatusFromTable != "cancelled":
+                # adjust wallets
+                # change owner
+                sql1 = f"SELECT nft_trans_type,initiator_id,receiver_id,total_amount,token_id FROM nft_transaction WHERE trans_id = {transactionID}"
+                df1 = pd.read_sql(sql1,conn)
+                print(df1)
+                nftStatusFromTable = df1['nft_trans_type'][0]
+                nftReceiverId = df1['receiver_id'][0]
+                nftInitiatorId = df1['initiator_id'][0]
+                amount =  df1['total_amount'][0]
+                token_id =  df1['token_id'][0]
+                print(amount,file=sys.stderr)
+                if nftStatusFromTable == 'buy':
+                    # add to buyer walllet and sbutraxt from seller wallet
+                    seller_id = nftReceiverId
+                    buyer_id = nftInitiatorId
+                    checkSql = f"SELECT wallet_balance from trader WHERE t_id = {seller_id}"
+                    df2 = pd.read_sql(checkSql,conn)
+                    walletAmount = df2['wallet_balance'][0]
+                    print(amount,file=sys.stderr)
+                    print(walletAmount,file=sys.stderr)
+                    if walletAmount-amount > 0:
+                        buySql = f"UPDATE trader SET wallet_balance = wallet_balance + {amount} WHERE t_id = {buyer_id} "
+                        cursor.execute(buySql)
+                        sellSql = f"UPDATE trader SET wallet_balance = wallet_balance - {amount} WHERE t_id = {seller_id} "
+                        cursor.execute(sellSql)
+                        #owner change
+                        changeNFT = f"UPDATE nft SET owner_id = {seller_id} WHERE token_id = {token_id}"
+                        cursor.execute(changeNFT)
+                    else:
+                        res = {"res":"failed","message":"Unable to proceed with cancellation transaction"}
+                        return json.dumps(res)
+                else:
+                    # add to seller wallet and subtract from buyer waller
+                    seller_id = nftInitiatorId
+                    buyer_id = nftReceiverId
+                    checkSql = f"SELECT wallet_balance from trader WHERE t_id = {buyer_id}"
+                    df3 = pd.read_sql(checkSql,conn)
+                    walletAmount = df3['wallet_amount'][0]
+                    if walletAmount-amount > 0:
+                        sellSql = f"UPDATE trader SET wallet_balance = wallet_balance + {amount} WHERE t_id = {seller_id}"
+                        cursor.execute(sellSql)
+                        buySql = f"UPDATE trader SET wallet_balance = wallet_balance - {amount} WHERE t_id = {buyer_id} "
+                        cursor.execute(buySql)
+                        #owner change
+                        changeNFT = f"UPDATE nft SET owner_id = {buyer_id} WHERE token_id = {token_id}"
+                        cursor.execute(changeNFT)
+                    else:
+                        res = {"res":"failed","message":"Unable to proceed with cancellation transaction"}
+                        return json.dumps(res)
                 sql = f"UPDATE nft_transaction SET trans_status = 'cancelled'  WHERE trans_id = {transactionID}"
                 cursor.execute(sql)
                 #print("NFTtransaction update executed " ,file=sys.stderr)
