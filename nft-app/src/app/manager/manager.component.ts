@@ -28,6 +28,7 @@ export class ManagerComponent implements OnInit {
   level_manager:number | undefined;
   username:any=''
   password:any=''
+  minDateValue=new Date();
   rangeDates: Date[]=[];
   enterDetails:boolean=false;
   addenterDetails:boolean=false
@@ -39,6 +40,7 @@ export class ManagerComponent implements OnInit {
   successfulTransactions:any='';
   totalAddedWalletAmountinETH:any='';
   totalAddedWalletAmountinUSD:any='';
+  buyTransactions:any='';
   totalAdds:any='';
   totalAmountInEth:any='';
   totalNFTTransactions:any='';
@@ -53,6 +55,7 @@ export class ManagerComponent implements OnInit {
   ownerId:any='';
   current_price:any='';
   tkId:any='';
+  sellTransactions:any='';
 
   constructor(private router:Router,private nftService:NftserService) {
     
@@ -175,6 +178,8 @@ export class ManagerComponent implements OnInit {
         this.totalWithdrawnWalletAmountinETH=result.totalWithdrawnWalletAmountinETH;
         this.totalWithdrawnWalletAmountinUSD=result.totalWithdrawnWalletAmountinUSD;
         this.totalwithdraws=result.totalwithdraws;
+        this.buyTransactions=result.buyTransactions;
+        this.sellTransactions=result.sellTransactions;
         
       },error => {
         // You can access status:

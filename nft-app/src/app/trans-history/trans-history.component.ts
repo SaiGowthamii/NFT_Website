@@ -150,6 +150,7 @@ export class TransHistoryComponent implements OnInit {
         let cancel_res:any=[];
         cancel_res=data;
         if(cancel_res.res=='success'){
+          localStorage.setItem('wallet_balance',cancel_res.updated_balance);
           alert('Transaction Cancelled Successfull');
           this.homepage();
           this.display=false;
