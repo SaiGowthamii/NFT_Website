@@ -33,6 +33,14 @@ class NFTTransaction:
             df2 = pd.read_sql(sql2,conn)
             #print(df2,file = sys.stderr)
             successTrans = int(df2['successTrans'][0])
+            sql2 = f"SELECT COUNT(*) AS buyTrans  FROM nft_transaction W, transaction T WHERE W.trans_id = T.trans_id AND  T.trans_time > '{fromDate}' AND  T.trans_time < '{toDate}' AND W.nft_trans_type = '{'buy'}'"
+            df2 = pd.read_sql(sql2,conn)
+            #print(df2,file = sys.stderr)
+            buyTrans = int(df2['buyTrans'][0])
+            sql2 = f"SELECT COUNT(*) AS sellTrans  FROM nft_transaction W, transaction T WHERE W.trans_id = T.trans_id AND  T.trans_time > '{fromDate}' AND  T.trans_time < '{toDate}' AND W.nft_trans_type = '{'sell'}'"
+            df2 = pd.read_sql(sql2,conn)
+            #print(df2,file = sys.stderr)
+            sellTrans = int(df2['sellTrans'][0])
             sql3 = f"SELECT SUM(W.total_amount) AS total  FROM nft_transaction W, transaction T WHERE W.trans_id = T.trans_id AND  T.trans_time > '{fromDate}' AND  T.trans_time < '{toDate}' AND W.trans_status = '{'successful'}'"
             df3 = pd.read_sql(sql3,conn)
             #print(df3,file = sys.stderr)
@@ -40,7 +48,7 @@ class NFTTransaction:
                 total = float(df3['total'][0])
             else:
                 total = 0.0
-            res = {"cancelledTransactions":cancelledTrans,"successfulTransactions":successTrans,"totalAmountInEth":total}
+            res = {"cancelledTransactions":cancelledTrans,"successfulTransactions":successTrans,"totalAmountInEth":total,"buyTransactions":buyTrans,"sellTransactions":sellTrans}
             #res = {}
             #res.update({"cancelledTransactions":cancelledTrans})
             #res.update({"successfulTransactions":successTrans})
@@ -69,6 +77,9 @@ class NFTTransaction:
                 nftInitiatorId = df1['initiator_id'][0]
                 amount =  df1['total_amount'][0]
                 token_id =  df1['token_id'][0]
+                checkSql = f"SELECT wallet_balance from trader WHERE t_id = {nftInitiatorId}"
+                df2 = pd.read_sql(checkSql,conn)
+                initiator_balance = df2['wallet_balance'][0]
                 print(amount,file=sys.stderr)
                 if nftStatusFromTable == 'buy':
                     # add to buyer walllet and sbutraxt from seller wallet
@@ -77,6 +88,7 @@ class NFTTransaction:
                     checkSql = f"SELECT wallet_balance from trader WHERE t_id = {seller_id}"
                     df2 = pd.read_sql(checkSql,conn)
                     walletAmount = df2['wallet_balance'][0]
+                    initiator_balance = initiator_balance + amount
                     print(amount,file=sys.stderr)
                     print(walletAmount,file=sys.stderr)
                     if walletAmount-amount > 0:
@@ -96,14 +108,15 @@ class NFTTransaction:
                     buyer_id = nftReceiverId
                     checkSql = f"SELECT wallet_balance from trader WHERE t_id = {buyer_id}"
                     df3 = pd.read_sql(checkSql,conn)
-                    walletAmount = df3['wallet_amount'][0]
+                    walletAmount = df3['wallet_balance'][0]
+                    initiator_balance = initiator_balance - amount
                     if walletAmount-amount > 0:
                         sellSql = f"UPDATE trader SET wallet_balance = wallet_balance + {amount} WHERE t_id = {seller_id}"
                         cursor.execute(sellSql)
                         buySql = f"UPDATE trader SET wallet_balance = wallet_balance - {amount} WHERE t_id = {buyer_id} "
                         cursor.execute(buySql)
                         #owner change
-                        changeNFT = f"UPDATE nft SET owner_id = {buyer_id} WHERE token_id = {token_id}"
+                        changeNFT = f"UPDATE nft SET owner_id = {seller_id} WHERE token_id = {token_id}"
                         cursor.execute(changeNFT)
                     else:
                         res = {"res":"failed","message":"Unable to proceed with cancellation transaction"}
@@ -114,7 +127,7 @@ class NFTTransaction:
                 #cancelledlog
                 cl= cancelledLogs.cancelledLogs(trans_id=transactionID,log_info=logInfo,log_trans_time=timestamp)
                 clout = cl.addLogs()
-                res = {"res":"successful","message":"Transaction Successful","trans_id":{transactionID}}
+                res = {"res":"successful","message":"Transaction Successful","trans_id":{transactionID},"updated_balance":initiator_balance}
                 return res
             else:
                 res = {"res":"failed","message":"Transaction has already been cancelled"}
