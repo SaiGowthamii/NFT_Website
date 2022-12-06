@@ -141,10 +141,11 @@ export class HomeComponent implements OnInit {
             console.log("data",data)
             this.buy_data=data;
             if(this.buy_data.res=='successful'){
+
               this.router.navigate(['/payment']);
             }
             else{
-              alert(this.data_result.message);
+              alert(this.buy_data.message);
               this.display=false;
             }
           }) 

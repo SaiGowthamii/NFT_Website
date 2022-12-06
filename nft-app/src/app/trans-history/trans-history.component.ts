@@ -147,16 +147,19 @@ export class TransHistoryComponent implements OnInit {
       "time_stamp": Date.now(),
        "trader_id":t_id }
       this.nftService.cancelApi(this.log_time).subscribe(data=>{
-        let cancel_res:any=[];
-        cancel_res=data;
-        if(cancel_res.res=='success'){
-          localStorage.setItem('wallet_balance',cancel_res.updated_balance);
-          alert('Transaction Cancelled Successfull');
+        let cancelres:any=[];
+        cancelres=data;
+        console.log("cancel",cancelres);
+        if(cancelres.res=='successful'){
+          console.log("cancel",cancelres);
+          localStorage.setItem('wallet_balance',cancelres.updated_balance);
+          this.balance=localStorage.getItem('wallet_balance')
+          alert(cancelres.message);
           this.homepage();
           this.display=false;
         }
         else{
-          alert(cancel_res.message);
+          alert(cancelres.message);
           this.homepage();
           this.display=false;
         }

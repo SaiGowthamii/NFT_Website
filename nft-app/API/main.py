@@ -243,7 +243,7 @@ def cancelNFTTransactions():
     trans = Transaction.Transaction()
     transout = trans.cancelTransaction(transactionId,timeStamp,logInfo)
     out = json.loads(transout)
-    return Response(json.dumps(out),mimetype='application/json')
+    return Response(transout,mimetype='application/json')
 
 @app.route("/sellNFT",methods =['GET','POST'])
 @jwt_required()
