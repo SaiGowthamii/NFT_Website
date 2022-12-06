@@ -211,8 +211,14 @@ export class ManagerComponent implements OnInit {
         }
         console.log("user",user)
         this.nftService.addNftApi(user).subscribe(data=>{
+          this.create_res=data;
           if(this.create_res.res=="success"){
-            alert(this.create_res.message)
+            alert(this.create_res.message)  
+            this.nftName='';
+            this.ethAdd='';
+            this.tkId='';
+            this.ownerId='';
+            this.current_price=''
           }
           else{
             this.addenterDetails=true;
@@ -233,6 +239,8 @@ export class ManagerComponent implements OnInit {
             alert(error.message);
           }
          })
+         
+         console.log("NFT",this.nftName)
   
       }
      }

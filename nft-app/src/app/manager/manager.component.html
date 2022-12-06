@@ -50,15 +50,15 @@
         <div class="centered" *ngIf="selectedABtn">
             <p-card class="create_card" [style]="{'width': '38rem', 'margin-bottom': '2em'}">
              <label class="required-field"> NFT Name</label> &nbsp;&nbsp; 
-             <input type="text" (focus)='onfocus()' style="height: 36px;position: relative;left: 82px;" [(ngModel)]="nftName" placeholder="Enter FirstName"><br><br>
+             <input type="text" (focus)='onfocus()' style="height: 36px;position: relative;left: 82px;" [(ngModel)]="nftName" placeholder="Enter NFT Name"><br><br>
              <label class="required-field"> Ethereum Address</label> &nbsp;&nbsp; 
-             <input type="text" (focus)='onfocus()' class="last" [(ngModel)]="ethAdd" placeholder="Enter LastName"><br><br>
+             <input type="text" (focus)='onfocus()' class="last" [(ngModel)]="ethAdd" placeholder="Enter Ethereum Address"><br><br>
              <label class="required-field" style="position: relative;right: 21px;"> Token ID</label> &nbsp;&nbsp; 
-             <input type="text" (focus)='onfocus()' style="height: 36px;position: relative;left: 89px;" [(ngModel)]="tkId" placeholder="Enter Level"><br><br>
+             <input type="text" (focus)='onfocus()' style="height: 36px;position: relative;left: 89px;" [(ngModel)]="tkId" placeholder="Enter Token Id"><br><br>
              <label class="required-field" style="position: relative;left: -16px;">Owner ID</label> &nbsp;&nbsp;
-             <input type="text" (focus)='onfocus()'class="city" [(ngModel)]="ownerId" placeholder="Enter username" ><br><br>
-             <label class="required-field" style="position: relative;left: 14px;"> Current Price</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  
-             <input type="text" (focus)='onfocus()' class="state" [(ngModel)]="current_price" placeholder="Enter Password"><br><br><br>
+             <input type="text" (focus)='onfocus()'class="city" [(ngModel)]="ownerId" placeholder="Enter Owner ID" ><br><br>
+             <label class="required-field" style="position: relative;left: 14px;"> Price</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  
+             <input type="text" (focus)='onfocus()' class="state" [(ngModel)]="current_price" placeholder="Enter Price"><br><br><br>
                 <label style="color:red;position: relative;top: -22px;left: 20px;" *ngIf="addenterDetails">{{errormessage}}</label>
               <div class="btnCls">
               <button  type="submit" class="btn btn-primary btnSty" (click)="addNft()">
@@ -87,7 +87,7 @@
         </button>
     </ng-template>
 </p-overlayPanel>
-<p-dialog header="Report" [modal]=true [closable]="true" [(visible)]="display" [style]="{width: '30vw'}">
+<p-dialog header="Report" [modal]=true [closable]="true" [(visible)]="display" [style]="{width: 'auto'}">
    <label>Successful Transaction : </label> &nbsp;&nbsp; <label>{{successfulTransactions}}</label><br><br>
    <label>Canecelled Transaction : </label> &nbsp;&nbsp; <label>{{cancelledTransactions}}</label><br><br>
    <label>No of NFT Transaction : </label> &nbsp;&nbsp; <label>{{totalNFTTransactions}}</label><br><br>
