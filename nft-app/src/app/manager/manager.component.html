@@ -71,7 +71,7 @@
         <div class="centere" *ngIf="selectedwBtn">
             <div class="field col-12 md:col-4">
                 <label for="range">Calendar</label>&nbsp;&nbsp;&nbsp;
-                <p-calendar [(ngModel)]="rangeDates"  dateFormat="yy-mm-dd"  selectionMode="range" [readonlyInput]="true" inputId="range" [showIcon]="true" placeholder="Select the date range"></p-calendar> &nbsp;&nbsp;
+                <p-calendar [(ngModel)]="rangeDates" [maxDate]="minDateValue"   dateFormat="yy-mm-dd"  selectionMode="range" [readonlyInput]="true" inputId="range" [showIcon]="true" placeholder="Select the date range"></p-calendar> &nbsp;&nbsp;
                 <button class="rep_btn" (click)="report_details()">Submit</button> &nbsp;&nbsp;
                 <button class="rep_btn" (click)="reset_cal()">Reset</button>
             </div>
@@ -92,6 +92,9 @@
    <label>No of NFT Transaction : </label> &nbsp;&nbsp; <label>{{totalNFTTransactions}}</label><br><br>
    <label>Successful Transaction : </label> &nbsp;&nbsp; <label>{{successfulTransactions}}</label><br><br>
    <label>Canecelled Transaction : </label> &nbsp;&nbsp; <label>{{cancelledTransactions}}</label><br><br>
+   <label>No of Buy Transaction : </label> &nbsp;&nbsp; <label>{{buyTransactions}}</label><br><br>
+   <label>No of Sell Transaction : </label> &nbsp;&nbsp; <label>{{sellTransactions}}</label><br><br>
+   <label>Total Volume of NFT Transactions in ETH : </label> &nbsp;&nbsp; <label>{{totalAmountInEth}}</label><br><br>
    <label>No of Wallet Transaction : </label> &nbsp;&nbsp; <label>{{totalWalletTransaction}}</label><br><br>
    <label>No of Deposit Wallet Transaction: </label> &nbsp;&nbsp; <label>{{totalAdds}}</label><br><br>
    <label>No of Withdraw Wallet Transaction: </label> &nbsp;&nbsp; <label>{{totalwithdraws}}</label><br><br>
