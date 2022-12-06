@@ -142,29 +142,11 @@ def addToWallet():
         out = {"res":"failed","message":"Unknown option for wallet_trans_type"}
     return Response(out,mimetype='application/json')
 
-@app.route("/addNFT",methods=['POST'])
-@jwt_required()
-def addNFT():
-    data = request.get_json(force=True)
-    manager_id = int(data['initiator_id'])
-    uid = int(get_jwt_identity())
-    if manager_id != uid:
-        res = {"res":"failed","message":"UnAuthorized, Please logout and login again"}
-        return Response(json.dumps(res),mimetype='application/json')
-    nft_name = data['nft_name']
-    contract_addr = data['contract_addr']
-    token_id = data['token_id']
-    current_price = float(data['current_price'])
-    owner_id = int(data['owner_id'])
-    nft = NFT.NFT(nft_name,token_id,contract_addr,owner_id,current_price)
-    out = nft.addNFT()
-    return Response(out,mimetype='application/json')
-
-
 @app.route("/buyNFT",methods=['GET','POST'])
 @jwt_required()
 def buyNFT():
     if request.method == 'GET':
+        #data = request.get_json(force=True)
         data = request.args
         trader_id = int(data['trader_id'])
         contract_addr = data['contract_addr']
@@ -203,17 +185,23 @@ def getTransactions():
     walletOut = walletTransaction.getWalletTransactions(trader_id)
     nftTransactionOut = NFTTransaction.NFTTransaction()
     nftOut = nftTransactionOut.getNFTTransactionDetails(trader_id)
+    # make a union of jsons and return
+    print(walletOut,file=sys.stderr)
+    print(nftOut ,file=sys.stderr)
     i = 0
     out = {}
     if walletOut != None:
+        print("loop1" ,file=sys.stderr)
         for each in walletOut:
             out[i] = walletOut[each]
             i=i+1
     if nftOut != None:
+        print("loop2" ,file=sys.stderr)
         for eac in nftOut:
             out[i] = nftOut[eac]
             i=i+1
     
+    print(json.dumps(out),file=sys.stderr)
     return Response(json.dumps(out),mimetype='application/json')
 
 
@@ -223,16 +211,16 @@ def getTransactions():
 @jwt_required()
 def cancelNFTTransactions():
     data = request.get_json(force=True)
-    transactionId = int(data['trans_id'])
-    trader_id = int(data['trader_id'])
-    uid = int(get_jwt_identity())
-    if trader_id != uid:
-        res = {"res":"failed","message":"UnAuthorized, Please logout and login again"}
-        return Response(json.dumps(res),mimetype='application/json',status=401)
+    transactionId = data['trans_id']
     logInfo = data['log_info']
     timeStamp = data['time_stamp']
+    #nfttransaction 
+    print("trans:"+ str(transactionId), file=sys.stderr)
+    print("LOGINFO:"+logInfo, file=sys.stderr)
+    print("timestamp:"+str(timeStamp), file=sys.stderr)
     trans = Transaction.Transaction()
     transout = trans.cancelTransaction(transactionId,timeStamp,logInfo)
+    print(transout, file= sys.stderr)
     out = json.loads(transout)
     return Response(json.dumps(out),mimetype='application/json')
 
@@ -240,6 +228,7 @@ def cancelNFTTransactions():
 @jwt_required()
 def getsellDetails():
     if request.method == 'GET':
+        #data = request.get_json(force=True)
         data = request.args
         trader_id = int(data['trader_id'])
         uid = int(get_jwt_identity())
@@ -278,18 +267,15 @@ def createManager():
         managerLevel = data['manager_level']
         initiator_id = int(data['initiator_id'])
         uid = int(get_jwt_identity())
-        try:
-            managerLevel = int(managerLevel)
-            if managerLevel != 1 and managerLevel != 2 and managerLevel != 3:
-                res = {"res":"failed","message":"Manager Level can be either 1, 2 or 3"}
-                return Response(json.dumps(res),mimetype='application/json')
-        except Exception as e:
-            res = {"res":"failed","message":"Manager Level can be either 1, 2 or 3"}
-            return Response(json.dumps(res),mimetype='application/json')
         if initiator_id != uid:
             res = {"res":"failed","message":"UnAuthorized, Please logout and login again"}
             return Response(json.dumps(res),mimetype='application/json',status=401)
+        print(managerUsername,file=sys.stderr)
+        print(managerPassword,file=sys.stderr)
+        print(managerFirstName,file=sys.stderr)
+        print(managerLevel,file=sys.stderr)
         managerInstance = manager.manager(managerUsername,managerPassword,managerFirstName,managerLastName,managerLevel)
+        print(managerLastName,file=sys.stderr)
         out = managerInstance.createManager()
         return Response(json.dumps(out),mimetype='application/json')
 
@@ -313,12 +299,18 @@ def getReports():
     # transaction table : total no of wallet , nft , total transactions
     transInfo = Transaction.Transaction()
     out1 = transInfo.getTransAggregateInfo(fromDate,toDate)
+    #print(out1,file=sys.stderr)
     # wallet : add, withdraws , added amount  , with drawn amount
     walletInfo = WalletTransaction.WalletTransaction()
     out2 = walletInfo.getWalletTransAggregateInfo(fromDate,toDate)
+    #print(out2,file=sys.stderr)
     # nft : no of buys , no of sells ,volume of buy in eth , usd , volume of sell in eth , usd , no of cancelled transactions
     nftInfo = NFTTransaction.NFTTransaction()
     out3 = nftInfo.getNFTTransAggregateInfo(fromDate,toDate)
+    #print(out3['res'],file=sys.stderr)
+    print(out1)
+    print(out2)
+    print(out3)
     i = 0
     out = {}
     if out1 != None:
