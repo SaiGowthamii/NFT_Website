@@ -25,7 +25,7 @@ export class ManagerComponent implements OnInit {
   create_res:any=[]
   first_name:any='';
   last_name:any='';
-  level_manager:number | undefined;
+  level_manager:any='';
   username:any=''
   password:any=''
   minDateValue=new Date();
@@ -105,7 +105,7 @@ export class ManagerComponent implements OnInit {
 
   }
   homepage(){
-    if(this.username==''||this.password==''||this.last_name==''||this.first_name==''||this.level==undefined){
+    if(this.username==''||this.password==''||this.last_name==''||this.first_name==''||this.level_manager==undefined){
       this.enterDetails=true;
     }
     else{
@@ -125,6 +125,11 @@ export class ManagerComponent implements OnInit {
         this.create_res=data;
         if(this.create_res.res=="success"){
           alert(this.create_res.message)
+          this.username=''
+          this.password=''
+          this.last_name=''
+          this.first_name=''
+          this.level_manager=''
         }
         else{
           this.enterDetails=true;
@@ -139,8 +144,10 @@ export class ManagerComponent implements OnInit {
         console.log(error.status);
         alert("Session has expired")
       this.login();})
+      
 
     }
+    
    }
    reset_cal(){
     this.rangeDates=[];

@@ -153,6 +153,7 @@ export class TransHistoryComponent implements OnInit {
         if(cancelres.res=='successful'){
           console.log("cancel",cancelres);
           localStorage.setItem('wallet_balance',cancelres.updated_balance);
+          this.balance=localStorage.getItem('wallet_balance')
           alert(cancelres.message);
           this.homepage();
           this.display=false;
