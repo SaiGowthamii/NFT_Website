@@ -30,7 +30,7 @@
                     <td>{{sales.nft_name}}</td>
                     <td>{{sales.contract_addr}}</td>
                     <td>{{sales.token_id}}</td>
-                    <td>{{sales.current_price}}</td>
+                    <td>{{sales.current_price}} ETH</td>
                     <td><button  type="submit" class="btn btn-primary logsty" (click)="sell(sales.contract_addr,sales.token_id)">Sell</button> </td>
                 </tr>
             </ng-template>
@@ -46,7 +46,7 @@
     <ng-template pTemplate>
         <label>Name: </label>&nbsp;<label>{{name}}</label><br>
         <label>Level: </label>&nbsp;<label>{{level}}</label><br>
-        <label>Wallet Amount: </label>&nbsp;<label>{{balance}}</label><br>
+        <label>Wallet Amount: </label>&nbsp;<label>{{balance}} ETH</label><br>
         <button  type="submit" class="btn btn-primary logsty" (click)="login()">
             Logout
         </button>

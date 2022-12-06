@@ -27,7 +27,7 @@
        <label class="labelSty">Smart contract Address : </label><label class="nftsty">{{nft_add}}</label>
        </div><br><br>
        <div class="field">
-       <label class="labelSty">Price : </label><label class="nftsty">{{nft_price}}</label>
+       <label class="labelSty">Price : </label><label class="nftsty">{{nft_price}} ETH</label>
        </div><br><br>
        <div class="field">
        <label >How do you want to pay commission fee ?</label><br>
@@ -37,7 +37,7 @@
        </div><br>
        <div class="field">
         <label >Commission Fee : </label><label *ngIf="display_usd">{{usdAmount}}</label>
-        <label *ngIf="display_eth">{{ethAmount}}</label><br>
+        <label *ngIf="display_eth">{{ethAmount}} ETH</label><br>
         <button  type="submit"   class="btn btn-primary btnSty" (click)="proceed()">Proceed</button>
         <button  type="submit"   class="btn btn-primary btnSty" (click)="nav_home()">Cancel</button> 
        </div>

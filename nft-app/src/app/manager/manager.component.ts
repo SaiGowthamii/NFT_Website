@@ -89,6 +89,7 @@ export class ManagerComponent implements OnInit {
     this.selectedwBtn=false;
     this.selectedNBtn=true;
     this.selectedABtn=false;
+    this.display=false;
   }
   report(){
     this.selectedwBtn=true;
@@ -99,6 +100,7 @@ export class ManagerComponent implements OnInit {
   this.selectedABtn=true;
   this.selectedwBtn=false;
   this.selectedNBtn=false;
+  this.display=false;
 
 
   }
@@ -122,7 +124,7 @@ export class ManagerComponent implements OnInit {
         console.log('data',data);
         this.create_res=data;
         if(this.create_res.res=="success"){
-          this.display=true;
+          alert(this.create_res.message)
         }
         else{
           this.enterDetails=true;
