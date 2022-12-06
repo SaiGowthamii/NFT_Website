@@ -22,6 +22,9 @@ class WalletTransaction:
         conn = cg.connect_to_mySQL()
         try:
             cursor = conn.connect()
+            if self.amount_in_eth < 0:
+                res = {"res":"failed","message":"amount cannot be negative"}
+                return json.dumps(res)
             qry = f"INSERT INTO test.transaction(trans_type) VALUES('{self.trans_type}')"
             cursor.execute(qry)
             qry_trans_id = f"SELECT * FROM test.transaction ORDER BY trans_id DESC LIMIT 1"
@@ -47,6 +50,9 @@ class WalletTransaction:
         conn = cg.connect_to_mySQL()
         try:
             cursor = conn.connect()
+            if self.amount_in_eth < 0:
+                res = {"res":"failed","message":"amount cannot be negative"}
+                return json.dumps(res)
             qry2 = f"SELECT wallet_balance FROM test.trader WHERE t_id={self.initiator_id}"
             df = pd.read_sql(qry2,conn)
             curr_balance = float(df['wallet_balance'][0])
