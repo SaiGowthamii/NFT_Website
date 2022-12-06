@@ -88,15 +88,15 @@
     </ng-template>
 </p-overlayPanel>
 <p-dialog header="Report" [modal]=true [closable]="true" [(visible)]="display" [style]="{width: 'auto'}">
+   <label>Total Transactions : </label> &nbsp;&nbsp; <label>{{totalTransactions}}</label><br><br>
+   <label>No of NFT Transaction : </label> &nbsp;&nbsp; <label>{{totalNFTTransactions}}</label><br><br>
    <label>Successful Transaction : </label> &nbsp;&nbsp; <label>{{successfulTransactions}}</label><br><br>
    <label>Canecelled Transaction : </label> &nbsp;&nbsp; <label>{{cancelledTransactions}}</label><br><br>
-   <label>No of NFT Transaction : </label> &nbsp;&nbsp; <label>{{totalNFTTransactions}}</label><br><br>
-   <label>Total Transactions : </label> &nbsp;&nbsp; <label>{{totalTransactions}}</label><br><br>
+   <label>No of Wallet Transaction : </label> &nbsp;&nbsp; <label>{{totalWalletTransaction}}</label><br><br>
    <label>No of Deposit Wallet Transaction: </label> &nbsp;&nbsp; <label>{{totalAdds}}</label><br><br>
+   <label>No of Withdraw Wallet Transaction: </label> &nbsp;&nbsp; <label>{{totalwithdraws}}</label><br><br>
    <label>Total Deposit Wallet Amount in ETH : </label> &nbsp;&nbsp; <label>{{totalAddedWalletAmountinETH}}</label><br><br>
    <label>Total Deposit Wallet Amount in USD : </label> &nbsp;&nbsp; <label>{{totalAddedWalletAmountinUSD}}</label><br><br>
-   <label>No of Wallet Transaction : </label> &nbsp;&nbsp; <label>{{totalWalletTransaction}}</label><br><br>
-   <label>No of Withdraw Wallet Transaction: </label> &nbsp;&nbsp; <label>{{totalwithdraws}}</label><br><br>
    <label>Total Withdraw Wallet Amount in ETH: </label> &nbsp;&nbsp; <label>{{totalWithdrawnWalletAmountinETH}}</label><br><br>
    <label>Total Withdraw Wallet Amount in ETH : </label> &nbsp;&nbsp; <label>{{totalWithdrawnWalletAmountinUSD}}</label><br><br>
 </p-dialog>
