@@ -103,7 +103,7 @@ class NFTTransaction:
                         res = {"res":"failed","message":"Unable to proceed with cancellation transaction"}
                         return json.dumps(res)
                 else:
-                    # add to seller wallet and subtract from buyer waller
+                    # remove from seller wallet and add to buyer waller
                     seller_id = nftInitiatorId
                     buyer_id = nftReceiverId
                     checkSql = f"SELECT wallet_balance from trader WHERE t_id = {buyer_id}"
@@ -111,9 +111,9 @@ class NFTTransaction:
                     walletAmount = df3['wallet_balance'][0]
                     initiator_balance = initiator_balance - amount
                     if walletAmount-amount > 0:
-                        sellSql = f"UPDATE trader SET wallet_balance = wallet_balance + {amount} WHERE t_id = {seller_id}"
+                        sellSql = f"UPDATE trader SET wallet_balance = wallet_balance + {amount} WHERE t_id = {buyer_id}"
                         cursor.execute(sellSql)
-                        buySql = f"UPDATE trader SET wallet_balance = wallet_balance - {amount} WHERE t_id = {buyer_id} "
+                        buySql = f"UPDATE trader SET wallet_balance = wallet_balance - {amount} WHERE t_id = {seller_id} "
                         cursor.execute(buySql)
                         #owner change
                         changeNFT = f"UPDATE nft SET owner_id = {seller_id} WHERE token_id = {token_id}"
@@ -334,13 +334,13 @@ class NFTTransaction:
             if current_owner != trader_id:
                 res = {"res":"failed","message":"Unable to proceed, NFT is owned by someone else"}
                 return json.dumps(res)
-            qry2 = f"SELECT t_id,wallet_balance FROM trader WHERE eth_addr = '{receiver_eth_address}'"
+            qry2 = f"SELECT t.t_id,t.wallet_balance FROM trader as t,user as u WHERE t.t_id = u.uid and (eth_addr = '{receiver_eth_address}' or u.username = '{receiver_eth_address}')"
             df3 = pd.read_sql(qry2,conn)
             if not df3.empty:
                 receiver_id = df3['t_id'][0]
                 receiver_wallet_balance = df3['wallet_balance'][0]
             else:
-                res = {"res":"failed","message":"Unable to proceed, Buyer's Ethereum Address not found"}
+                res = {"res":"failed","message":"Unable to proceed, Buyer's Ethereum Address or username not found"}
                 return json.dumps(res)
             if receiver_wallet_balance < nft_price:
                 res = {"res":"failed","message":"Unable to proceed with transaction: Insufficent Wallet balance on buyer's end"}

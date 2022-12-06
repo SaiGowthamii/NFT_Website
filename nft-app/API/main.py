@@ -51,7 +51,7 @@ def login():
     out = oLogin.check_type()
     #getc_details = oLogin.get_client_data()
     if out[2] == "failed":
-        res  = {"res":"failed"}
+        res  = {"res":"failed","message":"Failed to Authenticate"}
         return Response(json.dumps(res),mimetype='application/json')
     uid = out[0]
     ty = out[1]
@@ -106,6 +106,9 @@ def getNFTDataforTrader():
 def convertUSDtoEth():
     args = request.args
     amount_in_eth =  float(args['amount_in_eth'])
+    if amount_in_eth < 0:
+        res = {"amountUSD" : "amount cannot be negative"}
+        return Response(json.dumps(res),mimetype='application/json')
     response = requests.get("https://api.coinbase.com/v2/prices/ETH-USD/spot")
     json_data = response.json()
     eth_in_USD = float(json_data['data']['amount'])
@@ -243,7 +246,7 @@ def cancelNFTTransactions():
     trans = Transaction.Transaction()
     transout = trans.cancelTransaction(transactionId,timeStamp,logInfo)
     out = json.loads(transout)
-    return Response(transout,mimetype='application/json')
+    return Response(json.dumps(out),mimetype='application/json')
 
 @app.route("/sellNFT",methods =['GET','POST'])
 @jwt_required()
