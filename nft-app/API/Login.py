@@ -37,7 +37,6 @@ class Login:
             #print(ty, file=sys.stderr)
             json_user_data = self.df1.to_json(orient = "index")
             parsed_json = json.loads(json_user_data)
-            print(parsed_json, file=sys.stderr)
             if check_password_hash(psw_hash,self.password):
                 return [user_id,ty,"success"]
             else:
