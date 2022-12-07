@@ -47,7 +47,6 @@ def login():
     username = data['username']
     password = data['password']
     oLogin = Login.Login(username, password)
-    print(password, file=sys.stderr)
     out = oLogin.check_type()
     #getc_details = oLogin.get_client_data()
     if out[2] == "failed":
