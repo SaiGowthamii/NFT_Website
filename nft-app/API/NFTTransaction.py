@@ -106,7 +106,7 @@ class NFTTransaction:
                     # remove from seller wallet and add to buyer waller
                     seller_id = nftInitiatorId
                     buyer_id = nftReceiverId
-                    checkSql = f"SELECT wallet_balance from trader WHERE t_id = {buyer_id}"
+                    checkSql = f"SELECT wallet_balance from trader WHERE t_id = {nftInitiatorId}"
                     df3 = pd.read_sql(checkSql,conn)
                     walletAmount = df3['wallet_balance'][0]
                     initiator_balance = initiator_balance - amount
